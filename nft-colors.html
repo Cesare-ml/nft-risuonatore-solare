@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colori NFT - Risponditore Solare</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Karla:ital,wght@0,200..800;1,200..800&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/main.min.css">
+
+
+</head>
+<body>
+
+    <div class="header">
+      <div class="top">
+        <img src="/assets/imgs/logo.png"/>
+        <div class="title-wrapper">
+          <h1>Risuonatore Solare</h1>
+          <h2>2376 NFT Quantici. 108 colori unici in 22 livelli di profondità distinte.</h2>
+        </div>
+      </div>
+      <div class="atf">
+        <p>123 abc</p>
+      </div>
+    </div>
+
+    <!--
+    <div class="filter-container">
+      <div class="filtro-colori">
+      </div>
+
+        <label for="language-select">Lingua:</label>
+        <select id="language-select" onchange="changeLanguage()">
+            <option value="it">Italiano</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+  -->
+
+    <div class="container">
+      <div id="color-container">
+        <div class="head">
+          <label for="category-filter">Filtra colori</label>
+          <select id="category-filter" onchange="filterColors()">
+              <option value="">Tutti</option>
+              <option value="Caldi">Caldi</option>
+              <option value="Freddi">Freddi</option>
+              <option value="Pastello">Pastello</option>
+              <option value="Terrosi">Terrosi</option>
+              <option value="Verdi">Verdi</option>
+              <option value="Viola">Viola</option>
+              <option value="Metalli">Metalli</option>
+          </select>
+        </div>
+        <div id="color-list">
+        <!-- I colori saranno caricati dinamicamente qui -->
+        </div>
+      </div>
+
+      <div id="nft-contenuto">
+        <div id="nft-dettagli" class="sticky-element">
+
+          <div class="front">
+            <img class="nft" src="/nft-imgs/solar_2222px_39.00px_%23${color.colore.substring(1).toUpperCase()}_lvl${selectedLevel}_n${color.id}.png" />
+
+            <div class="main-descrizione">
+              <h2 class="n"></h2>
+
+              <div class="descrizione-colore">
+                <div class="color-name">
+                  <div class="color-box"></div>
+                  <h3 class="text"></h3>
+                </div>
+                <div class="color-meaning"></div>
+              </div>
+
+              <div class="filtro-livello">
+                <!--<label for="level-filter">Filtra per livello:</label>-->
+                <select id="level-filter" onchange="loadNFT(selectedNFT)">
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div id="ulteriori-descrizioni">
+
+          <div id="descrizione-livello" class="sezione">
+            <div class="head">
+            </div>
+              <div id="descrizione-livello-inner">
+              </div>
+          </div>
+
+          <div class="sezione" id="struttura-generatore">
+            <img src="/assets/imgs/schema-now.png"/>
+            <div class="inner">
+              <h3 class="titolo">Logica del Risuonatore Solare</h3>
+              <p class="sottotitolo">...</p>
+              <div class="contenuto">
+                <p><strong>Il passato inizia sempre nell’adesso.</strong></p>
+                <p>Proprio ora che leggi, stai generando nuova memoria.</p>
+                <p>Giusto?</p>
+                <p>Bene, ricordi quando hai iniziato a leggere questo messaggio?</p>
+                <p>Datti un momento, prova a ricordarlo.</p>
+                <p>Ottimo.</p>
+                <p>Nota che il ricordo lo stai vivendo <strong>adesso</strong>.</p>
+                <p>Quindi il passato è generato adesso e lo posso ricordare solo adesso.</p>
+                <p>È logico pensare allora che il passato non sia qualcosa di distaccato dal momento presente, ma sia come una materia sottile, fatta di memorie che si muovono al suo interno.</p>
+                <p>Non a caso, il passato, come sapeva bene George Orwell, è estremamente manipolabile.</p>
+                <p><strong>Com’è possibile che sia manipolabile?</strong></p>
+                <p>È manipolabile perché è una materia che possiamo in qualche modo toccare e plasmare quando ci rimettiamo sulla giusta prospettiva, quella del momento presente.</p>
+                <p>Bisogna comprendere a fondo, ed in questo aiuta la meditazione, che il momento presente non è assolutamente una materia fatta di tempo, bensì è l’osservatore stesso del tempo, è l’altra faccia della medaglia del tempo.</p>
+                <p><strong>Chi sono io?</strong></p>
+                <p>Colui che osserva il tempo nella sua totalità non può essere il tempo.</p>
+                <p>Tu non sei ciò che leggi.</p>
+                <p>Tu non sei lo schermo che stai guardando.</p>
+                <p>Tu non sei quello che gli altri pensano di te.</p>
+                <p>Nessuno può conoscermi veramente fino in fondo.</p>
+                <p>Il polpastrello dell’indice che ti sta indicando non può toccare sé stesso.</p>
+
+              </div>
+            </div><!--
+            <div class="img-wrapper">
+            </div>-->
+          </div>
+
+          <div class="sezione" id="dimensione-img">
+            <div class="inner">
+              <h3 class="titolo">Dimensione Immagine</h3>
+                <div class="contenuto">
+                <p>Ogni NFT del Risuonatore Solare è creato con una risoluzione di <strong>2222x2222px</strong>. Questo valore non è casuale: il numero <strong>2222</strong> può essere scomposto in <strong>22 22 x 22 22</strong>, richiamando il numero <strong>22</strong> per quattro volte, proprio come i <strong>22 livelli</strong> del Risuonatore Solare.</p>
+                <p>Il numero <strong>4</strong> (dato anche dal 22 => 2+2=4) è strettamente legato alla materia, rappresentando i <strong>4 elementi</strong> (Fuoco, Terra, Aria, Acqua), fondamentali per l’equilibrio dell’universo. Inoltre, la somma delle cifre <strong>2+2+2+2</strong> restituisce il numero <strong>8</strong>, simbolo dell’infinito, del karma e del bilanciamento perfetto tra il materiale e lo spirituale.</p>
+                <p>La scelta della risoluzione è in perfetta sintonia con la frequenza armonica del progetto, creando un'energia visiva che risuona con le leggi dell’universo.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="sezione" id="dimensione-cerchio-radix">
+            <div class="inner">
+              <img src="/assets/imgs/sun-phi.webp"/>
+              <h3 class="titolo">Dimensione Cerchio Radix</h3>
+              <div class="contenuto">
+                <p>Il cerchio di partenza ha un diametro di <strong>39px</strong>, che a <strong>222ppi</strong> corrisponde a <strong>0,4462 cm</strong>. Questo valore deriva dal rapporto aureo, ovvero:</p>
+                <p><strong>Diametro del Sole (1.392.700 km) ÷ φ<sup>55</sup> = 0,44 cm</strong></p>
+                <p>Il numero <strong>55</strong> è un numero maestro legato al cambiamento, alla trasformazione e all’espansione della consapevolezza. È il numero della libertà spirituale e del risveglio.</p>
+                <p>Il numero <strong>44</strong> simboleggia la manifestazione concreta della volontà divina, la costruzione solida di una struttura stabile e armoniosa. È un numero angelico che rappresenta il radicamento e la connessione tra il cielo e la terra.</p>
+                <p>Il numero <strong>222</strong> indica equilibrio, cooperazione e sincronicità divina. È un segnale di allineamento con il proprio percorso spirituale e con le forze universali. La scelta di 222ppi per la risoluzione delle immagini non è casuale: richiama l'armonia del 2222x2222px, rafforzando il messaggio simbolico dell’NFT.</p>
+                <p>Questa perfetta connessione tra numerologia, geometria sacra e matematica universale è alla base dell’energia del Risuonatore Solare.</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="sezione" id="significato-del-108">
+            <div class="inner">
+              <img src="/assets/imgs/shri-yantra-numero-108.jpg"/>
+              <h3 class="titolo">Il significato del numero 108</h3>
+              <div class="contenuto">
+                <p>Il numero <strong>108</strong> è un numero altamente significativo in molte tradizioni spirituali e culturali, ed è associato a vari concetti di grande importanza. In relazione agli NFT del Risuonatore Solare, il numero <strong>108</strong> rappresenta un'armonia universale, una connessione profonda tra il divino e il terreno, il completamento e l'illuminazione.</p>
+
+                <h4>1. Tradizione spirituale e filosofica:</h4>
+                <p><strong>Buddhismo e Hinduismo:</strong> Il numero <strong>108</strong> è sacro in molte tradizioni orientali. In particolare, nel <strong>Buddhismo</strong>, i praticanti usano una <strong>corona da 108 grani</strong> per le loro meditazioni, chiamata "mala", per aiutare a concentrarsi durante la recitazione di mantras. I 108 grani simboleggiano i <strong>108 afflitti</strong> (i desideri mondani o ostacoli verso l'illuminazione) che si possono superare attraverso la pratica spirituale.</p>
+                <p><strong>Hinduismo:</strong> Anche in questo caso, <strong>108</strong> è un numero sacro, legato ai <strong>108 nomi di divinità</strong> o alla <strong>trinità divina</strong> (Brahma, Vishnu, Shiva) che si manifesta nei 108 aspetti del divino.</p>
+
+                <h4>2. Numero universale:</h4>
+                <p><strong>Cosmologia:</strong> <strong>108</strong> è associato anche alla misura dei <strong>distanziamenti</strong> tra la Terra, la Luna e il Sole. La distanza tra la Terra e il Sole è circa <strong>108 volte</strong> quella tra la Terra e la Luna. Questa connessione tra le distanze celesti rappresenta un simbolo di equilibrio cosmico e di perfezione nel movimento degli astri.</p>
+                <p><strong>Matematica:</strong> <strong>108</strong> è un numero altamente ricorrente anche in geometri sacre e nelle forme naturali, come il numero di facce di alcuni poliedri regolari o nelle divisioni perfette degli angoli nei triangoli e nelle piramidi.</p>
+
+                <h4>3. Nel contesto degli NFT e del Risuonatore Solare:</h4>
+                <p>Il numero <strong>108</strong> per ogni livello di NFT nel Risuonatore Solare può rappresentare un ciclo completo di trasformazione, come un <strong>percorso spirituale</strong> di crescita e illuminazione. Il numero simboleggia l'idea di raggiungere l'<strong>unità</strong> e l'<strong>armonia</strong> con l'universo, proprio come nel ciclo di evoluzione dell'anima. Ogni NFT rappresenta un passo verso la realizzazione della verità universale, attraverso un cammino numerato che culmina in un'illuminazione piena.</p>
+
+                <h4>4. I seguaci di Gesù:</h4>
+                <p>Anche se i Vangeli non parlano specificamente di un numero 108 legato ai seguaci di Gesù, alcune tradizioni esoteriche e spirituali hanno associato il numero <strong>108</strong> agli <strong>insegnamenti universali</strong>. La connessione di <strong>108</strong> con il numero di discepoli o seguaci può essere vista come un simbolo di comunità spirituale, unità e condivisione di una verità trascendente che non conosce confini. In questo contesto, il numero 108 è un richiamo alla <strong>complettezza</strong> della spiritualità e all'integrazione di tutti gli aspetti dell’essere umano nella via dell'illuminazione.</p>
+
+                <h4>In sintesi:</h4>
+                <p><strong>108</strong> per ogni livello di NFT nel Risuonatore Solare non solo rappresenta un <strong>ciclo di perfezione spirituale</strong>, ma anche un <strong>percorso di elevazione e di realizzazione</strong>. È un simbolo che unisce le tradizioni antiche con la tecnologia moderna, trasmettendo un significato profondo di connessione con l’universo, la creazione e l’illuminazione.</p>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <script src="/assets/js/main.js"></script>
+
+</body>
+</html>

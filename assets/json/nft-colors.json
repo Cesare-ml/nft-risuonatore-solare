@@ -1,0 +1,866 @@
+[
+    {
+        "nome": "Oro Puro",
+        "id": 1,
+        "descrizione": "L'Oro Puro è simbolo di luce, potere e ricchezza spirituale.<br><br>Questo colore brillante e caldo richiama l'energia solare, portando con sé un senso di abbondanza e divinità.<br><br>È un colore che risuona con la magnificenza dell'universo, evocando il benessere e l'equilibrio cosmico.",
+        "colore": "#FFD700",
+        "categoria": "Metalli",
+        "sottocategoria": "Oro"
+    },
+    {
+        "nome": "Oro Antico",
+        "id": 2,
+        "descrizione": "L'Oro Antico è un colore che racchiude l'essenza del tempo e della tradizione.\n\nCon la sua tonalità calda e sfumata, evoca una sensazione di nostalgia e saggezza.\n\nQuesto colore ha un'energia che riecheggia con il passato, ma è anche portatore di nuova luce e serenità.",
+        "colore": "#C89F7F",
+        "categoria": "Metalli",
+        "sottocategoria": "Oro"
+    },
+    {
+        "nome": "Oro Fiamma",
+        "id": 3,
+        "descrizione": "Oro Fiamma è il calore sacro di una fiamma eterna, ardente di potenza e volontà.\n\nQuesto colore richiama l’essenza della luce primordiale, la scintilla divina che anima il cuore di ogni essere.\n\nÈ la vibrazione dell'abbondanza e della consapevolezza, un'emanazione del sole interiore.\n\nNel Risuonatore Solare, rappresenta il battito della realizzazione e del successo illuminato.\n\nUn faro dorato che guida lungo il sentiero della verità.",
+        "colore": "#FF8C00",
+        "categoria": "Metalli",
+        "sottocategoria": "Oro"
+    },
+    {
+        "nome": "Oro Sole",
+        "id": 4,
+        "descrizione": "L'Oro Sole è un colore luminoso e radiante che rappresenta l'energia solare.\n\nQuesto tono caldo e brillante porta con sé vitalità e prosperità, risvegliando l'energia vitale e il benessere.\n\nÈ una tonalità che emana forza e gioia, con un tocco di eleganza.",
+        "colore": "#DAA520",
+        "categoria": "Metalli",
+        "sottocategoria": "Oro"
+    },
+    {
+        "nome": "Oro Brillante",
+        "id": 5,
+        "descrizione": "L'Oro Brillante è una tonalità che emana una luce intensa e splendente, portando energia positiva e prosperità.\n\nQuesto colore è associato alla ricchezza materiale e spirituale, riflettendo una bellezza luminosa che stimola la creatività e l'abbondanza.",
+        "colore": "#F5C300",
+        "categoria": "Metalli",
+        "sottocategoria": "Oro"
+    },
+    {
+        "nome": "Oro Celestiale",
+        "id": 6,
+        "descrizione": "L'Oro Celestiale è un colore che unisce la luce divina alla preziosità dell’oro.\n\nCon la sua sfumatura eterea e luminosa, richiama il bagliore delle stelle e il senso di meraviglia cosmica.\n\nQuesto colore ispira elevazione spirituale, saggezza e una connessione profonda con l’infinito.",
+        "colore": "#F4E3B2",
+        "categoria": "Metalli",
+        "sottocategoria": "Oro"
+    },
+    {
+        "nome": "Oro Rosa",
+        "id": 7,
+        "descrizione": "L'Oro Rosa è un colore che incarna eleganza e delicatezza.\n\nCon la sua sfumatura calda e romantica, trasmette un senso di dolcezza e raffinatezza.\n\nQuesto colore unisce la solidità dell'oro alla morbidezza del rosa, evocando armonia, amore e una bellezza senza tempo.",
+        "colore": "#E6C7C2",
+        "categoria": "Metalli",
+        "sottocategoria": "Oro"
+    },
+    {
+        "nome": "Oro Bianco",
+        "id": 8,
+        "descrizione": "L'Oro Bianco è un colore che riflette purezza e modernità.\n\nCon la sua luminosità cristallina, dona una sensazione di eleganza sofisticata e senza tempo.\n\nQuesto colore rappresenta l'equilibrio tra forza e leggerezza, con un fascino discreto che esprime classe e innovazione.",
+        "colore": "#E1E1E1",
+        "categoria": "Metalli",
+        "sottocategoria": "Oro"
+    },
+    {
+        "nome": "Grigio Perla",
+        "id": 9,
+        "descrizione": "Il Grigio Perla è una tonalità neutra che emana raffinatezza e tranquillità.\n\nQuesto colore versatile si adatta a qualsiasi ambiente, portando un senso di calma e ordine.",
+        "colore": "#D3D3D3",
+        "categoria": "Metalli",
+        "sottocategoria": "Argento"
+    },
+    {
+        "nome": "Argento Luce",
+        "id": 10,
+        "descrizione": "L'Argento Luce è un colore delicato e sofisticato, che richiama la luminosità e la purezza della luce riflessa.\n\nÈ una tonalità che incarna la calma e la serenità, perfetta per ambienti che necessitano di equilibrio, eleganza e chiarezza mentale.",
+        "colore": "#C0C0C0",
+        "categoria": "Metalli",
+        "sottocategoria": "Argento"
+    },
+    {
+        "nome": "Argento Scuro",
+        "id": 11,
+        "descrizione": "L'Argento Scuro è una tonalità più profonda e misteriosa, che trasmette eleganza e raffinatezza.\n\nCon il suo carattere sereno e deciso, questo colore porta un senso di stabilità e connessione con la dimensione spirituale, ideale per momenti di riflessione profonda.",
+        "colore": "#B0B0B0",
+        "categoria": "Metalli",
+        "sottocategoria": "Argento"
+    },
+    {
+        "nome": "Argento Pallido",
+        "id": 12,
+        "descrizione": "L'Argento Pallido è un colore delicato che emana eleganza e serenità.\n\nCon la sua tonalità chiara e luminosa, rappresenta la purezza e la lucidità mentale.\n\nÈ un colore che riflette l'introspezione e la tranquillità, portando un senso di equilibrio e armonia.",
+        "colore": "#A9A9A9",
+        "categoria": "Metalli",
+        "sottocategoria": "Argento"
+    },
+    {
+        "nome": "Rame Lucido",
+        "id": 13,
+        "descrizione": "Il Rame Lucido è un colore brillante e caldo che riflette la luce con eleganza.\n\nLa sua luminosità e ricchezza evocano un senso di energia vitale e rinnovamento.\n\nQuesto colore simboleggia la trasformazione e l'integrazione, portando una vibrazione positiva di crescita e sviluppo.",
+        "colore": "#D68E4E",
+        "categoria": "Metalli",
+        "sottocategoria": "Rame"
+    },
+    {
+        "nome": "Rame Bruciato",
+        "id": 14,
+        "descrizione": "Il Rame Bruciato è una tonalità intensa e profonda che rappresenta il fuoco trasformativo.\n\nQuesto colore emana una potente energia di passione e rinnovamento, creando un'atmosfera calda e stimolante.\n\nÈ simbolo di forza e di una bellezza che nasce dalla resistenza e dalla capacità di adattamento agli elementi.",
+        "colore": "#AD6A4D",
+        "categoria": "Metalli",
+        "sottocategoria": "Rame"
+    },
+    {
+        "nome": "Rame Antico",
+        "id": 15,
+        "descrizione": "Il Rame Antico è una tonalità calda e ricca che richiama l'energia della terra e della tradizione.\n\nQuesto colore è simbolo di forza e resistenza, mentre la sua intensità naturale emana una vibrazione che richiama la connessione profonda con la storia e la cultura.\n\nEvoca un senso di stabilità e radicamento, ideale per chi cerca una presenza forte e sicura.",
+        "colore": "#B87333",
+        "categoria": "Metalli",
+        "sottocategoria": "Rame"
+    },
+    {
+        "nome": "Giallo Luce Dorata",
+        "id": 16,
+        "descrizione": "Giallo Luce Dorata è il bagliore della saggezza e della rivelazione interiore.\n\nCome i primi raggi del sole all’alba, porta chiarezza alla mente e leggerezza all’anima.\n\nÈ la vibrazione della conoscenza luminosa, quella che dissolve i dubbi e apre le porte alla consapevolezza.\n\nNel Risuonatore Solare, è il battito che illumina il cammino, risvegliando la percezione della verità eterna e infondendo pace interiore.",
+        "colore": "#FFD966",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Mango",
+        "id": 17,
+        "descrizione": "Il Mango è un colore caldo e dolce, che richiama le vibrazioni tropicali e il calore dei frutti esotici.\n\nLa sua tonalità solare e frizzante porta una sensazione di gioia e vitalità, perfetto per portare energia positiva in ogni ambiente.\n\nRappresenta la creatività e l’abbondanza, evocando il gusto dolce della vita e l’entusiasmo per nuove esperienze.",
+        "colore": "#FFB347",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Giallo Zafferano",
+        "id": 18,
+        "descrizione": "Un colore caldo e luminoso che incarna la luce del sole e l'energia della natura.\n\nLa sua tonalità vivace emana vitalità, creando un legame tra l'anima e l'universo.\n\nUn colore che irradia gioia e forza interiore, evocando un senso di armonia profonda e un potente stimolo alla crescita spirituale.",
+        "colore": "#FFC72C",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Giallo Luminoso",
+        "id": 19,
+        "descrizione": "Il Giallo Luminoso è un colore vibrante che porta con sé l'energia del sole e la gioia di un nuovo inizio.\nLa sua brillantezza risveglia l'entusiasmo e stimola la creatività, creando un'atmosfera di ottimismo e speranza.\nÈ il colore che illumina la mente e il cuore, infondendo energia positiva in ogni momento.",
+        "colore": "#FAD02E",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Giallo Zafferano Chiaro",
+        "id": 20,
+        "descrizione": "Il Giallo Zafferano Chiaro è un colore caldo e solare che richiama la brillantezza delle spezie preziose.\nLa sua tonalità dorata porta energia e vitalità, ideale per creare atmosfere luminose e piene di gioia.",
+        "colore": "#F4C430",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Giallo Girasole",
+        "id": 21,
+        "descrizione": "Il Giallo Girasole è un colore solare e gioioso, che evoca l'energia calda e luminosa del sole.\nCon la sua brillantezza e vivacità, porta un tocco di allegria e positività, perfetto per creare ambienti stimolanti e pieni di vita.",
+        "colore": "#FFDA03",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Giallo Canarino",
+        "id": 22,
+        "descrizione": "Il Giallo Canarino è un colore brillante e solare che porta luce e calore in ogni spazio.\nLa sua tonalità allegra e vivace è simbolo di felicità e ottimismo, perfetto per stimolare l'energia positiva e la creatività in ogni momento della giornata.",
+        "colore": "#FFFF00",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Giallo Rame",
+        "id": 23,
+        "descrizione": "Il Giallo Rame è un colore caldo e luminoso che cattura l'energia solare, donando un senso di dinamismo e rinnovamento.\n\nÈ una tonalità che unisce l'intensità del giallo alla ricchezza del rame, evocando una sensazione di abbondanza e vitalità.\n\nPerfetto per chi cerca un colore che trasmetta energia e forza interiore, mantenendo al tempo stesso una raffinatezza naturale.",
+        "colore": "#FFCC00",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Giallo Sole",
+        "id": 24,
+        "descrizione": "Giallo Sole è pura luce, la vibrazione della gioia e dell’intelletto.\n\nÈ il colore che illumina la coscienza e apre le porte della conoscenza.\n\nCome il sole al culmine del giorno, risveglia l’anima con il calore dell’intuizione.\n\nNel Risuonatore Solare, è la melodia della saggezza e della fiducia.\n\nUn battito dorato che dissolve le ombre e risveglia il potenziale interiore.",
+        "colore": "#F4A300",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Giallo Fermo",
+        "id": 25,
+        "descrizione": "Il Giallo Fermo è una tonalità solida e luminosa, che irradia energia e ottimismo.\n\nQuesto colore rappresenta la chiarezza mentale e la vitalità, portando una sensazione di calore e determinazione.",
+        "colore": "#F4A300",
+        "categoria": "Caldi",
+        "sottocategoria": "Gialli"
+    },
+    {
+        "nome": "Arancio Tramonto",
+        "id": 26,
+        "descrizione": "Arancio Tramonto è il respiro profondo della sera, il momento in cui il cielo si accende di fuoco e dolcezza.\n\nÈ la vibrazione della gratitudine, del lasciar andare con serenità ciò che è stato, per accogliere il nuovo con fiducia.\n\nNel Risuonatore Solare, è il battito del cuore che rallenta e si allinea con il ritmo cosmico, danzando tra la luce e l’ombra con equilibrio perfetto.",
+        "colore": "#FF7F50",
+        "categoria": "Caldi",
+        "sottocategoria": "Arancioni"
+    },
+    {
+        "nome": "Arancio Melone",
+        "id": 27,
+        "descrizione": "L'Arancio Melone è un colore caldo e solare che emana una vibrazione di energia e vitalità.\n\nCon la sua tonalità frizzante e fresca, questo colore richiama l'idea di un nuovo inizio, pieno di opportunità e potenziale.\n\nÈ il colore dell'estate e della gioia di vivere.",
+        "colore": "#FF7043",
+        "categoria": "Caldi",
+        "sottocategoria": "Arancioni"
+    },
+    {
+        "nome": "Arancio Sole",
+        "id": 28,
+        "descrizione": "Arancio Sole irradia energia pura, come un'alba che risveglia il mondo.\n\nQuesto colore vibra con la frequenza della creatività e dell'entusiasmo, spingendo all'azione e alla gioia.\n\nÈ la scintilla che accende il Risuonatore Solare, pulsando nel ritmo universale del cuore del tempo.\n\nL'arancio è il ponte tra il fuoco e la terra, connettendo passione e stabilità.\n\nSimbolo di trasformazione e crescita, illumina il cammino con luce dorata.",
+        "colore": "#FF5733",
+        "categoria": "Caldi",
+        "sottocategoria": "Arancioni"
+    },
+    {
+        "nome": "Arancio Giallo",
+        "id": 29,
+        "descrizione": "L'Arancio Giallo è un colore caldo e brillante che fonde l'energia dell'arancio con la luminosità del giallo.\n\nLa sua tonalità allegra e solare porta una sensazione di vitalità e ottimismo, perfetto per spazi che vogliono trasmettere energia positiva.",
+        "colore": "#FFA500",
+        "categoria": "Caldi",
+        "sottocategoria": "Arancioni"
+    },
+    {
+        "nome": "Arancio Peperoncino",
+        "id": 30,
+        "descrizione": "L'Arancio Peperoncino è un colore caldo e audace, che sprigiona energia e passione.\n\nLa sua tonalità brillante è perfetta per stimolare l'attività, creando atmosfere vivaci e dinamiche, capaci di risvegliare l'entusiasmo e la creatività.",
+        "colore": "#FF4500",
+        "categoria": "Caldi",
+        "sottocategoria": "Arancioni"
+    },
+    {
+        "nome": "Arancio Ruggine",
+        "id": 31,
+        "descrizione": "L'Arancio Ruggine è un colore caldo e avvolgente che combina l'energia vibrante dell'arancio con la profondità della ruggine.\n\nLa sua tonalità accesa porta con sé una sensazione di passione e trasformazione, come l'autunno che muta la natura.\n\nÈ il colore della creatività, dell'intuizione e della forza interiore.",
+        "colore": "#D2691E",
+        "categoria": "Caldi",
+        "sottocategoria": "Arancioni"
+    },
+    {
+        "nome": "Arancio Ruggine",
+        "id": 32,
+        "descrizione": "L'Arancio Ruggine è un colore caldo e terroso che unisce la forza del rosso con la dolcezza dell'arancio.\n\nQuesta tonalità evoca la bellezza dei tramonti autunnali e la passione radicata nella terra.",
+        "colore": "#D2691E",
+        "categoria": "Caldi",
+        "sottocategoria": "Arancioni"
+    },
+    {
+        "nome": "Corallo",
+        "id": 33,
+        "descrizione": "Il Corallo è un colore vibrante e caldo che unisce il rosso e l'arancio in una tonalità accogliente e dinamica.\n\nLa sua energia vivace e stimolante è perfetta per ambienti che desiderano esprimere passione e calore.",
+        "colore": "#FF7F50",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Corallo",
+        "id": 34,
+        "descrizione": "Rosso Corallo è il richiamo del mare profondo e della passione ardente. \nÈ un colore che pulsa con la vibrazione della vita, unendo il fuoco e l’acqua in una danza perfetta. \nSimboleggia la connessione tra emozione e azione, tra sogno e realtà. \nNel Risuonatore Solare, è il battito pulsante dell’ispirazione e della bellezza. \nUn’onda di calore che risuona con l’amore universale, nutrendo il cuore del tempo.",
+        "colore": "#FF6347",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Pomodoro",
+        "id": 35,
+        "descrizione": "Il Rosso Pomodoro è un colore vivace e solare che incarna l'energia del fuoco e la passione della vita. \nCon la sua tonalità brillante, evoca un senso di calore e dinamismo, perfetto per stimolare l'azione e la creatività in ogni situazione.",
+        "colore": "#FF6347",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rame Rosso",
+        "id": 36,
+        "descrizione": "Il Rame Rosso è un colore caldo e avvolgente, che combina la forza del rame con una sfumatura di passione e vitalità. \nQuesto colore emana energia e calore, creando un'atmosfera di intimità e determinazione, perfetto per stimolare la creatività e l'azione.",
+        "colore": "#C97D63",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Ciliegia",
+        "id": 37,
+        "descrizione": "Il Rosso Ciliegia è un colore ricco e vibrante che incarna la passione e l'intensità della frutta matura. \nLa sua tonalità profonda e calda è ideale per creare atmosfere accoglienti e stimolanti, evocando una sensazione di calore e desiderio.",
+        "colore": "#DE3163",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Fuoco",
+        "id": 38,
+        "descrizione": "Rosso Fuoco è il battito incandescente del cuore cosmico. \nÈ la scintilla dell’esistenza, il desiderio di esprimersi senza paura. \nLa sua vibrazione risveglia il coraggio, accende la volontà e infiamma le anime pronte a vivere pienamente. \nNel Risuonatore Solare, è l'impulso della creazione, il ritmo del divenire. \nUn fuoco sacro che brucia ogni limite e illumina la via con passione ardente.",
+        "colore": "#FF4500",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Magenta",
+        "id": 39,
+        "descrizione": "Il Rosso Magenta è un colore intenso e vibrante, una fusione tra il rosso caldo e il viola profondo. \nLa sua energia forte e dinamica evoca passione e creatività, ideale per stimolare emozioni e connessioni forti.",
+        "colore": "#FF00FF",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Fucsia",
+        "id": 40,
+        "descrizione": "Il Fucsia è una tonalità vibrante e audace che rappresenta l'energia creativa e la passione. \nCon la sua brillantezza, questo colore stimola la mente e il cuore, infondendo vitalità e originalità.",
+        "colore": "#FF00FF",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Granato",
+        "id": 41,
+        "descrizione": "Il Rosso Granato è un colore profondo e avvolgente, che trasmette forza, passione e determinazione. \nLa sua tonalità intensa e ricca evoca un senso di potenza interiore, come il fuoco che arde nel cuore. \nÈ il colore della passione pura, della vitalità e della protezione, perfetto per chi cerca di affermare la propria presenza con eleganza e forza.",
+        "colore": "#9E2A2B",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Ruggine",
+        "id": 42,
+        "descrizione": "Il Rosso Ruggine è una tonalità calda e intensa che richiama il cuore della terra. \nIl suo colore profondo evoca passione e forza, con un'energia che risuona con l'essenza primordiale dell'universo.",
+        "colore": "#B7410E",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Amaranto",
+        "id": 43,
+        "descrizione": "Un rosso intenso, ricco di passione e forza. Questo colore comunica un'energia primordiale che abbraccia la profondità delle emozioni umane, unendo l'ardore della terra e la potenza dell'amore. Il Rosso Amaranto è un invito a esplorare il cuore, il suo battito che si allinea con il ritmo dell'universo.",
+        "colore": "#9E1B32",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Rubino",
+        "id": 44,
+        "descrizione": "Rosso Rubino è il battito profondo della passione autentica, il colore dell’amore che si radica nella terra e si eleva verso il cielo. È la vibrazione dell’intensità, del desiderio che arde con nobiltà e determinazione. Nel Risuonatore Solare, rappresenta il sangue dell’universo, il flusso ininterrotto di energia vitale che nutre l’esistenza stessa, rendendola preziosa e immortale.",
+        "colore": "#9B111E",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Rosso Sangue",
+        "id": 45,
+        "descrizione": "Rosso Sangue è la pulsazione primordiale della vita, il ritmo sacro che scorre nelle vene dell’universo. È il colore della forza inarrestabile, della volontà indomabile che supera ogni ostacolo. Nel Risuonatore Solare, è il battito del cuore che risuona nell’infinito, il suono della creazione che si manifesta in ogni attimo, portando trasformazione e rinascita.",
+        "colore": "#8A0303",
+        "categoria": "Caldi",
+        "sottocategoria": "Rossi"
+    },
+    {
+        "nome": "Marrone Nocciola",
+        "id": 46,
+        "descrizione": "Il Marrone Nocciola è un colore caldo e naturale che evoca comfort e stabilità. Questa tonalità terrosa porta una sensazione di rifugio e connessione con la terra, perfetta per ambienti che promuovono il relax e la tranquillità.",
+        "colore": "#9E7B4F",
+        "categoria": "Terrosi",
+        "sottocategoria": "Marroni"
+    },
+    {
+        "nome": "Marrone Castagna",
+        "id": 47,
+        "descrizione": "Il Marrone Castagna è un colore caldo e accogliente, che richiama l'intensità e la profondità delle castagne mature. La sua tonalità avvolgente evoca la sensazione di un abbraccio caloroso, di stabilità e di radicamento. È il colore della terra che dona nutrimento, della calma che aiuta a ritrovare il proprio centro.",
+        "colore": "#A0522D",
+        "categoria": "Terrosi",
+        "sottocategoria": "Marroni"
+    },
+    {
+        "nome": "Marrone Rame",
+        "id": 48,
+        "descrizione": "Il Marrone Rame è un colore terroso che richiama la solidità e la stabilità della terra. Questo colore, caldo e ricco, emana una sensazione di radicamento e connessione con la natura. È perfetto per evocare un senso di sicurezza e protezione.",
+        "colore": "#8B5E3C",
+        "categoria": "Terrosi",
+        "sottocategoria": "Marroni"
+    },
+    {
+        "nome": "Marrone Terra",
+        "id": 49,
+        "descrizione": "Il Marrone Terra è un colore che incarna la forza e la stabilità della natura. Con il suo tono ricco e profondo, evoca l'energia della terra, che nutre e sostiene ogni forma di vita. È il colore della connessione con le radici, della solidità e dell'equilibrio, che porta un senso di sicurezza e tranquillità.",
+        "colore": "#8B4513",
+        "categoria": "Terrosi",
+        "sottocategoria": "Marroni"
+    },
+    {
+        "nome": "Marrone Legno",
+        "id": 50,
+        "descrizione": "Il Marrone Legno è un colore che richiama la calda bellezza del legno naturale. Con la sua tonalità profonda e terrena, evoca la sensazione di connessione con la natura e il suo ciclo eterno. È il colore della stabilità, della crescita e del radicamento, portando un senso di protezione e tranquillità.",
+        "colore": "#6B4226",
+        "categoria": "Terrosi",
+        "sottocategoria": "Marroni"
+    },
+    {
+        "nome": "Viola Caramello",
+        "id": 51,
+        "descrizione": "Il Viola Caramello è un colore caldo e avvolgente che unisce il viola con una punta di morbido marrone, creando una tonalità sofisticata e dolce. La sua energia è perfetta per ambienti che desiderano un'atmosfera rilassante e accogliente.",
+        "colore": "#D39BC6",
+        "categoria": "Viola",
+        "sottocategoria": "Viola Scuro"
+    },
+    {
+        "nome": "Viola Orchidea",
+        "id": 52,
+        "descrizione": "Il Viola Orchidea è un colore elegante e sofisticato che evoca la bellezza esotica e misteriosa dei fiori. Con la sua tonalità intensa e ricca, porta una sensazione di lusso e raffinatezza, perfetto per ambienti che desiderano esprimere creatività e originalità.",
+        "colore": "#DA70D6",
+        "categoria": "Viola",
+        "sottocategoria": "Viola Scuro"
+    },
+    {
+        "nome": "Viola Ametista",
+        "id": 53,
+        "descrizione": "Il Viola Ametista è un colore profondo e misterioso, che evoca la saggezza e la spiritualità. La sua tonalità intensa e ricca porta con sé una sensazione di calma meditativa, invitando alla riflessione interiore. È il colore perfetto per chi cerca un equilibrio tra il mondo materiale e quello spirituale, simboleggiando la trasformazione e la serenità.",
+        "colore": "#9966CC",
+        "categoria": "Viola",
+        "sottocategoria": "Viola Scuro"
+    },
+    {
+        "nome": "Viola Melanzana",
+        "id": 54,
+        "descrizione": "Il Viola Melanzana è una tonalità profonda e misteriosa che porta con sé l'eleganza e la raffinatezza. Con il suo equilibrio tra il blu e il viola, questo colore è simbolo di saggezza, potere e trasformazione interiore, connettendo l'individuo con la sua energia spirituale.",
+        "colore": "#9B30FF",
+        "categoria": "Viola",
+        "sottocategoria": "Viola Scuro"
+    },
+    {
+        "nome": "Viola Magenta",
+        "id": 55,
+        "descrizione": "Il Viola Magenta è un colore ricco e affascinante, che mescola il mistero del viola con l'intensità del magenta. Questo colore evoca la profondità dell'anima, stimolando la creatività, la spiritualità e la connessione con l'universo. È una tonalità che risveglia l'energia interiore e l'intuizione.",
+        "colore": "#8A2BE2",
+        "categoria": "Viola",
+        "sottocategoria": "Viola Scuro"
+    },
+    {
+        "nome": "Viola Sfumato",
+        "id": 56,
+        "descrizione": "Il Viola Sfumato è una tonalità ricca e profonda, che evoca mistero e introspezione. Con la sua sfumatura scura, il colore incarna l'equilibrio tra il mondo materiale e quello spirituale.",
+        "colore": "#6A4C93",
+        "categoria": "Viola",
+        "sottocategoria": "Viola Scuro"
+    },
+    {
+        "nome": "Viola Profondo",
+        "id": 57,
+        "descrizione": "Il Viola Profondo è un colore che evoca l'intensità e la profondità dell'anima. Con il suo tono ricco e misterioso, questo colore connette chi lo osserva alla saggezza universale, stimolando la riflessione interiore e l'intuizione. È una tonalità che porta serenità e comprensione.",
+        "colore": "#800080",
+        "categoria": "Viola",
+        "sottocategoria": "Viola Scuro"
+    },
+    {
+        "nome": "Viola Cardinale",
+        "id": 58,
+        "descrizione": "Il Viola Cardinale è un colore intenso e avvolgente, che richiama il mistero e la passione. La sua profondità e ricchezza evocano una sensazione di potenza e determinazione, simboleggiando la forza interiore. È il colore che stimola l'intuizione e la creatività, invitando alla crescita personale e alla realizzazione dei sogni.",
+        "colore": "#800020",
+        "categoria": "Viola",
+        "sottocategoria": "Viola Scuro"
+    },
+    {
+        "nome": "Indaco",
+        "id": 59,
+        "descrizione": "L'Indaco è un colore che risveglia il senso di mistero e introspezione. Profondo e affascinante, è spesso associato alla meditazione e alla spiritualità, stimolando la crescita interiore e l'accesso alla saggezza universale. Il suo bagliore evoca l'energia cosmica.",
+        "colore": "#4B0082",
+        "categoria": "Viola",
+        "sottocategoria": "Indaco"
+    },
+    {
+        "nome": "Azzurro Neve",
+        "id": 60,
+        "descrizione": "L'Azzurro Neve è un colore cristallino e delicato, che ricorda la purezza della neve appena caduta sotto il cielo sereno. La sua freschezza evoca un senso di tranquillità, come una pausa di pace nell'inverno. È un colore che purifica e rinnova, portando una leggerezza che accarezza l'anima e invita alla riflessione interiore.",
+        "colore": "#E0FFFF",
+        "categoria": "Freddi",
+        "sottocategoria": "Azzurri"
+    },
+    {
+        "nome": "Azzurro Palido",
+        "id": 61,
+        "descrizione": "L'Azzurro Palido è un colore fresco e delicato che richiama i cieli sereni e la pace interiore. La sua tonalità chiara e calma è perfetta per ambienti rilassanti e per stimolare la chiarezza mentale.",
+        "colore": "#B0E0E6",
+        "categoria": "Freddi",
+        "sottocategoria": "Azzurri"
+    },
+    {
+        "nome": "Azzurro Marino",
+        "id": 62,
+        "descrizione": "L'Azzurro Marino è un colore che richiama la serenità dell'oceano, con le sue acque calme e misteriose. Questa tonalità di blu chiaro porta con sé freschezza e tranquillità, evocando una sensazione di pace e apertura. È ideale per chi cerca un'armonia che connette il corpo e la mente alla vastità dell'infinito.",
+        "colore": "#5DADE2",
+        "categoria": "Freddi",
+        "sottocategoria": "Azzurri"
+    },
+    {
+        "nome": "Turchese Polvere",
+        "id": 63,
+        "descrizione": "Il Turchese Polvere è un colore fresco e delicato che mescola la serenità del blu con la vivacità del verde.\nQuesto colore evoca la calma delle acque limpide e cristalline, perfetto per ambienti che invitano al relax e alla riflessione.",
+        "colore": "#40E0D0",
+        "categoria": "Freddi",
+        "sottocategoria": "Azzurri"
+    },
+    {
+        "nome": "Turchese Acquatico",
+        "id": 64,
+        "descrizione": "Il Turchese Acquatico è un colore fresco e vivace che richiama le acque cristalline dei mari tropicali.\nQuesto colore emana tranquillità e serenità, favorendo un senso di equilibrio e armonia.\nÈ perfetto per portare calma e chiarezza mentale.",
+        "colore": "#30D5C8",
+        "categoria": "Freddi",
+        "sottocategoria": "Azzurri"
+    },
+    {
+        "nome": "Turchese Brillante",
+        "id": 65,
+        "descrizione": "Il Turchese Brillante è un colore che evoca le acque cristalline dei tropici, vibrante e luminoso.\nCon la sua tonalità fresca e vivace, trasmette energia positiva e vitalità.\nÈ un colore che stimola la creatività, l'intuizione e la connessione con la bellezza naturale del mondo.",
+        "colore": "#00CED1",
+        "categoria": "Freddi",
+        "sottocategoria": "Azzurri"
+    },
+    {
+        "nome": "Turchese Cristallo",
+        "id": 66,
+        "descrizione": "Il Turchese Cristallo è un colore luminoso e rinfrescante che richiama l'acqua cristallina e pura.\nLa sua tonalità brillante porta una sensazione di leggerezza e chiarezza, ideale per stimolare la creatività e la tranquillità.",
+        "colore": "#00B5B5",
+        "categoria": "Freddi",
+        "sottocategoria": "Azzurri"
+    },
+    {
+        "nome": "Blu Menta",
+        "id": 67,
+        "descrizione": "Il Blu Menta è un colore delicato e rinfrescante che porta una sensazione di freschezza e leggerezza.\nCon la sua tonalità morbida e delicata, evoca tranquillità e rilassamento,\ned è perfetto per creare ambienti sereni e stimolare la mente.",
+        "colore": "#AAF0D1",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Pastello",
+        "id": 68,
+        "descrizione": "Il Blu Pastello è un colore delicato e sereno che evoca la calma di un cielo sereno.\nLa sua tonalità morbida e chiara porta una sensazione di pace e serenità,\nideale per ambienti tranquilli e meditativi.",
+        "colore": "#AEC6CF",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Iceberg",
+        "id": 69,
+        "descrizione": "Il Blu Iceberg è un colore fresco e cristallino che richiama la serenità e la purezza del ghiaccio.\nLa sua tonalità delicata e calda porta una sensazione di tranquillità,\nperfetta per ambienti rilassanti e meditativi.",
+        "colore": "#A3C1DA",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Giallo Azzurro",
+        "id": 70,
+        "descrizione": "Il Giallo Azzurro è una tonalità delicata che unisce la freschezza dell'azzurro con l'energia del giallo.\nQuesto colore stimola la creatività e la serenità,\nportando luminosità e tranquillità nell'ambiente.",
+        "colore": "#A2A2D0",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Serafico",
+        "id": 71,
+        "descrizione": "Il Blu Serafico è un colore che rispecchia la dolcezza e la tranquillità di un cielo sereno.\nLa sua tonalità delicata porta una sensazione di pace interiore e di leggera spiritualità.\nÈ un colore che invita alla riflessione profonda, creando uno spazio di calma e armonia che aiuta a ritrovare equilibrio nell'anima.",
+        "colore": "#87CEEB",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Atlantico",
+        "id": 72,
+        "descrizione": "Il Blu Atlantico porta con sé la freschezza e l'immensità dell'oceano, simboleggiando la serenità e l'equilibrio.\nLa sua tonalità vivace è come una brezza marina che rinfresca la mente e solleva lo spirito,\ninvita alla riflessione profonda e al contatto con l'infinito.",
+        "colore": "#33A1FF",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Lavanda",
+        "id": 73,
+        "descrizione": "Il Blu Lavanda è un colore sereno e rilassante che unisce il blu profondo con il delicato tocco del lilla.\nQuesto colore è associato alla calma e alla spiritualità, evocando sensazioni di pace e tranquillità.\nÈ ideale per promuovere un ambiente di rilassamento e meditazione.",
+        "colore": "#6A5ACD",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Oltremare",
+        "id": 74,
+        "descrizione": "Il Blu Oltremare è un colore ricco e avvolgente, che richiama la profondità e l'intensità degli oceani.\nCon la sua tonalità vibrante, porta una sensazione di mistero e fascinazione, evocando l'infinito.\nÈ un colore che stimola la riflessione sul viaggio interiore, l'esplorazione dei propri orizzonti emotivi e spirituali.",
+        "colore": "#4169E1",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Notte",
+        "id": 75,
+        "descrizione": "Un colore che richiama la quiete e il mistero della notte.\nBlu Notte è il rifugio della mente, un colore che avvolge in un abbraccio di tranquillità e introspezione.\nÈ il colore dell'infinito, che collega il presente con il vasto cielo e le stelle, simbolo di sogni e infinite possibilità.",
+        "colore": "#4B9CD3",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Cielo",
+        "id": 76,
+        "descrizione": "Il Blu Cielo è un colore che evoca la vastità e la serenità del cielo aperto.\nLa sua tonalità fresca e luminosa porta una sensazione di libertà, come una brezza leggera che accarezza l'anima.\nQuesto colore invita alla calma e alla riflessione, connettendo l'individuo alla vastità dell'universo e alla pace interiore.",
+        "colore": "#1F75FE",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Elettrico",
+        "id": 77,
+        "descrizione": "Il Blu Elettrico è un colore audace e dinamico che risplende con un'intensità unica.\nEvoca l'energia del futuro e la potenza dell'innovazione, portando una sensazione di movimento e trasformazione.\nÈ il colore perfetto per chi desidera esplorare nuove frontiere e sfidare i propri limiti, connettendosi all'energia dell'universo.",
+        "colore": "#007FFF",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Ciano Elettrico",
+        "id": 78,
+        "descrizione": "Il Ciano Elettrico è un colore vibrante e dinamico che irradia energia e innovazione.\nCon la sua brillantezza intensa, evoca sensazioni di modernità e potere tecnologico,\ned è perfetto per rappresentare l'energia creativa e la connessione con il mondo digitale.",
+        "colore": "#00FFFF",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Acciaio",
+        "id": 79,
+        "descrizione": "Il Blu Acciaio è un colore profondo e potente, che rispecchia la forza e la solidità del metallo stesso.\nCon la sua tonalità grigia e fredda, evoca determinazione e resilienza.\nÈ un colore che incarna la stabilità e la concentrazione, perfetto per chi cerca chiarezza mentale e una connessione forte con il presente.",
+        "colore": "#4682B4",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Cobalto",
+        "id": 80,
+        "descrizione": "Il Blu Cobalto è un colore profondo e avvolgente, che evoca la ricchezza delle gemme rare.\nCon la sua tonalità intensa, emana una forza tranquilla che risveglia una connessione profonda con il cosmo.\nQuesto blu elegante e sofisticato stimola la riflessione e la ricerca interiore, portando con sé una sensazione di stabilità e serenità.",
+        "colore": "#0047AB",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Petrolio",
+        "id": 81,
+        "descrizione": "Il Blu Petrolio è un colore profondo e avvolgente che evoca la quiete misteriosa delle profondità marine.\nLa sua tonalità intensa e ricca di sfumature dona un senso di forza e determinazione.\nÈ un colore che invita alla riflessione e al contatto con le proprie emozioni più sottili, in perfetta armonia con l'universo.",
+        "colore": "#0E4D92",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Blu Capri",
+        "id": 82,
+        "descrizione": "Il Blu Capri è un colore profondo e ricco che evoca le acque cristalline del mare di Capri. La sua tonalità intensa e avvolgente crea un'atmosfera rilassante e raffinata, ideale per ambienti eleganti e tranquilli.",
+        "colore": "#005F73",
+        "categoria": "Freddi",
+        "sottocategoria": "Blu"
+    },
+    {
+        "nome": "Verde Menta",
+        "id": 83,
+        "descrizione": "Il Verde Menta è un colore fresco e leggero che evoca la tranquillità e la freschezza delle piante aromatiche. Con la sua delicatezza, questo verde apporta serenità e raffinatezza, creando un'atmosfera di calma e apertura mentale.",
+        "colore": "#98FF98",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Primavera",
+        "id": 84,
+        "descrizione": "Il Verde Primavera è un colore fresco e delicato che evoca la rinascita e la freschezza dei primi giorni di primavera. Con la sua luminosità leggera, questo verde porta con sé la promessa di nuovi inizi e la serenità di un mondo in fiore.",
+        "colore": "#98FB98",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Fieno",
+        "id": 85,
+        "descrizione": "Il Verde Fieno è una tonalità morbida e naturale che evoca la tranquillità dei prati estivi. Il suo colore delicato porta una sensazione di freschezza e leggerezza, perfetta per creare ambienti sereni e rilassanti.",
+        "colore": "#C2B280",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Smeraldo",
+        "id": 86,
+        "descrizione": "Il Verde Smeraldo è un colore ricco e lussuoso, che evoca la bellezza dei tesori nascosti nel cuore della terra. Con la sua tonalità intensa e vibrante, il Verde Smeraldo rappresenta abbondanza, speranza e connessione con la natura, irradiando energia positiva e serenità.",
+        "colore": "#50C878",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Acido",
+        "id": 87,
+        "descrizione": "Il Verde Acido è una tonalità energica e stimolante che porta con sé una sensazione di vitalità e dinamismo. Con la sua brillantezza, questo verde risveglia l'energia vitale e stimola la creatività, infondendo un senso di rinnovamento e di connessione con le forze naturali.",
+        "colore": "#00FF7F",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Lime Puro",
+        "id": 88,
+        "descrizione": "Il Verde Lime Puro è un colore brillante e frizzante che cattura l'energia della natura. La sua tonalità intensa e fresca porta una sensazione di vitalità e ottimismo, perfetto per aggiungere un tocco di freschezza e dinamicità agli spazi.",
+        "colore": "#32CD32",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Lime Fresco",
+        "id": 89,
+        "descrizione": "Il Lime Fresco è un colore vivace e stimolante che rappresenta freschezza e vitalità. Con la sua tonalità brillante, questo colore è perfetto per evocare energia, rinascita e un senso di rinnovamento. È il colore della crescita e dell'inizio di nuove opportunità.",
+        "colore": "#00FF00",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Prato",
+        "id": 90,
+        "descrizione": "Il Verde Prato è un colore fresco e naturale che richiama il verde dei prati primaverili. La sua tonalità luminosa porta una sensazione di freschezza e rinnovamento, perfetto per creare spazi vivaci e rigeneranti.",
+        "colore": "#7CFC00",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Muschio",
+        "id": 91,
+        "descrizione": "Il Verde Muschio è un colore terroso e profondo, che richiama l'autenticità e la calma delle foreste lussureggianti. Con il suo tono ricco e avvolgente, il Verde Muschio infonde una sensazione di stabilità, radicamento e connessione alla terra.",
+        "colore": "#8A9A5B",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Acqua",
+        "id": 92,
+        "descrizione": "Il Verde Acqua è una tonalità fresca e calma che richiama le acque limpide e cristalline. Con il suo vibrante colore, il Verde Acqua infonde un senso di tranquillità e pace, evocando l'armonia tra la terra e l'acqua, creando una connessione profonda con l'essenza dell'acqua.",
+        "colore": "#20B2AA",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Felce",
+        "id": 93,
+        "descrizione": "Il Verde Felce è un colore che porta con sé la freschezza e la vitalità delle piante selvatiche. Con la sua tonalità rilassante e naturale, evoca il senso di crescita e rigenerazione, connettendo l'anima alla serenità e alla pace della natura.",
+        "colore": "#4F7942",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Smeraldo Scuro",
+        "id": 94,
+        "descrizione": "Il Verde Smeraldo Scuro è un colore ricco e profondo che richiama la bellezza e l'eleganza delle gemme. La sua tonalità avvolgente evoca forza e serenità, creando un'atmosfera di equilibrio e connessione con la natura.",
+        "colore": "#2E8B57",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Foresta",
+        "id": 95,
+        "descrizione": "Il Verde Foresta evoca la profondità e la misteriosità delle foreste antiche, con la sua tonalità intensa che richiama la vita e la forza della natura. È un colore che infonde calma, stabilità e crescita, connettendo l'essenza dell'essere al ritmo della terra e al respiro della natura.",
+        "colore": "#228B22",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Giada",
+        "id": 96,
+        "descrizione": "Il Verde Giada è una tonalità vibrante che richiama la freschezza e la serenità della natura. La sua energia pulita e armoniosa porta un senso di equilibrio e connessione profonda con l'universo.",
+        "colore": "#00A86B",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Teal",
+        "id": 97,
+        "descrizione": "Il Verde Teal è una tonalità fresca e profonda che unisce l'intensità del blu e la tranquillità del verde. Questo colore evoca un senso di equilibrio, serenità e raffinatezza, richiamando l'idea di un paesaggio naturale e incontaminato.",
+        "colore": "#008080",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Muschio Scuro",
+        "id": 98,
+        "descrizione": "Il Verde Muschio Scuro è una tonalità ricca e avvolgente, che ricorda la profondità delle foreste e la serenità della natura incontaminata. La sua energia è calmante e radicante, perfetta per una connessione profonda con la terra.",
+        "colore": "#4B5320",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Bottiglia",
+        "id": 99,
+        "descrizione": "Il Verde Bottiglia è una tonalità profonda e sofisticata che richiama la natura selvaggia e misteriosa. Con il suo tono scuro e intenso, questo verde emana una sensazione di eleganza e serenità, connettendo l'essenza dell'essere a un mondo di segreti e pace interiore.",
+        "colore": "#006A4E",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Verde Abete",
+        "id": 100,
+        "descrizione": "Il Verde Abete è un colore profondo e ricco che evoca le foreste invernali e la solidità degli alberi secolari. Con la sua tonalità scura e intensa, il Verde Abete è il simbolo della forza, della longevità e della protezione, portando un senso di radicamento e tranquillità.",
+        "colore": "#006400",
+        "categoria": "Verdi",
+        "sottocategoria": "Verde Chiaro"
+    },
+    {
+        "nome": "Lavanda Pallida",
+        "id": 101,
+        "descrizione": "La Lavanda Pallida è un colore delicato e tranquillo che richiama la freschezza dei campi di lavanda in fiore. Con la sua tonalità morbida e rilassante, porta una sensazione di pace e serenità, perfetto per creare un'atmosfera calma e rilassante.",
+        "colore": "#E6E6FA",
+        "categoria": "Pastello",
+        "sottocategoria": "Pastello"
+    },
+    {
+        "nome": "Lavanda Luminosa",
+        "id": 102,
+        "descrizione": "La Lavanda Luminosa è un colore che porta con sé una luce morbida e sognante, come i campi fioriti sotto il cielo sereno. La sua delicatezza evoca tranquillità e serenità, donando un senso di calma profonda. È il colore ideale per chi cerca una connessione con l'anima, un'energia che illumina il cammino interiore.",
+        "colore": "#C0C0FF",
+        "categoria": "Pastello",
+        "sottocategoria": "Pastello"
+    },
+    {
+        "nome": "Pesca Delicata",
+        "id": 103,
+        "descrizione": "La Pesca Delicata è un colore morbido e raffinato, che richiama la dolcezza dei frutti maturi. Con il suo tono caldo e leggero, trasmette una sensazione di tranquillità e serenità, come un abbraccio che avvolge l'anima. È il colore della gentilezza e della grazia, perfetto per chi cerca un'atmosfera di calma e freschezza.",
+        "colore": "#FFDAB9",
+        "categoria": "Pastello",
+        "sottocategoria": "Pastello"
+    },
+    {
+        "nome": "Rosa Antico",
+        "id": 104,
+        "descrizione": "Il Rosa Antico è un colore delicato e raffinato, che richiama la dolcezza di un ricordo lontano. La sua tonalità tenue e calda emana una sensazione di pace e serenità, creando un'atmosfera intima e armoniosa. È il colore perfetto per chi cerca un rifugio emotivo, un angolo di tranquillità che stimola l'amore e la cura.",
+        "colore": "#FFB6C1",
+        "categoria": "Pastello",
+        "sottocategoria": "Pastello"
+    },
+    {
+        "nome": "Celeste Polvere",
+        "id": 105,
+        "descrizione": "Il Celeste Polvere è un colore che ricorda le sfumature eteree di un cielo sereno al tramonto. Con la sua tonalità morbida e polverosa, porta un senso di leggerezza e spensieratezza, come una brezza che accarezza l'anima. È il colore della calma, della purificazione e del rinnovamento, perfetto per chi cerca un respiro di freschezza e serenità.",
+        "colore": "#B0E0E6",
+        "categoria": "Pastello",
+        "sottocategoria": "Pastello"
+    },
+    {
+        "nome": "Rosa Flamingo",
+        "id": 106,
+        "descrizione": "Il Rosa Flamingo è un colore delicato e vibrante che esprime grazia e dolcezza. La sua luminosità calda e amichevole incarna l'energia positiva e l'armonia, creando un'atmosfera di leggerezza e benessere.",
+        "colore": "#FC8EAC",
+        "categoria": "Pastello",
+        "sottocategoria": "Pastello"
+    },
+    {
+        "nome": "Rosa Shocking",
+        "id": 107,
+        "descrizione": "Il Rosa Shocking è un colore audace e vivace, che cattura immediatamente l'attenzione. La sua energia intensa stimola la passione, l'emozione e la creatività, portando con sé una sensazione di freschezza e modernità. È il colore dell'auto-espressione e dell'individualità, che sfida le convenzioni e celebra la bellezza dell'unicità.",
+        "colore": "#FF69B4",
+        "categoria": "Pastello",
+        "sottocategoria": "Pastello"
+    },
+    {
+        "nome": "Malva",
+        "id": 108,
+        "descrizione": "Il Malva è un colore che evoca la delicatezza e l'eleganza, un equilibrio tra la serenità del viola e la tenerezza del rosa. La sua tonalità morbida e avvolgente trasmette un senso di calma e dolcezza, come una carezza che sfiora l'anima. È il colore che invita alla riflessione, alla spiritualità e alla pace interiore.",
+        "colore": "#DDA0DD",
+        "categoria": "Pastello",
+        "sottocategoria": "Rosa"
+    }
+]
