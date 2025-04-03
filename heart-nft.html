@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>Heart e Risuonatore Solare - NFT Quantici</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Karla:ital,wght@0,200..800;1,200..800&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/main-heart.min.css?v=0.1.1">
+
+
+</head>
+<body>
+<!--
+    <div class="header">
+      <div class="inner">
+        <div class="top">
+            <img src="/assets/imgs/logo.png"/>
+            <div class="title-wrapper">
+            <h1>Heart</h1>
+            <h2>108 Colori</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+-->
+    <!--
+    <div class="filter-container">
+      <div class="filtro-colori">
+      </div>
+
+        <label for="language-select">Lingua:</label>
+        <select id="language-select" onchange="changeLanguage()">
+            <option value="it">Italiano</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+  -->
+
+    <div class="container">
+      <div id="color-container">
+        <div class="head">
+          <label for="category-filter">Filtra colori</label>
+          <select id="category-filter" onchange="filterColors()">
+              <option value="">Tutti</option>
+              <option value="Caldi">Caldi</option>
+              <option value="Freddi">Freddi</option>
+              <option value="Pastello">Pastello</option>
+              <option value="Terrosi">Terrosi</option>
+              <option value="Verdi">Verdi</option>
+              <option value="Viola">Viola</option>
+              <option value="Metalli">Metalli</option>
+          </select>
+        </div>
+        <div id="color-list">
+        <!-- I colori saranno caricati dinamicamente qui -->
+        </div>
+      </div>
+
+      <div id="nft-contenuto">
+        <div id="nft-dettagli" class="sticky-element">
+
+          <div class="front">
+
+            <div id="svg-container"></div>
+
+          <!--  <img class="nft" src="/nft-imgs/solar_2222px_39.00px_%23${color.colore.substring(1).toUpperCase()}_lvl${selectedLevel}_n${color.id}.png" />
+-->
+            <div class="main-descrizione">
+              <h2 class="n"></h2>
+
+              <div class="descrizione-colore">
+                <div class="color-name">
+                  <div class="color-box"></div>
+                  <h3 class="text"></h3>
+                </div>
+                <div class="color-meaning"></div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <script src="/assets/js/main-heart.js"></script>
+
+</body>
+</html>
