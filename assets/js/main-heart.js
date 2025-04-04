@@ -207,15 +207,31 @@ function downloadBlob(blob, filename) {
   a.remove()
 }
 
-// 🧼 Serializza un SVG in stringa XML
 function serializeSvg(svg) {
   const serializer = new XMLSerializer()
   return serializer.serializeToString(svg)
 }
 
-// 🧠 Clona uno SVG e incorpora immagini esterne come base64
-async function prepareInlineSvg(svg, removeImages = false) {
+// 🔁 Ridimensiona SVG a 2222px larghezza
+function resizeSvg(svg) {
   const copy = svg.cloneNode(true)
+
+  let viewBox = copy.viewBox.baseVal
+  let originalWidth = viewBox?.width || copy.width.baseVal.value
+  let originalHeight = viewBox?.height || copy.height.baseVal.value
+
+  const newWidth = 2222
+  const newHeight = originalHeight * (newWidth / originalWidth)
+
+  copy.setAttribute('width', newWidth)
+  copy.setAttribute('height', newHeight)
+
+  return { svg: copy, width: newWidth, height: newHeight }
+}
+
+// 🧠 Clona SVG e incorpora immagini
+async function prepareInlineSvg(svg, removeImages = false) {
+  const { svg: copy } = resizeSvg(svg)
 
   if (removeImages) {
     copy.querySelectorAll('image').forEach(el => el.remove())
@@ -247,10 +263,11 @@ async function prepareInlineSvg(svg, removeImages = false) {
   return copy
 }
 
-// 🖼️ Converte SVG in PNG (anche con immagini)
-async function svgToPng(svg, transparent = false) {
-  const preparedSvg = await prepareInlineSvg(svg, transparent)
-  const svgData = serializeSvg(preparedSvg)
+// 📤 SVG → PNG con resize a 2222px larghezza
+async function svgToPng(originalSvg, transparent = false) {
+  const preparedSvg = await prepareInlineSvg(originalSvg, transparent)
+  const { svg: resizedSvg, width, height } = resizeSvg(preparedSvg)
+  const svgData = serializeSvg(resizedSvg)
   const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' })
   const url = URL.createObjectURL(svgBlob)
 
@@ -258,8 +275,8 @@ async function svgToPng(svg, transparent = false) {
     const img = new Image()
     img.onload = () => {
       const canvas = document.createElement('canvas')
-      canvas.width = svg.width.baseVal.value
-      canvas.height = svg.height.baseVal.value
+      canvas.width = width
+      canvas.height = height
       const ctx = canvas.getContext('2d')
 
       if (!transparent) {
@@ -277,18 +294,19 @@ async function svgToPng(svg, transparent = false) {
   })
 }
 
-// 🖊️ Scarica SVG con immagini incorporate
+// 💾 Scarica SVG (con immagini incorporate + resize)
 document.getElementById('download-svg').addEventListener('click', async () => {
   const svg = document.querySelector('svg')
   const preparedSvg = await prepareInlineSvg(svg)
-  const svgData = serializeSvg(preparedSvg)
+  const { svg: resizedSvg } = resizeSvg(preparedSvg)
+  const svgData = serializeSvg(resizedSvg)
   const blob = new Blob([svgData], { type: 'image/svg+xml' })
 
   const name = 'heart #' + selectedNFT + '_108 ' + colorsData[selectedNFT - 1].nome + '.svg'
   downloadBlob(blob, name)
 })
 
-// 🖼️ Scarica PNG
+// 💾 Scarica PNG
 document.getElementById('download-png').addEventListener('click', async () => {
   const svg = document.querySelector('svg')
   const blob = await svgToPng(svg, false)
@@ -297,7 +315,7 @@ document.getElementById('download-png').addEventListener('click', async () => {
   downloadBlob(blob, name)
 })
 
-// 🧊 Scarica PNG trasparente
+// 💾 Scarica PNG trasparente
 document.getElementById('download-transparent-png').addEventListener('click', async () => {
   const svg = document.querySelector('svg')
   const blob = await svgToPng(svg, true)
