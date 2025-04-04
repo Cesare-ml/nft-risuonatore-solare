@@ -196,3 +196,112 @@ window.addEventListener('scroll', function() {
     stickyElement.classList.remove('sticky');
   }
 });*/
+
+// 📦 Scarica un blob come file
+function downloadBlob(blob, filename) {
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+
+// 🧼 Serializza un SVG in stringa XML
+function serializeSvg(svg) {
+  const serializer = new XMLSerializer()
+  return serializer.serializeToString(svg)
+}
+
+// 🧠 Clona uno SVG e incorpora immagini esterne come base64
+async function prepareInlineSvg(svg, removeImages = false) {
+  const copy = svg.cloneNode(true)
+
+  if (removeImages) {
+    copy.querySelectorAll('image').forEach(el => el.remove())
+  } else {
+    const imageElements = copy.querySelectorAll('image')
+
+    await Promise.all(Array.from(imageElements).map(async (imgEl) => {
+      const href = imgEl.getAttribute('href') || imgEl.getAttributeNS('http://www.w3.org/1999/xlink', 'href')
+      if (!href || href.startsWith('data:')) return
+
+      try {
+        const res = await fetch(href)
+        const blob = await res.blob()
+        const reader = new FileReader()
+
+        await new Promise(resolve => {
+          reader.onload = () => {
+            imgEl.setAttribute('href', reader.result)
+            resolve()
+          }
+          reader.readAsDataURL(blob)
+        })
+      } catch (err) {
+        console.warn('Errore nel caricare immagine esterna:', href, err)
+      }
+    }))
+  }
+
+  return copy
+}
+
+// 🖼️ Converte SVG in PNG (anche con immagini)
+async function svgToPng(svg, transparent = false) {
+  const preparedSvg = await prepareInlineSvg(svg, transparent)
+  const svgData = serializeSvg(preparedSvg)
+  const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' })
+  const url = URL.createObjectURL(svgBlob)
+
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = svg.width.baseVal.value
+      canvas.height = svg.height.baseVal.value
+      const ctx = canvas.getContext('2d')
+
+      if (!transparent) {
+        ctx.fillStyle = 'white'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+      }
+
+      ctx.drawImage(img, 0, 0)
+      canvas.toBlob(blob => {
+        resolve(blob)
+        URL.revokeObjectURL(url)
+      }, 'image/png')
+    }
+    img.src = url
+  })
+}
+
+// 🖊️ Scarica SVG con immagini incorporate
+document.getElementById('download-svg').addEventListener('click', async () => {
+  const svg = document.querySelector('svg')
+  const preparedSvg = await prepareInlineSvg(svg)
+  const svgData = serializeSvg(preparedSvg)
+  const blob = new Blob([svgData], { type: 'image/svg+xml' })
+
+  const name = 'heart #' + selectedNFT + '_108 ' + colorsData[selectedNFT - 1].nome + '.svg'
+  downloadBlob(blob, name)
+})
+
+// 🖼️ Scarica PNG
+document.getElementById('download-png').addEventListener('click', async () => {
+  const svg = document.querySelector('svg')
+  const blob = await svgToPng(svg, false)
+
+  const name = 'heart #' + selectedNFT + '_108 ' + colorsData[selectedNFT - 1].nome + '.png'
+  downloadBlob(blob, name)
+})
+
+// 🧊 Scarica PNG trasparente
+document.getElementById('download-transparent-png').addEventListener('click', async () => {
+  const svg = document.querySelector('svg')
+  const blob = await svgToPng(svg, true)
+
+  const name = 'heart #' + selectedNFT + '_108 ' + colorsData[selectedNFT - 1].nome + '_trasparente.png'
+  downloadBlob(blob, name)
+})
