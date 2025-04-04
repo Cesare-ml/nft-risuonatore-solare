@@ -220,9 +220,10 @@ function resizeSvg(svg) {
   let originalWidth = viewBox?.width || copy.width.baseVal.value
   let originalHeight = viewBox?.height || copy.height.baseVal.value
 
-  const newWidth = 2222
+  const newWidth = 4444
   const newHeight = originalHeight * (newWidth / originalWidth)
 
+  console.log(newWidth);
   copy.setAttribute('width', newWidth)
   copy.setAttribute('height', newHeight)
 
