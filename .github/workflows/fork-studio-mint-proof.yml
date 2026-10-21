@@ -35,5 +35,5 @@ jobs:
           done
           tail -c 1500 /tmp/anvil.log
           exit 1
-      - name: Local fork only: simulate max supply and mint via owner impersonation
+      - name: "Local fork only — simulate max supply and mint via owner impersonation"
         run: node scripts/fork-studio-mint-proof.mjs
