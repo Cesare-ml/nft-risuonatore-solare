@@ -1,5 +1,7 @@
 # Procedura di pubblicazione — stessa collezione ERC-1155
 
+**Aggiornamento 22/10/2026:** il percorso preferito ora è **ERC1155SeaDropConfigurer.multiConfigure** che raggruppa `setMaxSupply` e `multiConfigureMint` nello stesso invio, con prova locale Anvil ancora da eseguire per questo nuovo metodo. Non serve più pianificare 2.358 transazioni separate solo per supply. [Procedura locale aggiornata](OPERATORE-LOCALE.md). Il precedente fork riuscito riguardava due chiamate separate e non va confuso con una validazione del nuovo metodo.
+
 > **Aggiornamento:** strumenti di test e console MetaMask **locali** documentati in [Operatore locale](OPERATORE-LOCALE.md). Non utilizzare GitHub Actions; nessun mint reale o cambio baseURI effettuato.
 
 Aggiornamento 21 ottobre 2026. **La strada on-chain è stata provata su un fork locale, senza inviare transazioni reali.**

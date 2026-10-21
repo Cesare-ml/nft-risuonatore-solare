@@ -1,5 +1,7 @@
 # Roadmap — Risuonatore Solare NFT
 
+**Svolta tecnica, 22/10/2026:** verifica del contratto `ERC1155SeaDropConfigurer.multiConfigure` (`0xa64dfa75`), che raggruppa configurazione supply e mint in una **singola transazione per lotto**. Con 2.358 NFT, circa 236 transazioni ipotizzando 10 NFT/lotto. Console locale e piano offline aggiornati, test ABI e prova Anvil disponibile da eseguire in locale, nessuna GitHub Actions. [Procedura aggiornata](OPERATORE-LOCALE.md). Prima di qualsiasi firma restano la conservazione dei 19 JSON IPFS storici, un CID verificato e la conferma del wallet owner.
+
 **Vincolo operativo:** non utilizzare GitHub Actions. Tutti gli otto workflow aggiunti sono stati rimossi. Ora disponibili piano offline, verificatore IPFS locale, test Node e console MetaMask su localhost. [Procedura locale](OPERATORE-LOCALE.md).
 
 **Prossima priorità tecnica:** recuperare e conservare esattamente i 19 JSON storici e studiare il contratto configuratore per non ricorrere a migliaia di transazioni individuali di supply.

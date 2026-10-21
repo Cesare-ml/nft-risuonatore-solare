@@ -1,5 +1,55 @@
 # Operatore NFT locale — stessa collezione OpenSea
 
+## Aggiornamento: mint atomico in una transazione per lotto
+
+Il contratto ufficiale **ERC1155SeaDropConfigurer** collegato alla stessa collezione Polygon (0x864baa13e01d8f9e26549dc91b458cd15e34eb7c) implementa **multiConfigure(address, MultiConfigureStruct)**, selector `0xa64dfa75`. Il sorgente verificato controlla `msg.sender == owner()` e usa sia `maxSupplyTokenIds` / `maxSupplyAmounts` sia `mintTokenIds` / `mintAmounts` nella **stessa transazione**. Non serve configurare una supply per transazione.
+
+Fonti tecniche: [sorgente verificato ERC1155SeaDropConfigurer](https://www.codeslaw.app/contracts/ethereum/0x864baa13e01d8f9e26549dc91b458cd15e34eb7c) e [ABI verificata](https://etherscan.io/address/0x864baa13e01d8f9e26549dc91b458cd15e34eb7c#code). Il configuratore effettivamente associato alla collezione è stato letto on-chain dal precedente audit. Prima dell'operatività reale, il test del nuovo percorso va eseguito su **Anvil fork locale** della rete Polygon, non su Ethereum.
+
+Il codice attuale:
+
+- `scripts/lib/opensea-configurer.mjs`: ABI con **21 campi del tuple** esattamente nell'ordine del contratto verificato; costruttore che lascia intenzionalmente **vuoti** baseURI, contractURI, impostazioni vendite, allowlist e royalty.
+- `scripts/lib/mint-plan.mjs`: produce ora `atomic_configure_mint`, una sola transazione per gruppo, anziché 1 configurazione per ID + mint successivo.
+- `tools/nft-operator.js`: esegue `estimateGas` e quindi, **solo con il consenso esplicito in MetaMask**, una chiamata `multiConfigure` verso il configuratore storico.
+- `scripts/fork-configurer-atomic-proof.mjs`: misura e verifica il comportamento di lotti da 1, 5 e 10 token soltanto su Anvil fork locale. **Non ancora eseguito in un ambiente Anvil per questa nuova versione**: il percorso diretto precedente era stato provato, ma questo resta da validare sul fork.
+
+Numero teorico di transazioni **esclusa** la modifica della baseURI e gli eventuali pin IPFS:
+
+| Nuovi NFT | Lotto | Operazioni atomiche proposte |
+| ---: | ---: | ---: |
+| 2.358 | 10 | 236 |
+| 2.358 | 30 | 79 |
+
+Questi numeri **non** sono stime dei costi: il limite gas del blocco e il prezzo per ogni lotto vanno verificati. Il test su fork non dimostra il possesso del wallet reale.
+
+### Verifica sul PC senza GitHub Actions
+
+```powershell
+npm install
+npm run nft:local:test
+npm run nft:plan
+npm run nft:mint:plan -- --batch-size 10 --start 0 --count 20
+```
+
+Per la prova del configuratore su un fork **isolato**, installare Foundry e in un primo terminale eseguire:
+
+```powershell
+anvil --fork-url https://polygon.drpc.org --chain-id 137 --host 127.0.0.1 --port 8545
+```
+
+Poi in un secondo terminale:
+
+```powershell
+npm run nft:fork:atomic
+```
+
+Il fork impersona localmente l'indirizzo pubblico owner **senza chiavi private** e usa snapshot/revert tra i lotti. Non può creare NFT nella Polygon reale. Se la simulazione non passa, **non avviare la console per firmare**.
+
+### Ostacolo ancora aperto: IPFS storico
+
+Il contratto conserva la URI dei 19 NFT nel CID attuale. La console richiede un nuovo CID metadata **verificato** che contenga i 19 JSON identici byte per byte oltre ai 2.358 nuovi. I gateway hanno dato errori HTTP 429: non abbiamo ancora recuperato e replicato gli originali. Una modifica `setBaseURI` cambierebbe il riferimento anche per gli NFT già detenuti da collezionisti. **Nessuna modifica è stata eseguita.**
+
+---
 **Nessun GitHub Actions.** I workflow di test introdotti in precedenza sono stati eliminati. Operazioni e prove si eseguono in locale su Windows, non su GitHub.
 
 ## Comandi PowerShell

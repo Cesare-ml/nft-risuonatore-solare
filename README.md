@@ -1,5 +1,7 @@
 # Risuonatore Solare — archivio NFT
 
+**Ottimizzazione mint (22/10/2026):** individuato `multiConfigure` del configuratore OpenSea ERC-1155, che può impostare le supply e mintare i nuovi NFT con **una transazione per lotto**. [Console e test locali aggiornati](docs/OPERATORE-LOCALE.md). Questo nuovo percorso non è ancora stato validato tramite un fork locale; nessun mint reale è stato effettuato e nessun GitHub Actions sarà utilizzato.
+
 > **Operatività locale:** tutti gli otto workflow GitHub Actions introdotti durante questo sviluppo sono stati rimossi. Preparazione NFT, test e console MetaMask si eseguono su Windows, senza CI. [Guida](docs/OPERATORE-LOCALE.md).
 
 Collezione artistica **Risuonatore Solare**. Il catalogo di riferimento è [`nft-colors.html`](nft-colors.html); il dominio dichiarato in `CNAME` è **nft.mirkolancerotto.it**.
