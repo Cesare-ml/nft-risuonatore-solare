@@ -1,5 +1,7 @@
 # Procedura di pubblicazione — stessa collezione ERC-1155
 
+> **Aggiornamento:** strumenti di test e console MetaMask **locali** documentati in [Operatore locale](OPERATORE-LOCALE.md). Non utilizzare GitHub Actions; nessun mint reale o cambio baseURI effettuato.
+
 Aggiornamento 21 ottobre 2026. **La strada on-chain è stata provata su un fork locale, senza inviare transazioni reali.**
 
 ## Risultato decisivo verificato

@@ -1,5 +1,7 @@
 # Risuonatore Solare — archivio NFT
 
+> **Operatività locale:** tutti gli otto workflow GitHub Actions introdotti durante questo sviluppo sono stati rimossi. Preparazione NFT, test e console MetaMask si eseguono su Windows, senza CI. [Guida](docs/OPERATORE-LOCALE.md).
+
 Collezione artistica **Risuonatore Solare**. Il catalogo di riferimento è [`nft-colors.html`](nft-colors.html); il dominio dichiarato in `CNAME` è **nft.mirkolancerotto.it**.
 
 > **Aggiornamento 21 ottobre 2026.** Il repository contiene **108 schede colore × 22 profondità = 2.376 PNG**. Collezione [OpenSea](https://opensea.io/collection/solar-resonator-quantum-nft-collection) identificata: **Polygon ERC-1155**, contratto `0xead98e12d3836562ea39c6a6ca5ef1292359a862`, **19 token ID** pubblici corrispondenti a **18 combinazioni**. 2.358 altre combinazioni non risultano in questi item e restano **da verificare on-chain**. Vedi [riconciliazione OpenSea](docs/OPENSEA-COLLEZIONE-VERIFICATA.md).
@@ -73,3 +75,15 @@ node scripts/stage-ipfs-release.mjs
 ```
 
 Il pinning IPFS vero è documentato in [procedura stessa collezione](docs/PROGRAMMATIC-MINT-SAME-COLLECTION.md); richiede il recupero dei metadati storici e non equivale a mint on-chain.
+
+## Console locale NFT — senza GitHub Actions
+
+```powershell
+npm install
+npm run nft:local:test
+npm run nft:plan
+npm run nft:mint:plan -- --batch-size 10 --start 0 --count 20
+npm run nft:console
+```
+
+Aprire http://127.0.0.1:8765/ con MetaMask. Ogni operazione on-chain è bloccata finché l'archivio IPFS dei 19 NFT storici e dei nuovi non è verificato e la base URI non coincide. [Procedura completa](docs/OPERATORE-LOCALE.md).

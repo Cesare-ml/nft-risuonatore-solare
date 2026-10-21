@@ -1,5 +1,9 @@
 # Roadmap — Risuonatore Solare NFT
 
+**Vincolo operativo:** non utilizzare GitHub Actions. Tutti gli otto workflow aggiunti sono stati rimossi. Ora disponibili piano offline, verificatore IPFS locale, test Node e console MetaMask su localhost. [Procedura locale](OPERATORE-LOCALE.md).
+
+**Prossima priorità tecnica:** recuperare e conservare esattamente i 19 JSON storici e studiare il contratto configuratore per non ricorrere a migliaia di transazioni individuali di supply.
+
 **Aggiornamento operativo 21/10/2026:** compatibilità stessa collezione **provata su fork**: `setMaxSupply(20,1)` + `multiConfigureMint(owner,[20],[1])` con `totalSupply(20)=1` solo su Anvil. Pianificazione offline testata per 2.358 nuove opere; Kubo staging IPFS predisposto ma non eseguito, perché i gateway storici restituiscono HTTP 429 e serve preservare i 19 JSON originali prima di un `setBaseURI`. Vedere [procedura completa](PROGRAMMATIC-MINT-SAME-COLLECTION.md).
 
 **Aggiornamento tecnico 21/10/2026:** ABI verificata dell'implementazione `0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2` recuperata da Sourcify, on-chain supply ID 1–19 = **1 unità ciascuno**, ID 20 = **0**. Non si osservano funzioni pubbliche di mint con nome esplicito nell'ABI; successiva priorità è la **ricostruzione delle transazioni/factory OpenSea Studio** e dei permessi reali. [Report](AUDIT-CONTRATTO-POLYGON.md). Non eseguire mint diretti prima di questa verifica.
