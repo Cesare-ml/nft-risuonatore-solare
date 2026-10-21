@@ -12,7 +12,8 @@
     "nft:mint:plan": "node scripts/prepare-mint-batches.mjs",
     "nft:local:test": "node --test tests/*.test.mjs",
     "nft:console": "node scripts/local-mint-console.mjs",
-    "nft:configurer:audit": "node scripts/inspect-configurer.mjs"
+    "nft:configurer:audit": "node scripts/inspect-configurer.mjs",
+    "nft:fork:atomic": "node scripts/fork-configurer-atomic-proof.mjs --local-fork-only"
   },
   "keywords": [],
   "author": "",
