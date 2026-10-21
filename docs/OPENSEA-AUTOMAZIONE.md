@@ -1,5 +1,7 @@
 # Pubblicazione e automazione OpenSea
 
+> **Esito ABI e supply, 21/10/2026:** contratto proxy ERC-1155 con implementazione `0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2` verificata in Sourcify. Gli ID 1–19 hanno `totalSupply=1`; l'ID 20 ha `totalSupply=0` al blocco 95938461. L'ABI verificata non espone una funzione pubblica esplicita chiamata `mint`/ `create`/`claim`. **L'automazione mediante firma e chiamata diretta è sospesa** finché non è ricostruito il percorso factory/Studio realmente usato per creare gli item storici. Nessun nuovo contratto o token è stato creato. [Dettaglio e fonte](AUDIT-CONTRATTO-POLYGON.md).
+
 > **Decisione tecnica aggiornata (21/10/2026):** la collezione reale [Solar Resonator | Quantum NFT Collection](https://opensea.io/collection/solar-resonator-quantum-nft-collection) è **ERC-1155 su Polygon**, contratto `0xead98e12d3836562ea39c6a6ca5ef1292359a862`. **Le API bulk/manifest per i Drop descritte più sotto NON sono direttamente applicabili a questa collezione ERC-1155 Studio.** Secondo la [FAQ ufficiale OpenSea](https://support.opensea.io/en/articles/8867028-creator-faq), `Create Collection` **non permette bulk upload**: gli item si caricano singolarmente da Studio. La pipeline proposta per i Drop è una **alternativa con eventuale nuovo contratto**, non il piano predefinito di questa collezione. Vedi [inventario verificato](OPENSEA-COLLEZIONE-VERIFICATA.md).
 
 ## Audit tecnico read-only disponibile dal 21 ottobre 2026

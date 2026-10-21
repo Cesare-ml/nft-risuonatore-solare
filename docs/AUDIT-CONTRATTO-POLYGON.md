@@ -1,5 +1,22 @@
 # Audit contratto Polygon ERC-1155 — fase 1
 
+## Risultati definitivi aggiunti dopo recupero ABI e supply — 21/10/2026
+
+È stata recuperata **l'ABI verificata dell'implementazione** da **Sourcify API v2**, all'indirizzo [`0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2`](https://polygonscan.com/address/0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2). L'audit live è passato: [GitHub Actions run 39667057245](https://github.com/Cesare-ml/nft-risuonatore-solare/actions/runs/39667057245).
+
+- Il contratto della collezione è **proxy minimale EIP-1167** con `owner()` = `0x2180747f94c3319162137a0e2ca5b1e8c7efb2ed` (indirizzo letto dal proxy; non conferma l'accesso minter).
+- Le **19 chiamate** a `uri(id)` sono riuscite. Template comune `ipfs://bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4/{id}`.
+- **`totalSupply(uint256)` on-chain**, blocco **95.938.461**: ID **1–19 = 1 copia ciascuno**; ID **20 = 0**. Somma ID 1–19 = **19 unità**. Il valore 0 per 20 non è prova storica che non sia mai stato creato (potrebbe essere stato bruciato). Nessun altro ID è stato analizzato per supply.
+- L'ABI dell'implementazione elenca `totalMinted(uint256)`, `totalSupply(uint256)`, `maxSupply(uint256)`, `initialize(...)`, `setBaseURI(string)`, `setMaxSupply(uint256,uint256)`, `owner()`, `transferOwnership(address)` e funzioni ERC-1155. **Non espone metodi pubblici esplicitamente denominati mint / create / claim**.
+- Questo **NON** dimostra matematicamente che non esista una modalità indiretta tramite factory, estensione, fallback o altri contratti autorizzati. Ma non possiamo costruire un minter diretto **basandoci soltanto su questa ABI**. Va analizzata la sorgente dell'implementazione e il flusso reale usato da OpenSea Studio.
+
+Lo snapshot riproducibile dei dati osservati è in [`data/onchain/polygon-contract-2026-10-21.json`](../data/onchain/polygon-contract-2026-10-21.json). Un report JSON più dettagliato è disponibile fra gli artefatti temporanei della GitHub Action.
+
+### Prossima indagine obbligatoria
+
+**Ricostruire la transazione di creazione/mint del token ID 1 e il contratto chiamato**, mediante PolygonScan/Blockscout/trace explorer o lettura completa eventi on-chain; identificare factory/ruoli realmente autorizzati e l'eventuale funzione che consente di creare nuovi ID nella stessa collezione. Solo allora valutare una procedura automatica firmata. In caso contrario, preparare i media/metadati in batch e creare gli item in Studio uno per uno, mantenendo il contratto esistente.
+
+---
 ## Risultati blockchain verificati — 21/10/2026
 
 La CLI è stata **eseguita realmente** da una GitHub Actions runner con RPC Polygon pubblico e ha ottenuto risultati:

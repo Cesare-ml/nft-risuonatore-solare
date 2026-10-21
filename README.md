@@ -42,6 +42,7 @@ Per rigenerare i CSV, dalla cartella `python/` eseguire `python gen-csv.py` (ric
 6. [Roadmap incrementale](docs/ROADMAP.md)
 7. [Collezione OpenSea e 19 token identificati](docs/OPENSEA-COLLEZIONE-VERIFICATA.md)
 8. [Audit del contratto Polygon ERC-1155: metodo e comandi](docs/AUDIT-CONTRATTO-POLYGON.md)
+9. [Snapshot on-chain verificato (Polygon, ABI e supply)](data/onchain/polygon-contract-2026-10-21.json)
 
 **Non è stata avviata alcuna operazione on-chain.** Prima di generare token, cambiare metadati pubblicati o caricare file su OpenSea, eseguire la riconciliazione dei mint esistenti descritta nelle guide. Le 108 schede non corrispondono a 108 HEX diversi: vedere [audit](docs/AUDIT-2026-10-21.md).
 
