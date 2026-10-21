@@ -11,7 +11,8 @@
     "nft:ipfs:verify": "node scripts/verify-ipfs-release.mjs",
     "nft:mint:plan": "node scripts/prepare-mint-batches.mjs",
     "nft:local:test": "node --test tests/mint-plan.test.mjs",
-    "nft:console": "node scripts/local-mint-console.mjs"
+    "nft:console": "node scripts/local-mint-console.mjs",
+    "nft:configurer:audit": "node scripts/inspect-configurer.mjs"
   },
   "keywords": [],
   "author": "",
