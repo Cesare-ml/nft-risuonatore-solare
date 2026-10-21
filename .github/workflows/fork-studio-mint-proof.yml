@@ -1,0 +1,39 @@
+name: Local fork proof of ERC1155 batch mint (never mainnet writes)
+
+on:
+  push:
+    paths:
+      - "scripts/fork-studio-mint-proof.mjs"
+      - ".github/workflows/fork-studio-mint-proof.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fork-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Install ABI coder for ephemeral fork proof
+        run: npm install ethers@6 --no-save --package-lock=false --ignore-scripts --no-audit --no-fund
+      - name: Start isolated Polygon fork
+        run: |
+          anvil --fork-url https://polygon.drpc.org --chain-id 137 --host 127.0.0.1 --port 8545 > /tmp/anvil.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS -X POST http://127.0.0.1:8545 -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"anvil_nodeInfo","params":[]}' >/dev/null; then
+              echo 'Local Anvil running'; exit 0
+            fi
+            sleep 1
+          done
+          tail -c 1500 /tmp/anvil.log
+          exit 1
+      - name: Local fork only: simulate max supply and mint via owner impersonation
+        run: node scripts/fork-studio-mint-proof.mjs
