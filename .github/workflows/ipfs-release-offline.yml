@@ -1,0 +1,27 @@
+name: Offline IPFS release preflight (no upload)
+
+on:
+  push:
+    paths:
+      - "scripts/stage-ipfs-release.mjs"
+      - "scripts/plan-next-mints.mjs"
+      - ".github/workflows/ipfs-release-offline.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node --check scripts/stage-ipfs-release.mjs
+      - name: Verify 2376 combinations and draft plan
+        run: node scripts/plan-next-mints.mjs
+      - name: Dry-run IPFS release preflight (NO pin / NO chain interaction)
+        run: node scripts/stage-ipfs-release.mjs

@@ -43,6 +43,7 @@ Per rigenerare i CSV, dalla cartella `python/` eseguire `python gen-csv.py` (ric
 7. [Collezione OpenSea e 19 token identificati](docs/OPENSEA-COLLEZIONE-VERIFICATA.md)
 8. [Audit del contratto Polygon ERC-1155: metodo e comandi](docs/AUDIT-CONTRATTO-POLYGON.md)
 9. [Snapshot on-chain verificato (Polygon, ABI e supply)](data/onchain/polygon-contract-2026-10-21.json)
+10. [Mint programmabile nella stessa collezione: prova e procedura IPFS](docs/PROGRAMMATIC-MINT-SAME-COLLECTION.md)
 
 **Non è stata avviata alcuna operazione on-chain.** Prima di generare token, cambiare metadati pubblicati o caricare file su OpenSea, eseguire la riconciliazione dei mint esistenti descritta nelle guide. Le 108 schede non corrispondono a 108 HEX diversi: vedere [audit](docs/AUDIT-2026-10-21.md).
 
@@ -56,3 +57,19 @@ npm run nft:chain:audit -- --out reports/polygon-audit.json
 ```
 
 Per una scansione di eventi in una finestra **specifica e documentata**: `npm run nft:chain:audit -- --from-block N --to-block M --out reports/polygon-events.json`. Le scansioni coprono al massimo 100.000 blocchi per esecuzione: vanno concatenate senza intervalli scoperti dal blocco di deploy. Vedere [guida tecnica](docs/AUDIT-CONTRATTO-POLYGON.md). **Non eseguire mint basandosi solo sul risultato di queste chiamate.**
+
+
+## La stessa collezione: mint programmabile dimostrato su fork
+
+**21 ottobre 2026:** il fallback dell'implementazione verificata permette `multiConfigureMint(address,uint256[],uint256[])` con firma dell'owner o del configurer autorizzato. Su fork locale Anvil della **collezione originale** sono state eseguite con successo `setMaxSupply(20,1)` e `multiConfigureMint(owner,[20],[1])`, facendo passare `totalSupply(20)` da 0 a 1 **solo sul fork**. [Prova completa](docs/PROGRAMMATIC-MINT-SAME-COLLECTION.md) e [GitHub Action riuscita](https://github.com/Cesare-ml/nft-risuonatore-solare/actions/runs/39677491570).
+
+Sono disponibili gli script `scripts/plan-next-mints.mjs` per il manifest **2.358 NFT da pianificare** e `scripts/stage-ipfs-release.mjs` per preparare una directory IPFS che conservi esattamente i metadata dei 19 NFT storici. Lo staging su Kubo richiede azione locale esplicita (`--stage`); nessun mint né `setBaseURI` sono stati effettuati su Polygon reale.
+
+Comandi senza effetti esterni:
+
+```sh
+node scripts/plan-next-mints.mjs
+node scripts/stage-ipfs-release.mjs
+```
+
+Il pinning IPFS vero è documentato in [procedura stessa collezione](docs/PROGRAMMATIC-MINT-SAME-COLLECTION.md); richiede il recupero dei metadati storici e non equivale a mint on-chain.

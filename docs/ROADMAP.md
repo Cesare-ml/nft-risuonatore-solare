@@ -1,5 +1,7 @@
 # Roadmap — Risuonatore Solare NFT
 
+**Aggiornamento operativo 21/10/2026:** compatibilità stessa collezione **provata su fork**: `setMaxSupply(20,1)` + `multiConfigureMint(owner,[20],[1])` con `totalSupply(20)=1` solo su Anvil. Pianificazione offline testata per 2.358 nuove opere; Kubo staging IPFS predisposto ma non eseguito, perché i gateway storici restituiscono HTTP 429 e serve preservare i 19 JSON originali prima di un `setBaseURI`. Vedere [procedura completa](PROGRAMMATIC-MINT-SAME-COLLECTION.md).
+
 **Aggiornamento tecnico 21/10/2026:** ABI verificata dell'implementazione `0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2` recuperata da Sourcify, on-chain supply ID 1–19 = **1 unità ciascuno**, ID 20 = **0**. Non si osservano funzioni pubbliche di mint con nome esplicito nell'ABI; successiva priorità è la **ricostruzione delle transazioni/factory OpenSea Studio** e dei permessi reali. [Report](AUDIT-CONTRATTO-POLYGON.md). Non eseguire mint diretti prima di questa verifica.
 
 **Aggiornamento 21/10/2026:** completata la scoperta del contratto esistente: [Polygon ERC-1155, 19 token IDs / 18 combinazioni](OPENSEA-COLLEZIONE-VERIFICATA.md). Lavoro P0 successivo: verifica ABI e ruolo minter, transazioni/URI/supply e decisione sul doppio token della variante Cobalto #80 livello 8. **Non usare il bulk upload del Drop sul contratto esistente** senza prova di compatibilità; la FAQ OpenSea esclude bulk upload nella modalità Create Collection.
