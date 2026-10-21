@@ -10,7 +10,7 @@
     "nft:ipfs:check": "node scripts/stage-ipfs-release.mjs",
     "nft:ipfs:verify": "node scripts/verify-ipfs-release.mjs",
     "nft:mint:plan": "node scripts/prepare-mint-batches.mjs",
-    "nft:local:test": "node --test tests/*.test.mjs",
+    "nft:local:test": "node --test",
     "nft:console": "node scripts/local-mint-console.mjs",
     "nft:configurer:audit": "node scripts/inspect-configurer.mjs",
     "nft:fork:atomic": "node scripts/fork-configurer-atomic-proof.mjs --local-fork-only"
