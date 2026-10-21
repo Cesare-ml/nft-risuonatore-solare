@@ -41,6 +41,24 @@ function cleanTx(t){
     transaction_types:t.transaction_types ?? null
   };
 }
+function extractPrimaryContracts(payload){
+  const sources=payload?.sources ?? payload?.stdJsonInput?.sources ?? {};
+  const picks={
+    'src/clones/ERC1155SeaDropContractOffererCloneable.sol': [[90,235],[310,420]],
+    'src/interfaces/IERC1155SeaDrop.sol': [[10,110]],
+    'src/clones/ERC1155SeaDropCloneable.sol': [[1,105]]
+  };
+  const result={};
+  for(const [name,ranges] of Object.entries(picks)){
+    const source=sources[name];
+    const contents=typeof source==='string'?source:source?.content;
+    if(typeof contents!=='string')continue;
+    const lines=contents.split('\n');
+    result[name]=ranges.map(([start,end])=>({start,end,lines:lines.slice(start-1,end).map((text,i)=>({n:start+i,text}))}));
+  }
+  return result;
+}
+
 function keywordsFromSources(payload){
   const sources=payload?.sources ?? payload?.stdJsonInput?.sources ?? payload?.creationBytecode?.sources ?? {};
   const results=[];
@@ -104,6 +122,7 @@ async function run(){
     report.verified_source={match:j.match??null,contract_name:j.name??j.contractIdentifier??null,
       compiler:j.compiler??null,source_files:keywordsFromSources(j),
       source_file_count:Object.keys(j.sources??j.stdJsonInput?.sources??{}).length,
+      source_focus:extractPrimaryContracts(j),
       abi_functions:(j.abi??[]).filter(x=>x.type==='function').map(x=>({
         name:x.name,inputs:(x.inputs??[]).map(i=>i.type),mutability:x.stateMutability
       }))};
@@ -116,7 +135,7 @@ async function run(){
   await mkdir(dirname(out),{recursive:true});
   await writeFile(out,JSON.stringify(report,null,2)+'\n','utf8');
   console.log(JSON.stringify({
-    readonly:true,transfer_summary:report.token_transfer_summary,
+    readonly:true,source_focus:report.verified_source?.source_focus,transfer_summary:report.token_transfer_summary,
     token_1_history:report.token_1_history,
     sample_txs:report.sampled_transactions,
     verified_source:report.verified_source,
