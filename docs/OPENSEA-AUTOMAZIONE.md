@@ -1,5 +1,15 @@
 # Pubblicazione e automazione OpenSea
 
+> **Decisione tecnica aggiornata (21/10/2026):** la collezione reale [Solar Resonator | Quantum NFT Collection](https://opensea.io/collection/solar-resonator-quantum-nft-collection) è **ERC-1155 su Polygon**, contratto `0xead98e12d3836562ea39c6a6ca5ef1292359a862`. **Le API bulk/manifest per i Drop descritte più sotto NON sono direttamente applicabili a questa collezione ERC-1155 Studio.** Secondo la [FAQ ufficiale OpenSea](https://support.opensea.io/en/articles/8867028-creator-faq), `Create Collection` **non permette bulk upload**: gli item si caricano singolarmente da Studio. La pipeline proposta per i Drop è una **alternativa con eventuale nuovo contratto**, non il piano predefinito di questa collezione. Vedi [inventario verificato](OPENSEA-COLLEZIONE-VERIFICATA.md).
+
+## Percorso prioritario per IL CONTRATTO ESISTENTE
+
+1. Conservare chain Polygon + ERC-1155 + contratto storico, e predisporre automaticamente i **metadati e le immagini** già disponibili; identificare e saltare le 18 combinazioni già rappresentate da 19 token OpenSea.
+2. **Verificare on-chain** con ABI e log di mint quali operazioni il wallet creatore è autorizzato a eseguire e se i metadata possono essere attribuiti programmaticamente; nessuna firma/trasferimento automatico senza approvazione.
+3. In assenza di una funzione sicura di minting programmabile nel contratto, procedere tramite **OpenSea Studio item-per-item** con asset e campi già pronti, oppure decidere consapevolmente l'eventuale nuovo Drop.
+4. **NON** inviare i media all'API `/drops/.../items` presumendo che aggiorni i token ERC-1155 esistenti. Il caricamento di media, il mint e il listing restano operazioni differenti.
+5. La supply ERC-1155 può superare 1 per token ID: non calcolare i NFT posseduti a partire dai soli 19 ID.
+
 Ricognizione fonti ufficiali: **21 ottobre 2026**. **Non è stato eseguito alcun upload né mint.** Scopo: rendere riproducibili preparazione, caricamento, riconciliazione e monitoraggio senza creare NFT duplicati.
 
 ## Prima decisione: conservare la collezione già avviata

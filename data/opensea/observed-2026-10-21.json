@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "observed_date": "2026-10-21",
+  "source": "https://opensea.io/collection/solar-resonator-quantum-nft-collection",
+  "scope": "public OpenSea collection page and the 19 linked token item pages; not a complete blockchain reconciliation",
+  "collection": {
+    "slug": "solar-resonator-quantum-nft-collection",
+    "display_name": "Solar Resonator | Quantum NFT Collection",
+    "chain": "polygon",
+    "contract_address": "0xead98e12d3836562ea39c6a6ca5ef1292359a862",
+    "token_standard": "ERC1155",
+    "first_seen_collection_date_displayed": "Mar 2025",
+    "creator_profile_displayed": "MirkoLancerotto",
+    "creator_fee_displayed_percent": 8,
+    "unique_token_ids_observed": 19,
+    "distinct_catalog_artwork_ids_matched_by_title": 18,
+    "unique_owners_displayed": 5,
+    "items_listed_displayed": 0
+  },
+  "provenance": {
+    "mapping_method": "match numeric color id and level in OpenSea item title to repository catalog; check corresponding filename exists",
+    "source_of_truth_for_actual_mints": "contract/event logs on Polygon; not yet independently verified",
+    "status_of_all_other_combinations": "unverified",
+    "known_duplicate_artwork_ids": [
+      "RS-C080-L08"
+    ],
+    "notes": [
+      "OpenSea ERC-1155 token IDs are NOT color IDs or artwork IDs.",
+      "ERC-1155 token ID is not an individual copy; do not assume supply per ID equals one.",
+      "This snapshot must be checked against fresh OpenSea and Polygon onchain data before any minting."
+    ]
+  },
+  "items": [
+    {
+      "artwork_id": "RS-C001-L22",
+      "color_id": 1,
+      "depth": 22,
+      "token_id": "1",
+      "opensea_name": "Solar Resonator | L22 #1/108 Pure Gold",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#FFD700_lvl22_n1.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/1",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C044-L19",
+      "color_id": 44,
+      "depth": 19,
+      "token_id": "2",
+      "opensea_name": "L19 Ruby Red #44/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#9B111E_lvl19_n44.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/2",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C080-L08",
+      "color_id": 80,
+      "depth": 8,
+      "token_id": "3",
+      "opensea_name": "L8 Cobalt Blue #80/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#0047AB_lvl8_n80.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/3",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C080-L08",
+      "color_id": 80,
+      "depth": 8,
+      "token_id": "4",
+      "opensea_name": "L8 Cobalt Blue #80/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#0047AB_lvl8_n80.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/4",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C058-L06",
+      "color_id": 58,
+      "depth": 6,
+      "token_id": "5",
+      "opensea_name": "L6 Cardinal Violet #58/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#800020_lvl6_n58.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/5",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C101-L13",
+      "color_id": 101,
+      "depth": 13,
+      "token_id": "6",
+      "opensea_name": "L13 Pale Lavender #101/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#E6E6FA_lvl13_n101.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/6",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C097-L18",
+      "color_id": 97,
+      "depth": 18,
+      "token_id": "7",
+      "opensea_name": "L18 Teal Green #97/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#008080_lvl18_n97.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/7",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C078-L11",
+      "color_id": 78,
+      "depth": 11,
+      "token_id": "8",
+      "opensea_name": "L11 Electric Cyan #78/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#00FFFF_lvl11_n78.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/8",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C064-L16",
+      "color_id": 64,
+      "depth": 16,
+      "token_id": "9",
+      "opensea_name": "L16 Aquatic Turquoise #64/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#30D5C8_lvl16_n64.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/9",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C083-L07",
+      "color_id": 83,
+      "depth": 7,
+      "token_id": "10",
+      "opensea_name": "L7 Mint Green #83/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#98FF98_lvl7_n83.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/10",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C002-L07",
+      "color_id": 2,
+      "depth": 7,
+      "token_id": "11",
+      "opensea_name": "L7 Old Gold #2/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#C89F7F_lvl7_n2.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/11",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C027-L12",
+      "color_id": 27,
+      "depth": 12,
+      "token_id": "12",
+      "opensea_name": "L12 Melon Orange #27/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#FF7043_lvl12_n27.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/12",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C067-L05",
+      "color_id": 67,
+      "depth": 5,
+      "token_id": "13",
+      "opensea_name": "L5 Mint Blue #67/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#AAF0D1_lvl5_n67.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/13",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C106-L04",
+      "color_id": 106,
+      "depth": 4,
+      "token_id": "14",
+      "opensea_name": "L4 Flamingo Pink #106/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#FC8EAC_lvl4_n106.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/14",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C037-L03",
+      "color_id": 37,
+      "depth": 3,
+      "token_id": "15",
+      "opensea_name": "L3 Cherry Red #37/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#DE3163_lvl3_n37.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/15",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C103-L02",
+      "color_id": 103,
+      "depth": 2,
+      "token_id": "16",
+      "opensea_name": "L2 Delicate Peach #103/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#FFDAB9_lvl2_n103.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/16",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C099-L01",
+      "color_id": 99,
+      "depth": 1,
+      "token_id": "17",
+      "opensea_name": "L1 Bottle Green #99/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#006A4E_lvl1_n99.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/17",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C088-L13",
+      "color_id": 88,
+      "depth": 13,
+      "token_id": "18",
+      "opensea_name": "L13 Pure Lime Green #88/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#32CD32_lvl13_n88.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/18",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    },
+    {
+      "artwork_id": "RS-C072-L22",
+      "color_id": 72,
+      "depth": 22,
+      "token_id": "19",
+      "opensea_name": "L22 Atlantic Blue #72/108 | Solar Resonator",
+      "image_path": "nft-imgs/solar_2222px_39.00px_#33A1FF_lvl22_n72.png",
+      "opensea_url": "https://opensea.io/item/polygon/0xead98e12d3836562ea39c6a6ca5ef1292359a862/19",
+      "observation": "public_opensea_item_page_title_and_token_url",
+      "onchain_receipt_verified": false
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Roadmap — Risuonatore Solare NFT
 
+**Aggiornamento 21/10/2026:** completata la scoperta del contratto esistente: [Polygon ERC-1155, 19 token IDs / 18 combinazioni](OPENSEA-COLLEZIONE-VERIFICATA.md). Lavoro P0 successivo: verifica ABI e ruolo minter, transazioni/URI/supply e decisione sul doppio token della variante Cobalto #80 livello 8. **Non usare il bulk upload del Drop sul contratto esistente** senza prova di compatibilità; la FAQ OpenSea esclude bulk upload nella modalità Create Collection.
+
 Data iniziale: **21 ottobre 2026**. Filosofia: preservare l'opera e gli NFT esistenti; automatizzare prima i controlli, poi eventuali upload e mint.
 
 | Priorità | Lavoro | Criterio di conclusione |

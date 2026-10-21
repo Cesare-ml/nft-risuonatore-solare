@@ -1,5 +1,7 @@
 # Catalogo canonico e metadati NFT
 
+> **Nota 21/10/2026:** gli NFT storici esistenti appartengono a un **contratto ERC-1155 su Polygon**, non ERC-721. L'esempio ERC-721 più sotto è solo **esemplificativo** e NON deve essere usato per pubblicare nella collezione esistente senza adattamento allo standard ERC-1155, al contratto e alle URI effettive. [Inventario OpenSea verificato](OPENSEA-COLLEZIONE-VERIFICATA.md). Distinguere i 19 `token_id` dai 18 `artwork_id` perché i token #3 e #4 hanno entrambi colore 80, livello 8.
+
 Data della specifica: **21 ottobre 2026**. Questo documento propone un formato di interoperabilità **senza attribuire token ID ancora sconosciuti**.
 
 ## Identità delle opere

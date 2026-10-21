@@ -1,5 +1,7 @@
 # Stato di minting: riconciliazione prima dell'automazione
 
+> **Aggiornamento 21/10/2026:** collezione identificata su OpenSea: Polygon, contratto `0xead98e12d3836562ea39c6a6ca5ef1292359a862`, ERC-1155, **19 token ID** visibili che rappresentano **18 combinazioni** colore/profondità (duplicazione `RS-C080-L08`). Dati e URL in [Collezione verificata](OPENSEA-COLLEZIONE-VERIFICATA.md) e [snapshot JSON](../data/opensea/observed-2026-10-21.json). La verifica di mint e supply tramite transazioni on-chain resta da eseguire. I restanti 2.358 abbinamenti restano **unverified**, non «non mintati».
+
 **Importante (21 ottobre 2026):** l'artista riferisce che alcuni NFT sono già stati pubblicati/mintati su OpenSea. Non è stato possibile stabilire da questo repository **quali** siano, in **quale contratto/rete** o quanti. Non assegnare a quelli non documentati lo stato `not_minted`: usare `unverified`.
 
 ## Dati da recuperare una volta sola
