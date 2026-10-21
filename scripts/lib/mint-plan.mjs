@@ -4,6 +4,7 @@
  */
 export const COLLECTION='0xead98e12d3836562ea39c6a6ca5ef1292359a862';
 export const CHAIN_ID=137;
+export const CONFIGURER='0x864baa13e01d8f9e26549dc91b458cd15e34eb7c';
 export function requireValid(ok,message){if(!ok)throw new Error(message)}
 export function group(items,n){
  requireValid(Number.isSafeInteger(n)&&n>=1&&n<=30,'Batch size must be 1..30');
@@ -37,31 +38,28 @@ export function buildMintPlan(snapshot, catalog, {
    unique.add(id);
  }
  const chunks=group(selection,normalizedBatch);
- const operations=[
-   ...selection.map(item=>({
-     kind:'configure_supply',function:'setMaxSupply(uint256,uint256)',
-     token_ids:[String(item.proposed_token_id)],
-     arguments:[String(item.proposed_token_id),'1'],to:COLLECTION,
-     expected_current_supply:'0',expected_max_supply:'0',
-     expected_sender_role:'contract_owner',
-     stage:'AFTER_METADATA_RELEASE_CONFIRMED'
-   })),
-   ...chunks.map(chunk=>({
-     kind:'mint_batch',function:'multiConfigureMint(address,uint256[],uint256[])',
-     token_ids:chunk.map(item=>String(item.proposed_token_id)),
-     arguments:[recipient,chunk.map(item=>String(item.proposed_token_id)),chunk.map(()=> '1')],
-     to:COLLECTION,
-     expected_sender_role:'owner_or_authorized_configurer',
-     stage:'AFTER_ALL_SELECTED_IDS_CONFIGURED'
-   }))
- ];
+ const operations=chunks.map(chunk=>({
+   kind:'atomic_configure_mint',
+   function:'multiConfigure(address,tuple)',
+   token_ids:chunk.map(item=>String(item.proposed_token_id)),
+   configuration_amounts:chunk.map(()=> '1'),
+   mint_amounts:chunk.map(()=> '1'),
+   recipient:recipient??null,
+   to:CONFIGURER,
+   target_collection:COLLECTION,
+   expected_sender_role:'contract_owner',
+   stage:'AFTER_METADATA_RELEASE_CONFIRMED',
+   base_uri_must_remain_unchanged:true,
+   warning:'Configures supply and mints selected IDs atomically; never sets baseURI'
+ }));
+
  const validRelease=!!release &&
    release.status==='LOCAL_IPFS_STAGING_COMPLETE' &&
    release.historic_json_preserved_byte_identical===19 &&
    release.proposed_base_uri?.startsWith('ipfs://') &&
    release.proposed_base_uri?.endsWith('/{id}');
  return {
-   schema_version:1,mode:'OFFLINE_TRANSACTION_DRAFT_NO_SIGNATURE',
+   schema_version:2,mode:'OFFLINE_TRANSACTION_DRAFT_NO_SIGNATURE',
    chain_id:CHAIN_ID,collection_address:COLLECTION,
    recipient:recipient??null,
    preparation_ready_for_live_execution:false,
@@ -72,9 +70,10 @@ export function buildMintPlan(snapshot, catalog, {
    selected_artwork_ids:selection.map(x=>x.artwork_id),
    selected_token_ids:[...unique],
    totals:{
-     selected:selection.length,configuration_transactions:selection.length,
-     batch_mint_transactions:chunks.length,
-     expected_total_transactions:selection.length+chunks.length,
+     selected:selection.length,
+     atomic_configure_mint_transactions:chunks.length,
+     expected_total_transactions:chunks.length,
+     direct_owner_legacy_transactions_avoided:selection.length,
      metadata_update_transactions_not_included:1
    },
    gates:[
@@ -82,7 +81,7 @@ export function buildMintPlan(snapshot, catalog, {
      'Preserve all 19 original metadata JSON bytes; run nft:ipfs:verify and replicate pinning.',
      'Explicitly approve any setBaseURI operation; historic holders are affected.',
      'Reconcile ALL proposed token IDs onchain with both totalMinted and maxSupply.',
-     'Estimate fees per transaction and gas/batch size before approving live signing.',
+     'Estimate fees per transaction and gas/batch size for ERC1155SeaDropConfigurer.multiConfigure before approving live signing.',
      'Check real Polygon chain ID 137 and exact existing contract before signing.',
      'Do not sign or broadcast directly from this draft file.'
    ],
