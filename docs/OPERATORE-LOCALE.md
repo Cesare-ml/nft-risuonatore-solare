@@ -57,3 +57,15 @@ Nel fork Anvil locale l'ID #20 è stato configurato e mintato correttamente; Pol
 - `tests/mint-plan.test.mjs`: test unitari Node da eseguire manualmente.
 
 La documentazione contrattuale precedente è in [PROGRAMMATIC-MINT-SAME-COLLECTION.md](PROGRAMMATIC-MINT-SAME-COLLECTION.md).
+
+
+## Ricerca del configuratore OpenSea (in sola lettura)
+
+La configurazione di una supply separata per ognuno dei 2.358 token richiederebbe 2.358 firme/transazioni con il percorso diretto owner. Prima di avviare qualunque batch reale, verificare se il configurer OpenSea consente una gestione più efficiente:
+
+```powershell
+npm install
+npm run nft:configurer:audit
+```
+
+Il comando interroga Polygon e Sourcify dal PC, controlla l'indirizzo del configuratore attualmente associato alla collezione e salva `reports/configurer-inspection.json`. **Non invia transazioni e non utilizza GitHub Actions.** Se l'ABI verificata non è disponibile, il risultato è inconcludente: è necessario recuperare il codice verificato da un explorer e simulare sul fork locale, non inventare il supporto batch.
