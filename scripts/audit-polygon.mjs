@@ -186,6 +186,18 @@ async function loadAbi(abiPath, lookupAddress = CONTRACT) {
                abi: normalizeAbi(value) };
     }
   } catch { /* fall through */ }
+  // Sourcify API v2 (v1 was switched off in July 2026). One verified contract lookup.
+  try {
+    const lookup = 'https://sourcify.dev/server/v2/contract/137/' + lookupAddress + '?fields=abi';
+    const res = await timeoutFetch(lookup, { headers: { accept: 'application/json' } });
+    if (res.ok) {
+      const value = await res.json();
+      if (value.match && value.abi) {
+        return { source: 'sourcify_v2_polygon', verified: true, verification_match: value.match,
+                 abi: normalizeAbi(value) };
+      }
+    }
+  } catch { /* fall through */ }
   if (process.env.ETHERSCAN_API_KEY) {
     try {
       const u = new URL('https://api.etherscan.io/v2/api');

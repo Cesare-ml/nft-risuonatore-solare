@@ -1,5 +1,21 @@
 # Audit contratto Polygon ERC-1155 — fase 1
 
+## Risultati blockchain verificati — 21/10/2026
+
+La CLI è stata **eseguita realmente** da una GitHub Actions runner con RPC Polygon pubblico e ha ottenuto risultati:
+
+- **Chain ID 137**, contract `0xead98e12d3836562ea39c6a6ca5ef1292359a862` presente, bytecode **45 bytes** (blocco 95938345).
+- **Minimal proxy EIP-1167 standard** identificato dal runtime: implementazione **[`0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2`](https://polygonscan.com/address/0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2)**, bytecode implementazione **17.857 byte**.
+- `owner()` chiamato **sul proxy della collezione**, restituisce **`0x2180747f94c3319162137a0e2ca5b1e8c7efb2ed`**; **non prova il ruolo minter** e non identifica automaticamente la persona fisica proprietaria.
+- `supportsInterface` via `eth_call`: ERC-165, ERC-1155 e metadata URI = **true**.
+- `uri(id)` per gli **ID 1–19** restituisce senza errori **`ipfs://bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4/{id}`**. Per `{id}` valgono 64 cifre HEX. La URI restituita non certifica che l'ID sia stato mintato, né la disponibilità effettiva del JSON sul gateway.
+- L'ABI verificata **non è stata ottenuta** attraverso Blockscout nella prima esecuzione. La CLI prova ora anche Sourcify v2 e, se configurata, Etherscan v2; la possibilità concreta di mint resta non verificata.
+
+Report completo (artefatto temporaneo GitHub Actions): [run 39666627099](https://github.com/Cesare-ml/nft-risuonatore-solare/actions/runs/39666627099). La CLI e i decoder hanno superato anche [i test offline](https://github.com/Cesare-ml/nft-risuonatore-solare/actions/runs/39666627289).
+
+**Attenzione:** la sezione seguente, redatta prima del controllo RPC, include affermazioni storiche sullo stato inizialmente non verificato. I valori qui sopra prevalgono sulle precedenti incertezze per rete, standard, proxy, implementazione, `owner()` e URI.
+
+---
 Data: **21 ottobre 2026**. Contratto: [`0xead98e12d3836562ea39c6a6ca5ef1292359a862`](https://polygonscan.com/address/0xead98e12d3836562ea39c6a6ca5ef1292359a862), chain ID **137 (Polygon mainnet)**.
 
 ## Risultato della ricognizione
