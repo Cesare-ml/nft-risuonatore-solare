@@ -5,7 +5,12 @@
   "scripts": {
     "start": "http-server .",
     "nft:chain:audit": "node scripts/audit-polygon.mjs",
-    "nft:chain:test": "node scripts/audit-polygon.mjs --self-test"
+    "nft:chain:test": "node scripts/audit-polygon.mjs --self-test",
+    "nft:plan": "node scripts/plan-next-mints.mjs",
+    "nft:ipfs:check": "node scripts/stage-ipfs-release.mjs",
+    "nft:ipfs:verify": "node scripts/verify-ipfs-release.mjs",
+    "nft:mint:plan": "node scripts/prepare-mint-batches.mjs",
+    "nft:local:test": "node --test tests/mint-plan.test.mjs"
   },
   "keywords": [],
   "author": "",
