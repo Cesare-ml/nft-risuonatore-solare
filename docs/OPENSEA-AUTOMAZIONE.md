@@ -2,6 +2,10 @@
 
 > **Decisione tecnica aggiornata (21/10/2026):** la collezione reale [Solar Resonator | Quantum NFT Collection](https://opensea.io/collection/solar-resonator-quantum-nft-collection) è **ERC-1155 su Polygon**, contratto `0xead98e12d3836562ea39c6a6ca5ef1292359a862`. **Le API bulk/manifest per i Drop descritte più sotto NON sono direttamente applicabili a questa collezione ERC-1155 Studio.** Secondo la [FAQ ufficiale OpenSea](https://support.opensea.io/en/articles/8867028-creator-faq), `Create Collection` **non permette bulk upload**: gli item si caricano singolarmente da Studio. La pipeline proposta per i Drop è una **alternativa con eventuale nuovo contratto**, non il piano predefinito di questa collezione. Vedi [inventario verificato](OPENSEA-COLLEZIONE-VERIFICATA.md).
 
+## Audit tecnico read-only disponibile dal 21 ottobre 2026
+
+È stato aggiunto il comando `npm run nft:chain:audit` (Node.js, nessuna firma) per interrogare via RPC bytecode, interfacce ERC-1155, metadata URI, ABI e log di mint in intervalli espliciti. Le capacità di mint programmabile del contratto **NON sono ancora verificate**: vedere [audit tecnico del contratto](AUDIT-CONTRATTO-POLYGON.md). Non utilizzare le API bulk OpenSea Drops per questa collezione.
+
 ## Percorso prioritario per IL CONTRATTO ESISTENTE
 
 1. Conservare chain Polygon + ERC-1155 + contratto storico, e predisporre automaticamente i **metadati e le immagini** già disponibili; identificare e saltare le 18 combinazioni già rappresentate da 19 token OpenSea.

@@ -41,5 +41,17 @@ Per rigenerare i CSV, dalla cartella `python/` eseguire `python gen-csv.py` (ric
 5. [Automazione OpenSea: opzioni e flusso](docs/OPENSEA-AUTOMAZIONE.md)
 6. [Roadmap incrementale](docs/ROADMAP.md)
 7. [Collezione OpenSea e 19 token identificati](docs/OPENSEA-COLLEZIONE-VERIFICATA.md)
+8. [Audit del contratto Polygon ERC-1155: metodo e comandi](docs/AUDIT-CONTRATTO-POLYGON.md)
 
 **Non è stata avviata alcuna operazione on-chain.** Prima di generare token, cambiare metadati pubblicati o caricare file su OpenSea, eseguire la riconciliazione dei mint esistenti descritta nelle guide. Le 108 schede non corrispondono a 108 HEX diversi: vedere [audit](docs/AUDIT-2026-10-21.md).
+
+## Diagnostica del contratto su Polygon (solo lettura)
+
+Il repository include ora un comando Node.js, senza nuove dipendenze, per verificare **dal proprio computer** rete, bytecode, standard ERC-1155, URI metadata e ABI verificata. Non collega wallet e non invia transazioni.
+
+```sh
+npm run nft:chain:test
+npm run nft:chain:audit -- --out reports/polygon-audit.json
+```
+
+Per una scansione di eventi in una finestra **specifica e documentata**: `npm run nft:chain:audit -- --from-block N --to-block M --out reports/polygon-events.json`. Le scansioni coprono al massimo 100.000 blocchi per esecuzione: vanno concatenate senza intervalli scoperti dal blocco di deploy. Vedere [guida tecnica](docs/AUDIT-CONTRATTO-POLYGON.md). **Non eseguire mint basandosi solo sul risultato di queste chiamate.**
