@@ -1,51 +1,41 @@
-<!doctype html>
-<html lang="it"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Risuonatore Solare — Console NFT locale</title>
+<!doctype html><html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Risuonatore Solare — Mint locale</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#10171c;color:#e7e9e9;font:16px/1.5 system-ui,sans-serif}
-main{max-width:880px;margin:auto;padding:32px 22px 80px}
-h1{font-size:26px;margin:0 0 8px}h2{font-size:18px;margin:25px 0 10px}
-p{color:#a9b9bf}code{overflow-wrap:anywhere;color:#aac8ff}
+main{max-width:850px;margin:auto;padding:30px 22px 75px}
+h1{font-size:26px;margin:0 0 8px}h2{font-size:18px;margin:0 0 12px}
+p{color:#acbec5}code{overflow-wrap:anywhere;color:#b6ccff}
 section{padding:22px 24px;border:1px solid #33444d;border-radius:12px;margin-top:16px;background:#19232a}
 button,input{font:inherit;border-radius:7px;padding:10px 14px}
-button{background:#e3ebe8;color:#12222b;border:0;font-weight:600;cursor:pointer;margin:5px 8px 5px 0}
-button:disabled{background:#52616a;color:#9fa8ab;cursor:not-allowed}
-input{width:150px;color:#e7e9e9;background:#111b22;border:1px solid #52616a}
+button{background:#dce9e7;color:#12222b;border:0;font-weight:600;cursor:pointer;margin:5px 8px 5px 0}
+button:disabled{background:#52616a;color:#a6afb1;cursor:not-allowed}
+input{width:140px;color:#e7e9e9;background:#111b22;border:1px solid #52616a}
 label{display:inline-flex;gap:8px;align-items:center;margin:8px 0}
 pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#10171c;padding:14px;border-radius:7px}
-.small{font-size:13px}.danger{color:#ffb8a8}.good{color:#b6efc3}
+.small{font-size:13px}.warn{color:#ffd5a0}.good{color:#b6efc3}
 </style></head><body><main>
 <h1>Risuonatore Solare</h1>
-<p>Console di pubblicazione NFT · <strong>solo in locale</strong> · Polygon ERC-1155 · collezione originale</p>
+<p>Pubblicazione NFT · <strong>solo su questo computer</strong> · Stessa collezione OpenSea Polygon ERC-1155</p>
 <section>
-<h2>1. Piano e archivio</h2>
-<div id="planStatus">Caricamento...</div>
-<p class="small">Una modifica alla base URI interessa anche i 19 NFT storici. Questa console non modifica mai la base URI: è una operazione separata da autorizzare soltanto dopo backup e pinning ridondante.</p>
+<h2>1. Preparazione catalogo</h2>
+<div id="planStatus">Verifica piano locale...</div>
+<p class="small">I 19 NFT già esistenti vengono preservati. I prossimi token sono proposte finché non sono verificati on-chain. Il pulsante di mint rimane bloccato fino alla verifica IPFS e all'aggiornamento separato della base URI.</p>
 </section>
 <section>
-<h2>2. Wallet proprietario</h2>
-<button id="connect">Collega MetaMask</button>
-<button id="check">Verifica contratto, wallet e URI</button>
+<h2>2. Wallet MetaMask</h2>
+<button id="connect">Collega wallet</button><button id="check">Controlla rete, proprietario e CID</button>
 <pre id="walletStatus">Wallet non collegato.</pre>
 </section>
 <section>
-<h2>3. Configura supply di un NFT</h2>
-<label>Token ID <input id="tokenId" type="number" value="20" min="20" step="1"></label>
-<p>Una transazione per ogni ID. Prima di firmare si controllano <code>totalMinted=0</code>, <code>totalSupply=0</code> e <code>maxSupply=0</code>.</p>
-<button id="configure" disabled>Verifica e richiedi firma: maxSupply=1</button>
+<h2>3. Mint programmabile in un'unica transazione</h2>
+<label>Lotto numero <input id="batchIndex" type="number" value="1" min="1" step="1"></label>
+<p id="batchInfo"></p>
+<p>Per ogni ID del lotto la console esige <code>maxSupply = 0</code>, <code>totalMinted = 0</code> e <code>totalSupply = 0</code>. L'operazione OpenSea <code>multiConfigure</code> imposta la supply a 1 e crea il token nella <strong>stessa transazione</strong>.</p>
+<button id="preview">Verifica lotto (sola lettura)</button>
+<button id="mint" disabled>Richiedi firma per questo lotto</button>
+<p class="small warn">Nessuna pubblicazione automatica: conferma singola in MetaMask, commissioni visibili e ricevuta on-chain. Non cambiamo la base URI da questa console.</p>
 </section>
-<section>
-<h2>4. Mint in batch</h2>
-<label>Numero lotto <input id="batchIndex" type="number" value="1" min="1" step="1"></label>
-<p id="batchInfo">Nessun lotto caricato.</p>
-<p>Tutti gli ID del lotto devono avere <code>maxSupply=1</code>, <code>totalMinted=0</code> e <code>totalSupply=0</code>.</p>
-<button id="mint" disabled>Verifica e richiedi firma: mint lotto</button>
-</section>
-<section>
-<h2>Registro attività</h2><pre id="log" role="status" aria-live="polite">Pronta per i controlli in sola lettura.</pre>
-</section>
-</main>
-<script src="/ethers.js"></script>
-<script src="/operator.js"></script>
+<section><h2>Log</h2><pre role="status" aria-live="polite" id="log">Pronta.</pre></section>
+</main><script src="/ethers.js"></script><script type="module" src="/operator.js"></script>
 </body></html>

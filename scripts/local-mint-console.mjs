@@ -43,7 +43,8 @@ async function localState(){
 const routes={
  '/':['text/html; charset=utf-8',resolve(ROOT,'tools/nft-operator.html')],
  '/operator.js':['text/javascript; charset=utf-8',resolve(ROOT,'tools/nft-operator.js')],
- '/ethers.js':['text/javascript; charset=utf-8',resolve(ROOT,'node_modules/ethers/dist/ethers.umd.min.js')]
+ '/ethers.js':['text/javascript; charset=utf-8',resolve(ROOT,'node_modules/ethers/dist/ethers.umd.min.js')],
+ '/configurer.js':['text/javascript; charset=utf-8',resolve(ROOT,'scripts/lib/opensea-configurer.mjs')]
 };
 const server=createServer(async(req,res)=>{
  const url=(req.url||'').split('?')[0];
