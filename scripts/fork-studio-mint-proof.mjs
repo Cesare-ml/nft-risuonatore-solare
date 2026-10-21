@@ -31,7 +31,17 @@ async function sendLocal(from,name,args){
  }
  const hash=await rpc('eth_sendTransaction',[{to:CONTRACT,from,data:abi.encodeFunctionData(name,args),
    gas:'0x4c4b40'}]);
- const receipt=await rpc('eth_getTransactionReceipt',[hash]);
+ let receipt=null;
+ for(let i=0;i<40;i++){
+   receipt=await rpc('eth_getTransactionReceipt',[hash]);
+   if(receipt)break;
+   await new Promise(done=>setTimeout(done,250));
+ }
+ if(!receipt){
+   // Anvil only, never real chain. Some versions defer mining of eth_sendTransaction.
+   await rpc('anvil_mine',[1]);
+   receipt=await rpc('eth_getTransactionReceipt',[hash]);
+ }
  if(!receipt || receipt.status!=='0x1')throw new Error('Local fork receipt status != success: '+JSON.stringify(receipt));
  return {method:name,hash,gas_used:parseInt(receipt.gasUsed,16),
    emitted_events:receipt.logs?.length??0};
