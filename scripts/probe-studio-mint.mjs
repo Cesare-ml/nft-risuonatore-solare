@@ -13,7 +13,10 @@ const CONTRACT_ABI=[
   'function owner() view returns (address)',
   'function configurer() view returns (address)',
   'function multiConfigureMint(address recipient,uint256[] tokenIds,uint256[] amounts)',
-  'function totalSupply(uint256) view returns (uint256)'
+  'function totalSupply(uint256) view returns (uint256)',
+  'function maxSupply(uint256) view returns (uint256)',
+  'function totalMinted(uint256) view returns (uint256)',
+  'function baseURI() view returns (string)'
 ];
 const iface=new Interface(CONTRACT_ABI);
 async function rpc(method,params){
@@ -53,9 +56,19 @@ async function main(){
   const owner=(await readFn('owner'))[0];
   const configurer=(await readFn('configurer'))[0];
   const supply20=String((await readFn('totalSupply',[20n]))[0]);
+  const supplyLimits={};
+  for(const id of [1n,19n,20n,21n]){
+    supplyLimits[String(id)]={
+      max:String((await readFn('maxSupply',[id]))[0]),
+      total_minted:String((await readFn('totalMinted',[id]))[0]),
+      current_supply:String((await readFn('totalSupply',[id]))[0])
+    };
+  }
+  const baseURI=(await readFn('baseURI'))[0];
   if(supply20!=='0')throw new Error('Token 20 already has supply '+supply20+'; update read-only test choice manually');
   const result={read_only:true,chain_id:Number(chainId),collection:CONTRACT,
     owner_onchain:owner,configurer_onchain:configurer,token_id_for_simulation_only:'20',
+    supply_limits:supplyLimits,base_uri:baseURI,
     supply_before_simulation:supply20,
     function_signature:'multiConfigureMint(address,uint256[],uint256[])',
     derived_selector:iface.getFunction('multiConfigureMint').selector,
