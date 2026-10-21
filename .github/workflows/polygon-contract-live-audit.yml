@@ -32,9 +32,11 @@ jobs:
             implementation_code_bytes:r.implementation_code_size_bytes, owner_probe:r.owner_probe,
             interfaces:r.interfaces,
             metadata_uri_results:r.token_uris,
+            current_supply:r.current_supply_by_token_id,
             abi_source:r.abi.source, abi_verified:r.abi.verified,
             abi_lookup_address:r.abi.lookup_address,
-            proxy:r.abi.proxy, candidate_functions:r.abi.candidates,
+            implementation_proxy:r.abi.proxy, candidate_functions:r.abi.candidates,
+            all_contract_functions:r.abi.functions,
             mint_permission_status:r.assessment.creator_mint_permissions
           },null,2));"
       - name: Preserve audit JSON artifact

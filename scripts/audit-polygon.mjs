@@ -163,6 +163,17 @@ async function tryUri(url, id) {
     return { token_id: String(id), raw_uri: null, resolved_uri: null, error: String(e.message) };
   }
 }
+async function tryTotalSupply(url, id) {
+  try {
+    // Solidity selector for totalSupply(uint256), present in the verified implementation ABI.
+    const raw = await callRead(url, '0xbd85b039' + encodeUint(id));
+    if (!/^0x[0-9a-fA-F]{64}$/.test(raw)) throw new Error('Unexpected totalSupply return data');
+    return { token_id: String(id), current_supply: BigInt(raw).toString(), error: null };
+  } catch (e) {
+    return { token_id: String(id), current_supply: null, error: String(e.message) };
+  }
+}
+
 function normalizeAbi(payload) {
   const candidate = payload?.abi ?? payload?.result ?? payload;
   const parsed = typeof candidate === 'string' ? JSON.parse(candidate) : candidate;
@@ -297,6 +308,9 @@ async function main() {
   const abiLookupAddress = proxyDetection.implementation || CONTRACT;
   const abi = abiSummary(await loadAbi(opts.abi, abiLookupAddress));
   abi.lookup_address = abiLookupAddress;
+  const hasSupplyMethod = abi.functions.some(f => f.signature === 'totalSupply(uint256)');
+  const supplies = [];
+  if (hasSupplyMethod) for (const id of [...ids, '20']) supplies.push(await tryTotalSupply(url, id));
   const to = opts.to ?? currentBlock;
   if (to > currentBlock) throw new Error('--to-block beyond current latest block');
   const mintEvents = opts.from === null ? null : await mintLogs(url, opts.from, to);
@@ -311,7 +325,7 @@ async function main() {
     owner_probe: ownerProbe,
     observed_opensea_token_ids: ids, observed_distinct_artwork_ids:
       new Set(snapshot.items.map(x => x.artwork_id)).size,
-    interfaces: iface, token_uris: uris, abi,
+    interfaces: iface, token_uris: uris, current_supply_by_token_id: supplies, abi,
     minted_transfer_events: mintEvents,
     mint_event_scan: opts.from === null
       ? { complete: false, status: 'not_requested', instruction: 'Provide deployment --from-block and explicit --to-block. Scan all windows to reconstruct full history.' }
