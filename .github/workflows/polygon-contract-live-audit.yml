@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - ".github/workflows/polygon-contract-live-audit.yml"
+      - "scripts/audit-polygon.mjs"
   workflow_dispatch:
 
 permissions:
@@ -27,9 +28,12 @@ jobs:
           const r=JSON.parse(fs.readFileSync('reports/polygon-live-audit.json', 'utf8'));
           console.log(JSON.stringify({
             contract:r.contract, chain_id:r.chain_id, checked_block:r.checked_block,
-            code_bytes:r.contract_code_size_bytes, interfaces:r.interfaces,
+            code_bytes:r.contract_code_size_bytes, proxy:r.proxy_detection,
+            implementation_code_bytes:r.implementation_code_size_bytes, owner_probe:r.owner_probe,
+            interfaces:r.interfaces,
             metadata_uri_results:r.token_uris,
             abi_source:r.abi.source, abi_verified:r.abi.verified,
+            abi_lookup_address:r.abi.lookup_address,
             proxy:r.abi.proxy, candidate_functions:r.abi.candidates,
             mint_permission_status:r.assessment.creator_mint_permissions
           },null,2));"

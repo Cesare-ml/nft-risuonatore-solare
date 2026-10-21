@@ -171,13 +171,13 @@ function normalizeAbi(payload) {
   }
   return parsed;
 }
-async function loadAbi(abiPath) {
+async function loadAbi(abiPath, lookupAddress = CONTRACT) {
   if (abiPath) {
     return { source: 'user_supplied_abi', verified: null,
              abi: normalizeAbi(JSON.parse(await readFile(resolve(abiPath), 'utf8'))) };
   }
   try {
-    const res = await timeoutFetch('https://polygon.blockscout.com/api/v2/smart-contracts/' + CONTRACT,
+    const res = await timeoutFetch('https://polygon.blockscout.com/api/v2/smart-contracts/' + lookupAddress,
       { headers: { accept: 'application/json' } });
     if (res.ok) {
       const value = await res.json();
@@ -191,7 +191,7 @@ async function loadAbi(abiPath) {
       const u = new URL('https://api.etherscan.io/v2/api');
       for (const [k, v] of Object.entries({
         chainid: '137', module: 'contract', action: 'getabi',
-        address: CONTRACT, apikey: process.env.ETHERSCAN_API_KEY
+        address: lookupAddress, apikey: process.env.ETHERSCAN_API_KEY
       })) u.searchParams.set(k, v);
       const res = await timeoutFetch(u);
       if (res.ok) {
@@ -204,6 +204,24 @@ async function loadAbi(abiPath) {
   return { source: 'unavailable', verified: null, abi: null,
            note: 'Obtain verified ABI from explorer, or pass --abi path. Mint function/roles unverified.' };
 }
+async function tryOwner(url) {
+  try {
+    const raw = await callRead(url, '0x8da5cb5b'); // Ownable.owner() if implemented
+    if (!/^0x[0-9a-fA-F]{64}$/.test(raw)) throw new Error('Unexpected owner() return data');
+    const addr = '0x' + raw.slice(-40).toLowerCase();
+    if (addr === '0x' + '0'.repeat(40)) throw new Error('Zero address owner()');
+    return { value: addr, error: null,
+      warning: 'owner() response alone does not prove permission to mint new token IDs' };
+  } catch (e) {
+    return { value: null, error: String(e.message) };
+  }
+}
+function detectMinimalProxy(code) {
+  const match = code.match(/^0x363d3d373d3d3d363d73([0-9a-f]{40})5af43d82803e903d91602b57fd5bf3$/i);
+  return match ? { type: 'EIP-1167 standard minimal proxy', implementation: '0x' + match[1].toLowerCase() }
+    : { type: 'unknown/not EIP-1167 exact runtime', implementation: null };
+}
+
 function abiSummary(abiResult) {
   if (!abiResult.abi) return { ...abiResult, functions: [], candidates: [] };
   const functions = abiResult.abi.filter(x => x.type === 'function')
@@ -258,7 +276,15 @@ async function main() {
   };
   const uris = [];
   for (const id of ids) uris.push(await tryUri(url, id)); // sequential for public RPC rate limits
-  const abi = abiSummary(await loadAbi(opts.abi));
+  const proxyDetection = detectMinimalProxy(code);
+  const implementationCode = proxyDetection.implementation
+    ? await rpc('eth_getCode', [proxyDetection.implementation, 'latest'], url) : null;
+  const implementationBytes = implementationCode && implementationCode !== '0x'
+    ? (implementationCode.length - 2) / 2 : null;
+  const ownerProbe = await tryOwner(url);
+  const abiLookupAddress = proxyDetection.implementation || CONTRACT;
+  const abi = abiSummary(await loadAbi(opts.abi, abiLookupAddress));
+  abi.lookup_address = abiLookupAddress;
   const to = opts.to ?? currentBlock;
   if (to > currentBlock) throw new Error('--to-block beyond current latest block');
   const mintEvents = opts.from === null ? null : await mintLogs(url, opts.from, to);
@@ -269,6 +295,8 @@ async function main() {
     chain: 'polygon', chain_id: chainId, contract: CONTRACT,
     rpc_provider: 'configured endpoint (URL and secrets deliberately omitted)',
     checked_block: currentBlock, contract_code_size_bytes: (code.length - 2) / 2,
+    proxy_detection: proxyDetection, implementation_code_size_bytes: implementationBytes,
+    owner_probe: ownerProbe,
     observed_opensea_token_ids: ids, observed_distinct_artwork_ids:
       new Set(snapshot.items.map(x => x.artwork_id)).size,
     interfaces: iface, token_uris: uris, abi,
