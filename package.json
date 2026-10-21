@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "http-server ."
+    "start": "http-server .",
+    "nft:chain:audit": "node scripts/audit-polygon.mjs",
+    "nft:chain:test": "node scripts/audit-polygon.mjs --self-test"
   },
   "keywords": [],
   "author": "",
