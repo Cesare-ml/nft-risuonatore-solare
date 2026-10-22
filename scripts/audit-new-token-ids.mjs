@@ -10,6 +10,7 @@ import {readFile,mkdir,writeFile,rename} from 'node:fs/promises';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
+import {analyzeMintProgress} from './lib/mint-progress.mjs';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const PLAN=resolve(ROOT,'reports/staging-mint-plan.json');
@@ -116,6 +117,9 @@ async function main(){
  const prior=rows.slice(0,19),future=rows.slice(19);
  const existingConsistent=prior.every(x=>x.historical_consistent);
  const occupied=future.filter(x=>!x.vacant);
+ let progress=null,progress_error=null;
+ try{progress=analyzeMintProgress(future)}
+ catch(e){progress_error=e.message}
  const report={
   format:'polygon-erc1155-proposed-id-readonly-v1',
   created_at:new Date().toISOString(),read_only:true,chain_id:137,
@@ -128,6 +132,8 @@ async function main(){
   existing_consistent:existingConsistent,
   all_proposed_ids_unused:occupied.length===0,
   occupied_new_ids:occupied,
+  mint_progress:progress,
+  mint_progress_error:progress_error,
   historic:prior,
   new_token_states:future,
   warning:'READ-ONLY POINT-IN-TIME SNAPSHOT; repeat state checks on each ID at signing time. This does not approve a transaction or validate IPFS.'
@@ -141,8 +147,11 @@ async function main(){
   block:report.pinned_block_number,existing_consistent:existingConsistent,
   new_ids_checked:future.length,unused:future.length-occupied.length,
   occupied:occupied.length,first_occupied:occupied.slice(0,10),
+  completed_prefix:progress?.fully_minted_prefix_count??null,
+  next_free_token_id:progress?.first_unminted_token_id??null,
+  progress_error,
   owner,configurer,read_only:true
  },null,2));
- if(!existingConsistent||occupied.length)process.exitCode=2;
+ if(!existingConsistent||progress_error)process.exitCode=2;
 }
 main().catch(error=>{console.error('READ-ONLY ID AUDIT FAILED: '+error.message);process.exitCode=1;});
