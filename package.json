@@ -13,7 +13,8 @@
     "nft:local:test": "node --test",
     "nft:console": "node scripts/local-mint-console.mjs",
     "nft:configurer:audit": "node scripts/inspect-configurer.mjs",
-    "nft:fork:atomic": "node scripts/fork-configurer-atomic-proof.mjs --local-fork-only"
+    "nft:fork:atomic": "node scripts/fork-configurer-atomic-proof.mjs --local-fork-only",
+    "nft:ids:audit": "node scripts/audit-new-token-ids.mjs"
   },
   "keywords": [],
   "author": "",
