@@ -18,7 +18,8 @@
     "nft:ipfs:public": "node scripts/verify-public-ipfs-release.mjs",
     "nft:ipfs:recover": "node scripts/recover-historic-ipfs.mjs",
     "nft:ipfs:diagnose": "node scripts/recover-historic-ipfs.mjs --diagnose",
-    "nft:doctor": "node scripts/local-nft-doctor.mjs"
+    "nft:doctor": "node scripts/local-nft-doctor.mjs",
+    "nft:mint:resume": "node scripts/prepare-next-mint-batches.mjs"
   },
   "keywords": [],
   "author": "",
