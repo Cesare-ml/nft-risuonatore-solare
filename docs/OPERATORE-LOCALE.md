@@ -96,6 +96,8 @@ Con il nuovo sistema la **scansione completa resta obbligatoria** ogni volta; so
 npm run nft:mint:plan -- --batch-size 10 --release-report reports/solar-release-staging/release-report.json
 ```
 
+La prova Anvil è ora **obbligatoria**: la console richiede il report `reports/atomic-fork-proof.json`, recente e con checksum dell'ABI attuale, prima di permettere qualsiasi richiesta di firma. Il test deve dimostrare tre transazioni di mint atomico (lotti 1, 5, 10), base URI invariata, token #1 storico invariato e nessuna modifica alla Polygon reale.
+
 **Test necessario ancora da eseguire:** installare Foundry e avviare un fork locale isolato, su un primo terminale:
 
 ```powershell
@@ -107,6 +109,8 @@ Su un secondo terminale:
 ```powershell
 npm run nft:fork:atomic
 ```
+
+Il test produce `reports/atomic-fork-proof.json` **solo se tutti i lotti hanno ricevute riuscite e i controlli storici restano invariati**. La console rifiuta report mancanti, scaduti oltre sette giorni o riferiti a una versione diversa del codice ABI.
 
 Questo test impersona l'owner **solo nel fork** e prova 1, 5 e 10 token per transazione, misurando il gas. Non pubblica NFT reali. Il precedente test riuscito su fork utilizzava due chiamate **separate**: non va confuso con questo nuovo test.
 

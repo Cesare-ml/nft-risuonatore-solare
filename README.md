@@ -108,7 +108,20 @@ npm install
 npm run nft:local:test
 npm run nft:plan
 npm run nft:mint:plan -- --batch-size 10 --start 0 --count 20
+# Richiede Anvil fork in ascolto su 127.0.0.1:8545:
+npm run nft:fork:atomic
 npm run nft:console
 ```
 
 Aprire http://127.0.0.1:8765/ con MetaMask. Ogni operazione on-chain è bloccata finché l'archivio IPFS dei 19 NFT storici e dei nuovi non è verificato e la base URI non coincide. [Procedura completa](docs/OPERATORE-LOCALE.md).
+
+### Ripresa e prova obbligatoria prima delle firme
+
+Dopo aver mintato e riconciliato un primo gruppo, è possibile preparare il successivo **senza transazioni automatiche**:
+
+```powershell
+npm run nft:ids:audit
+npm run nft:mint:resume -- --batch-size 10 --count 100
+```
+
+Il sistema rifiuta lacune, supply parziali e ID già occupati dal lotto selezionato. Prima di qualsiasi richiesta di firma reale serve inoltre il report generato da `npm run nft:fork:atomic` su Anvil locale; la console verifica il checksum dell'ABI, il gas e la conservazione della base URI originale. [Guida completa](docs/OPERATORE-LOCALE.md).

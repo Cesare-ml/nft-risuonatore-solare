@@ -103,6 +103,7 @@ if(location.hostname!=='127.0.0.1'){
   if(!batches.length)throw Error('Nessun lotto atomic disponibile');
   const checks={
    valid_offline_atomic_plan:'Piano NFT',
+   atomic_fork_proof_verified:'Prova Anvil mint atomico',
    local_ipfs_bytes_verified:'Archivio IPFS locale',
    local_release_matches_mint_plan:'Catalogo e CID',
    two_public_gateways_verified:'Due gateway IPFS',
