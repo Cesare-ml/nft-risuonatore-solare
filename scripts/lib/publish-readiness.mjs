@@ -19,7 +19,17 @@ export function evaluateReadiness({
  const release=releaseBytes?JSON.parse(releaseBytes.toString('utf8')):null;
  const validIds=(catalog?.pending??[]).map(item=>String(item.proposed_token_id));
  const exactIds=validIds.length===2358&&validIds.every((id,i)=>id===String(i+20));
- const validPlan=!!(plan&&plan.schema_version===2&&plan.chain_id===137&&
+ const flattenedIds=(plan?.operations??[]).flatMap(op=>
+  Array.isArray(op.token_ids)?op.token_ids.map(String):[]);
+ const planTokens=(plan?.selected_token_ids??[]).map(String);
+ const planIdsMatch=planTokens.length>0&&
+  new Set(flattenedIds).size===flattenedIds.length&&
+  flattenedIds.length===planTokens.length&&
+  flattenedIds.every((id,i)=>id===planTokens[i])&&
+  planTokens.every(id=>validIds.includes(id))&&
+  plan?.totals?.selected===planTokens.length&&
+  plan?.totals?.expected_total_transactions===plan.operations.length;
+ const validPlan=!!(plan&&planIdsMatch&&plan.schema_version===2&&plan.chain_id===137&&
   lower(plan.collection_address)===COLLECTION&&
   plan.mode==='OFFLINE_TRANSACTION_DRAFT_NO_SIGNATURE'&&
   Array.isArray(plan.operations)&&plan.operations.length>0&&

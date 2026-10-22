@@ -5,7 +5,7 @@ const now=Date.parse('2026-10-22T12:00:00Z');
 const ids=Array.from({length:2358},(_,i)=>String(20+i));
 const plan={schema_version:2,chain_id:137,collection_address:COLLECTION,
  mode:'OFFLINE_TRANSACTION_DRAFT_NO_SIGNATURE',metadata_release_locally_staged:true,
- selected_token_ids:['20'],proposed_base_uri:'ipfs://bafynewcidxxx/{id}',
+ selected_token_ids:['20'],totals:{selected:1,expected_total_transactions:1},proposed_base_uri:'ipfs://bafynewcidxxx/{id}',
  operations:[{kind:'atomic_configure_mint',to:CONFIGURER,target_collection:COLLECTION,token_ids:['20']}]};
 const catalog={pending:ids.map(id=>({proposed_token_id:id}))};
 const release={status:'LOCAL_IPFS_STAGING_COMPLETE',
@@ -50,6 +50,17 @@ test('fails closed with occupied ID or switched address',()=>{
  const badPlan=structuredClone(plan);
  badPlan.operations[0].to='0x0000000000000000000000000000000000000000';
  assert.equal(approved({...valid(),plan:badPlan}),false);
+});
+test('fails closed if mint operations drift from the selected catalog IDs',()=>{
+ const mutated=structuredClone(plan);
+ mutated.operations[0].token_ids=['21'];
+ assert.equal(approved({...valid(),plan:mutated}),false);
+ const duplicate=structuredClone(plan);
+ duplicate.operations.push({...duplicate.operations[0]});
+ duplicate.selected_token_ids.push('20');
+ duplicate.totals.expected_total_transactions=2;
+ duplicate.totals.selected=2;
+ assert.equal(approved({...valid(),plan:duplicate}),false);
 });
 test('fails closed if remote CID or sample set changes',()=>{
  const bad=structuredClone(remote);bad.media_cid='bafyother';
