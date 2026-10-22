@@ -68,13 +68,16 @@ export function evaluateReadiness({
   chain.new_token_states?.length===2358&&
   historicValid&&
   chain.existing_consistent===true&&ageValid(chain.created_at,12,now));
+ const rawForkBlock=forkProof?.fork_identity?.fork_block_number;
+ const forkBlockFormat=typeof rawForkBlock==='string'&&/^[0-9]+$/.test(rawForkBlock);
+ const forkBlockIsRecentEnough=forkBlockFormat&&BigInt(rawForkBlock)>=HISTORIC_BLOCK_FLOOR;
  const batches=[1,5,10];
  const forkVerified=!!(forkProof&&abiSourceBytes&&
   forkProof.status==='LOCAL_ATOMIC_FORK_PROOF_PASSED'&&
   forkProof.scope==='LOCAL_ANVIL_FORK_ONLY'&&
   forkProof.chain_id===137&&
   forkProof.fork_identity?.implementation===ORIGINAL_IMPLEMENTATION&&
-  BigInt(forkProof.fork_identity?.fork_block_number??0)>=HISTORIC_BLOCK_FLOOR&&
+  forkBlockIsRecentEnough&&
   forkProof.fork_identity?.code_bytes===45&&
   lower(forkProof.collection)===COLLECTION&&
   lower(forkProof.configurer)===CONFIGURER&&

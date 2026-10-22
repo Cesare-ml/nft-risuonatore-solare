@@ -148,3 +148,12 @@ test('standalone Anvil proof without original Polygon fork identity cannot enabl
  alt.fork_identity.implementation='0x0000000000000000000000000000000000000000';
  assert.equal(approved({...valid(),forkProof:alt}),false);
 });
+
+test('corrupted fork provenance safely refuses signing rather than crashing the console',()=>{
+ const bad=structuredClone(forkProof);
+ bad.fork_identity.fork_block_number='invalid';
+ assert.equal(approved({...valid(),forkProof:bad}),false);
+ const missing=structuredClone(forkProof);
+ delete missing.fork_identity.fork_block_number;
+ assert.equal(approved({...valid(),forkProof:missing}),false);
+});
