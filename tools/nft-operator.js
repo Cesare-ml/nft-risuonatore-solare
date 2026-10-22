@@ -155,6 +155,14 @@ if(location.hostname!=='127.0.0.1'){
    const {config,ids}=await checkBatch(choice,true);
    const gas=await configurer.multiConfigure.estimateGas(COLLECTION,config);
    if(!(await feePrompt(ids,gas)))return;
+   // Price prompt / wallet extension can take time. Re-check chain, wallet,
+   // contract codehash, baseURI and EVERY token ID immediately before signing.
+   const fresh=await checkBatch(choice,true);
+   if(fresh.recipient.toLowerCase()!==config.mintRecipient.toLowerCase()||
+      fresh.ids.join(',')!==ids.join(','))
+     throw Error('Il destinatario o gli ID sono cambiati durante la conferma: firma bloccata');
+   if(selectedBatch().n!==choice.n)
+     throw Error('Lotto modificato dopo la conferma: firma bloccata');
    const tx=await configurer.multiConfigure(COLLECTION,config);
    msg('Transazione inviata a configuratore: '+tx.hash);
    const receipt=await tx.wait(1);
