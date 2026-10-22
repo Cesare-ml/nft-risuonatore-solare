@@ -4,6 +4,7 @@
  * No network, no signing. Independently unit-testable.
  */
 import {createHash} from 'node:crypto';
+import {ORIGINAL_IMPLEMENTATION,HISTORIC_BLOCK_FLOOR} from './fork-provenance.mjs';
 export const COLLECTION='0xead98e12d3836562ea39c6a6ca5ef1292359a862';
 export const CONFIGURER='0x864baa13e01d8f9e26549dc91b458cd15e34eb7c';
 export const sha=b=>createHash('sha256').update(b).digest('hex');
@@ -72,6 +73,9 @@ export function evaluateReadiness({
   forkProof.status==='LOCAL_ATOMIC_FORK_PROOF_PASSED'&&
   forkProof.scope==='LOCAL_ANVIL_FORK_ONLY'&&
   forkProof.chain_id===137&&
+  forkProof.fork_identity?.implementation===ORIGINAL_IMPLEMENTATION&&
+  BigInt(forkProof.fork_identity?.fork_block_number??0)>=HISTORIC_BLOCK_FLOOR&&
+  forkProof.fork_identity?.code_bytes===45&&
   lower(forkProof.collection)===COLLECTION&&
   lower(forkProof.configurer)===CONFIGURER&&
   forkProof.selector==='0xa64dfa75'&&

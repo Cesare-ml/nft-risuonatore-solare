@@ -35,6 +35,7 @@ const abiSourceBytes=Buffer.from('test ABI source fixture');
 const forkProof={
  status:'LOCAL_ATOMIC_FORK_PROOF_PASSED',
  scope:'LOCAL_ANVIL_FORK_ONLY',chain_id:137,
+ fork_identity:{implementation:'0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2',fork_block_number:'96000000',code_bytes:45},
  collection:COLLECTION,configurer:CONFIGURER,selector:'0xa64dfa75',
  abi_source_sha256:sha(abiSourceBytes),
  configurer_bytecode_keccak256:'0x'+'a'.repeat(64),
@@ -134,4 +135,16 @@ test('fork proof and exact ABI source are mandatory to request any signature',()
  const old=structuredClone(forkProof);
  old.created_at=new Date(now-8*24*3600000).toISOString();
  assert.equal(approved({...valid(),forkProof:old}),false);
+});
+
+test('standalone Anvil proof without original Polygon fork identity cannot enable signatures',()=>{
+ const wrong=structuredClone(forkProof);
+ delete wrong.fork_identity;
+ assert.equal(approved({...valid(),forkProof:wrong}),false);
+ const old=structuredClone(forkProof);
+ old.fork_identity.fork_block_number='90000000';
+ assert.equal(approved({...valid(),forkProof:old}),false);
+ const alt=structuredClone(forkProof);
+ alt.fork_identity.implementation='0x0000000000000000000000000000000000000000';
+ assert.equal(approved({...valid(),forkProof:alt}),false);
 });
