@@ -18,6 +18,7 @@ const chain={
  created_at:new Date(now-30000).toISOString(),
  existing_checked:19,new_ids_checked:2358,
  plan_sha256:sha(Buffer.from(ids.join(','))),all_proposed_ids_unused:true,
+ occupied_new_ids:[],
  existing_consistent:true,
  historic:Array.from({length:19},(_,i)=>({token_id:String(i+1),historical_consistent:true})),
  new_token_states:ids.map(id=>({token_id:id,maxSupply:'0',totalMinted:'0',totalSupply:'0',vacant:true}))
@@ -30,7 +31,23 @@ const remote={schema:2,status:'TWO_GATEWAY_SAMPLES_VERIFIED',checks_passed:true,
  distinct_gateway_operators:['pinata','storacha'],
  new_metadata_image_sample_ids:['20','609','1199','1788','2377'],
  total_remote_files_verified:58,verified_at:new Date(now-60000).toISOString()};
-const valid=()=>({plan,catalog,releaseBytes,localVerified:true,remote,chain,enableSigning:true,now});
+const abiSourceBytes=Buffer.from('test ABI source fixture');
+const forkProof={
+ status:'LOCAL_ATOMIC_FORK_PROOF_PASSED',
+ scope:'LOCAL_ANVIL_FORK_ONLY',chain_id:137,
+ collection:COLLECTION,configurer:CONFIGURER,selector:'0xa64dfa75',
+ abi_source_sha256:sha(abiSourceBytes),
+ configurer_bytecode_keccak256:'0x'+'a'.repeat(64),
+ historic_base_uri_unchanged:true,historic_token_1_unchanged:true,
+ public_polygon_transactions:0,
+ results:[1,5,10].map((tokens,i)=>({
+  tokens,tx_count:1,selector:'0xa64dfa75',
+  gas_used:100000+i*50000,gas_estimated:110000+i*50000
+ })),
+ created_at:new Date(now-30000).toISOString()
+};
+const valid=()=>({plan,catalog,releaseBytes,localVerified:true,remote,chain,
+ enableSigning:true,now,forkProof,abiSourceBytes});
 const approved=(opts)=>Object.values(evaluateReadiness(opts)).every(Boolean);
 test('only all exact bound, current proofs can unlock',()=>{
  assert.equal(approved(valid()),true);
@@ -106,4 +123,15 @@ test('different hostnames of the SAME provider never satisfy gateway gate',()=>{
  const legacy=structuredClone(remote);
  legacy.schema=1;
  assert.equal(approved({...valid(),remote:legacy}),false);
+});
+
+test('fork proof and exact ABI source are mandatory to request any signature',()=>{
+ assert.equal(approved({...valid(),forkProof:null}),false);
+ assert.equal(approved({...valid(),abiSourceBytes:Buffer.from('changed ABI')}),false);
+ const wrong=structuredClone(forkProof);
+ wrong.historic_base_uri_unchanged=false;
+ assert.equal(approved({...valid(),forkProof:wrong}),false);
+ const old=structuredClone(forkProof);
+ old.created_at=new Date(now-8*24*3600000).toISOString();
+ assert.equal(approved({...valid(),forkProof:old}),false);
 });

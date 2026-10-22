@@ -24,17 +24,20 @@ function executable(command,parameters=['--version']){
  };
 }
 async function main(){
- const [catalog,plan,remote,chain,releaseBytes]=await Promise.all([
+ const [catalog,plan,remote,chain,releaseBytes,forkRaw,abiSourceBytes]=await Promise.all([
   readOptional('reports/staging-mint-plan.json'),
   readOptional('reports/local-mint-batches.json'),
   readOptional('reports/ipfs-public-verification.json'),
   readOptional('reports/onchain-new-ids-audit.json'),
-  readOptional('reports/solar-release-staging/release-report.json')
+  readOptional('reports/solar-release-staging/release-report.json'),
+  readOptional('reports/atomic-fork-proof.json'),
+  readOptional('scripts/lib/opensea-configurer.mjs')
  ]);
  function parseOrNull(b){if(!b)return null;try{return JSON.parse(b.toString('utf8'))}catch{return null}}
  const contents={
   catalog:parseOrNull(catalog),plan:parseOrNull(plan),remote:parseOrNull(remote),
-  chain:parseOrNull(chain),releaseBytes
+  chain:parseOrNull(chain),releaseBytes,
+  forkProof:parseOrNull(forkRaw),abiSourceBytes
  };
  const report={
   mode:'LOCAL_READ_ONLY_DIAGNOSTICS',
@@ -50,7 +53,8 @@ async function main(){
    atomic_mint_plan_present:!!plan,
    historical_release_report_present:!!releaseBytes,
    all_token_ids_audit_present:!!chain,
-   remote_ipfs_verification_present:!!remote
+   remote_ipfs_verification_present:!!remote,
+   atomic_anvil_fork_proof_present:!!forkRaw
   },
   next_steps:[],
   signing_permitted_by_doctor:false
@@ -60,6 +64,7 @@ async function main(){
  const checks=evaluateReadiness({
   plan:contents.plan,catalog:contents.catalog,releaseBytes,
   chain:contents.chain,remote:contents.remote,
+  forkProof:contents.forkProof,abiSourceBytes:contents.abiSourceBytes,
   localVerified:false,enableSigning:false
  });
  report.gates=checks;
@@ -71,6 +76,8 @@ async function main(){
  if(!report.files.all_token_ids_audit_present)report.next_steps.push('npm run nft:ids:audit');
  if(!report.files.remote_ipfs_verification_present)
    report.next_steps.push('Once IPFS staging is complete: npm run nft:ipfs:public');
+ if(!report.files.atomic_anvil_fork_proof_present)
+   report.next_steps.push('Run local Anvil fork: npm run nft:fork:atomic (never mainnet).');
  if(!report.prerequisites.anvil_local_fork.installed)
    report.next_steps.push('Install Foundry Anvil and run the local fork test before any real mint.');
  if(!report.prerequisites.ethers_library)
