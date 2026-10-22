@@ -16,7 +16,8 @@ const REPORT=resolve(ROOT,'reports/ipfs-public-verification.json');
 const PLAN=resolve(ROOT,'reports/staging-mint-plan.json');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const hexId=id=>BigInt(id).toString(16).padStart(64,'0');
-const defaults=['https://ipfs.io/ipfs','https://dweb.link/ipfs'];
+// Distinct gateway operators: Pinata and Storacha; both remain best-effort.
+const defaults=['https://gateway.pinata.cloud/ipfs','https://w3s.link/ipfs'];
 const sleep=ms=>new Promise(done=>setTimeout(done,ms));
 let chosen=[];
 for(let i=0;i<process.argv.slice(2).length;i++){
@@ -33,11 +34,19 @@ function normalizeGateway(v){
    throw Error('Only HTTPS gateways without credentials or query parameters are accepted');
  const base=(u.origin+u.pathname).replace(/\/$/,'');
  if(!base.endsWith('/ipfs'))throw Error('Gateway URL must end with /ipfs');
- return {base,host:u.hostname};
+ const host=u.hostname.toLowerCase();
+ // Since Sep 2026 these two public-good gateways have ceased serving ordinary
+ // backend HTTP retrieval reliably and are run as the SAME backend service.
+ if(['ipfs.io','dweb.link','cloudflare-ipfs.com','cf-ipfs.com'].includes(host))
+   throw Error('This gateway is deprecated/unreliable for programmatic retrieval: '+host);
+ const provider=host==='gateway.pinata.cloud'||host.endsWith('.mypinata.cloud')
+   ?'pinata':host==='w3s.link'||host==='storacha.link'||host.endsWith('.ipfs.w3s.link')
+   ?'storacha':host;
+ return {base,host,provider};
 }
 const gateways=chosen.map(normalizeGateway);
-if(gateways.length<2||new Set(gateways.map(x=>x.host)).size!==gateways.length)
- throw Error('Two independent HTTPS gateway hosts required');
+if(gateways.length<2||new Set(gateways.map(x=>x.provider)).size!==gateways.length)
+ throw Error('At least two distinct HTTPS gateway operators required; aliases of the same provider do not count');
 async function remote(gateway,cid,filename,maxBytes){
  const url=gateway.base+'/'+cid+'/'+filename;
  for(let attempt=0;attempt<3;attempt++){
@@ -109,11 +118,12 @@ async function run(){
   proposed_base_uri:release.proposed_base_uri,
   media_cid:mediaCid,
   independent_gateway_hosts:gateways.map(x=>x.host),
+  distinct_gateway_operators:gateways.map(x=>x.provider),
   historic_json_exact_match_per_gateway:19,
   new_metadata_image_sample_ids:chosenArt.map(x=>String(x.proposed_token_id)),
   total_remote_files_verified:count,
   checks_passed:true,transactions_sent:0,
-  limitations:'Gateway sampling does not guarantee permanent pin availability or independently prove IPLD path authenticity. Verify durable redundant remote pinning separately.'
+  limitations:'Distinct gateway HTTP operators are not proof of independently pinned content or IPLD path authenticity. w3s.link is a caching gateway and may rely on upstreams. Verify durable independent remote pins separately.'
  };
  await mkdir(dirname(REPORT),{recursive:true});
  await writeFile(REPORT,JSON.stringify(report,null,2)+'\n','utf8');
