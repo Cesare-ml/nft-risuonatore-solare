@@ -77,7 +77,7 @@ export function evaluateReadiness({
   /^ipfs:\/\/bafy[a-z2-7]+\/\{id\}$/.test(plan.proposed_base_uri));
  const expectedSample=[20,609,1199,1788,2377].map(String);
  const remoteVerified=!!(releaseBound&&remote&&
-  remote.status==='TWO_GATEWAY_SAMPLES_VERIFIED'&&
+  remote.schema===2&&remote.status==='TWO_GATEWAY_SAMPLES_VERIFIED'&&
   remote.checks_passed===true&&remote.chain_id===137&&
   lower(remote.collection)===COLLECTION&&
   remote.proposed_base_uri===release.proposed_base_uri&&
@@ -88,6 +88,9 @@ export function evaluateReadiness({
   remote.total_remote_files_verified>=58&&
   remote.independent_gateway_hosts?.length>=2&&
   new Set(remote.independent_gateway_hosts).size>=2&&
+  remote.distinct_gateway_operators?.length===remote.independent_gateway_hosts.length&&
+  new Set(remote.distinct_gateway_operators).size>=2&&
+  new Set(remote.distinct_gateway_operators).size===remote.distinct_gateway_operators.length&&
   ageValid(remote.verified_at,24,now));
  return {
   valid_offline_atomic_plan:validPlan,

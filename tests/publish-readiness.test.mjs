@@ -22,10 +22,12 @@ const chain={
  historic:Array.from({length:19},(_,i)=>({token_id:String(i+1),historical_consistent:true})),
  new_token_states:ids.map(id=>({token_id:id,maxSupply:'0',totalMinted:'0',totalSupply:'0',vacant:true}))
 };
-const remote={status:'TWO_GATEWAY_SAMPLES_VERIFIED',checks_passed:true,
+const remote={schema:2,status:'TWO_GATEWAY_SAMPLES_VERIFIED',checks_passed:true,
  chain_id:137,collection:COLLECTION,proposed_base_uri:release.proposed_base_uri,
  media_cid:release.media_cid,release_report_sha256:sha(releaseBytes),
- historic_json_exact_match_per_gateway:19,independent_gateway_hosts:['ipfs.io','dweb.link'],
+ historic_json_exact_match_per_gateway:19,
+ independent_gateway_hosts:['gateway.pinata.cloud','w3s.link'],
+ distinct_gateway_operators:['pinata','storacha'],
  new_metadata_image_sample_ids:['20','609','1199','1788','2377'],
  total_remote_files_verified:58,verified_at:new Date(now-60000).toISOString()};
 const valid=()=>({plan,catalog,releaseBytes,localVerified:true,remote,chain,enableSigning:true,now});
@@ -95,4 +97,13 @@ test('unexpected partial supply configuration blocks later sessions too',()=>{
  remainingPlan.selected_token_ids=['30'];
  remainingPlan.operations[0].token_ids=['30'];
  assert.equal(approved({...valid(),plan:remainingPlan,chain:past}),false);
+});
+
+test('different hostnames of the SAME provider never satisfy gateway gate',()=>{
+ const bad=structuredClone(remote);
+ bad.distinct_gateway_operators=['storacha','storacha'];
+ assert.equal(approved({...valid(),remote:bad}),false);
+ const legacy=structuredClone(remote);
+ legacy.schema=1;
+ assert.equal(approved({...valid(),remote:legacy}),false);
 });

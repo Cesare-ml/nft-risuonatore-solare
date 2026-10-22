@@ -90,7 +90,7 @@ async function run(){
   }
  }
  const report={
-  schema:1,status:'TWO_GATEWAY_SAMPLES_VERIFIED',
+  schema:2,status:'TWO_GATEWAY_SAMPLES_VERIFIED',
   verified_at:new Date().toISOString(),
   release_report_sha256:sha(releaseBytes),
   chain_id:137,collection:'0xead98e12d3836562ea39c6a6ca5ef1292359a862',
