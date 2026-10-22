@@ -68,3 +68,31 @@ test('fails closed if remote CID or sample set changes',()=>{
  const wrong=structuredClone(remote);wrong.new_metadata_image_sample_ids=['20'];
  assert.equal(approved({...valid(),remote:wrong}),false);
 });
+
+
+test('a later session can plan only untouched IDs after old batches completed',()=>{
+ const past=structuredClone(chain);
+ for(let i=0;i<10;i++){
+   past.new_token_states[i]={...past.new_token_states[i],
+     maxSupply:'1',totalMinted:'1',totalSupply:'1',vacant:false};
+ }
+ past.all_proposed_ids_unused=false;
+ past.occupied_new_ids=past.new_token_states.slice(0,10);
+ const remainingPlan=structuredClone(plan);
+ remainingPlan.selected_token_ids=['30'];
+ remainingPlan.operations[0].token_ids=['30'];
+ assert.equal(approved({...valid(),plan:remainingPlan,chain:past}),true);
+ // The old batch, once occupied, can never be signed again.
+ assert.equal(approved({...valid(),chain:past}),false);
+});
+test('unexpected partial supply configuration blocks later sessions too',()=>{
+ const past=structuredClone(chain);
+ past.new_token_states[0]={...past.new_token_states[0],
+   maxSupply:'1',totalMinted:'0',totalSupply:'0',vacant:false};
+ past.all_proposed_ids_unused=false;
+ past.occupied_new_ids=[past.new_token_states[0]];
+ const remainingPlan=structuredClone(plan);
+ remainingPlan.selected_token_ids=['30'];
+ remainingPlan.operations[0].token_ids=['30'];
+ assert.equal(approved({...valid(),plan:remainingPlan,chain:past}),false);
+});

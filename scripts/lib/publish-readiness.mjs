@@ -41,16 +41,31 @@ export function evaluateReadiness({
   plan.selected_token_ids.every(id=>validIds.includes(String(id))));
  const historicValid=chain?.historic?.length===19&&chain.historic.every((row,i)=>
   row.token_id===String(i+1)&&row.historical_consistent===true);
- const chainVerified=!!(exactIds&&chain&&chain.read_only===true&&
+ // After earlier batches have been minted, those IDs are occupied forever.
+ // Only the IDs selected in the CURRENT plan must be vacant. Other planned
+ // IDs may be fully minted (max=1, minted=1, supply=1), but partial or
+ // unexpected states fail closed. Ownership/provenance of those earlier mints
+ // must be reconciled separately; this gate never certifies who received them.
+ const selected=new Set(planTokens);
+ const classified=(chain?.new_token_states??[]).map((row,i)=>{
+  const vacant=row.token_id===validIds[i]&&row.vacant===true&&
+   row.maxSupply==='0'&&row.totalMinted==='0'&&row.totalSupply==='0';
+  const fullyMinted=row.token_id===validIds[i]&&row.vacant===false&&
+   row.maxSupply==='1'&&row.totalMinted==='1'&&row.totalSupply==='1';
+  return {vacant,fullyMinted,selected:selected.has(row.token_id)};
+ });
+ const validProgress=classified.length===2358&&classified.every(x=>
+  x.selected?x.vacant:(x.vacant||x.fullyMinted));
+ const occupiedCount=classified.filter(x=>x.fullyMinted).length;
+ const occupancyMatches=chain?.occupied_new_ids?.length===occupiedCount&&
+   chain?.all_proposed_ids_unused===(occupiedCount===0);
+ const chainVerified=!!(validProgress&&occupancyMatches&&exactIds&&chain&&chain.read_only===true&&
   chain.chain_id===137&&lower(chain.contract)===COLLECTION&&
   lower(chain.configurer)===CONFIGURER&&
   chain.plan_sha256===sha(Buffer.from(validIds.join(',')))&&
   chain.new_ids_checked===2358&&chain.existing_checked===19&&
   chain.new_token_states?.length===2358&&
-  chain.new_token_states.every((x,i)=>x.token_id===validIds[i]&&
-   x.vacant===true&&x.maxSupply==='0'&&
-   x.totalMinted==='0'&&x.totalSupply==='0')&&
-  historicValid&&chain.all_proposed_ids_unused===true&&
+  historicValid&&
   chain.existing_consistent===true&&ageValid(chain.created_at,12,now));
  const approvedOriginalCID='ipfs://bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4/{id}';
  const releaseBound=!!(validPlan&&localVerified&&release&&releaseBytes&&
