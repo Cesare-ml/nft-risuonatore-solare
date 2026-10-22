@@ -6,12 +6,13 @@
  * New media gets filename RS-Cxxx-Lxx.png (no fragment # in IPFS paths).
  * A pin on a single local Kubo node is NOT a production availability guarantee.
  */
-import {readFile,mkdir,writeFile,stat,link,readdir} from 'node:fs/promises';
+import {readFile,mkdir,writeFile,stat,link,readdir,rm} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {resolve,dirname,basename} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
+import {readHistoricArchive} from './lib/historic-archive.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const OLD_CID='bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4';
 const PLAN=resolve(ROOT,'reports/staging-mint-plan.json');
@@ -54,17 +55,26 @@ async function run(){
   console.error('Using '+version);
   await mkdir(MEDIA,{recursive:true});
   await mkdir(METADATA,{recursive:true});
+  // Use original JSONs recovered and verified via Kubo. Do not re-download
+  // every old CID on staging: transient network loss should not invalidate
+  // a complete, verified recovery archive.
+  const recovered=await readHistoricArchive(resolve(STAGE,'historic-originals'),
+     plan.existing_token_mapping);
+  // Fail closed: a failed staging attempt must not leave old approval reports.
+  await rm(resolve(STAGE,'release-report.json'),{force:true});
+  await rm(resolve(ROOT,'reports/ipfs-public-verification.json'),{force:true});
   const archived={};
-  for(const item of plan.existing_token_mapping){
-    const filename=ID(item.token_id);
-    const raw=ipfs(['cat',OLD_CID+'/'+filename],{encoding:'buffer',timeout:240000});
-    const obj=JSON.parse(raw.toString('utf8'));
-    if(!obj || typeof obj!=='object' || !obj.name || !obj.image) {
-      throw new Error('Historic metadata missing required name/image at token #'+item.token_id);
+  for(const [filename,item] of Object.entries(recovered)){
+    const dest=resolve(METADATA,filename);
+    try{
+      const already=await readFile(dest);
+      if(checksum(already)!==item.archive.sha256)
+        throw new Error('Existing historic staged token was altered: '+filename);
+    }catch(e){
+      if(e.code!=='ENOENT')throw e;
+      await writeFile(dest,item.raw,{flag:'wx'});
     }
-    const saved=resolve(METADATA,filename);
-    await writeFile(saved,raw);
-    archived[filename]={bytes:raw.length,sha256:checksum(raw),name:obj.name,image:obj.image};
+    archived[filename]=item.archive;
   }
   // Put each pending media under safe, unique filename. Hardlinks avoid duplicate
   // ~900 MB allocation; report an error if the filesystem forbids hardlinking.
