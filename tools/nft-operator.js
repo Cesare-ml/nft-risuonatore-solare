@@ -2,6 +2,7 @@ import {
  CONFIGURER,CONFIGURER_ABI,CONFIGURER_SELECTOR,COLLECTION,
  makeAtomicMintConfig
 } from '/configurer.js';
+import {EXPECTED_COLLECTION_PROXY_CODE} from '/fork-identity.js';
 const $=id=>document.getElementById(id);
 const msg=text=>{
  $('log').textContent=new Date().toLocaleTimeString()+' · '+text+'\n\n'+$('log').textContent.slice(0,5500);
@@ -32,8 +33,17 @@ async function preflight(needUri=true){
    throw Error('Il wallet connesso non è owner() della collezione');
  const onchainConfigurer=await contract.configurer();
  if(onchainConfigurer.toLowerCase()!==CONFIGURER)throw Error('Configurer del contratto modificato: stop');
- if((await provider.getCode(COLLECTION))==='0x'||(await provider.getCode(CONFIGURER))==='0x')
-   throw Error('Contratto NFT o configuratore non distribuito su Polygon');
+ const liveProxy=await provider.getCode(COLLECTION);
+ if(liveProxy.toLowerCase()!==EXPECTED_COLLECTION_PROXY_CODE.toLowerCase())
+   throw Error('Il bytecode della collezione Polygon non coincide con il proxy storico. Mint bloccato.');
+ const liveConfigurer=await provider.getCode(CONFIGURER);
+ if(liveConfigurer==='0x')
+   throw Error('Configuratore OpenSea non distribuito su Polygon');
+ if(needUri){
+   const expected=state.expected_configurer_code_hash;
+   if(!expected||ethers.keccak256(liveConfigurer).toLowerCase()!==expected.toLowerCase())
+      throw Error('Configurer codehash differente dalla prova Anvil locale. Mint bloccato.');
+ }
  if(configurer.interface.getFunction('multiConfigure').selector!==CONFIGURER_SELECTOR)
    throw Error('Selector ABI del configuratore incongruente');
  const currentURI=await contract.baseURI();

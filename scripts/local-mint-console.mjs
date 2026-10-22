@@ -63,6 +63,7 @@ async function localState(){
  });
  return {
   plan,readiness,ipfs_local_bytes_verified:verifiedLocal,
+  expected_configurer_code_hash:readiness.atomic_fork_proof_verified ? forkProof.configurer_bytecode_keccak256 : null,
   tx_gates_satisfied_for_ui:Object.values(readiness).every(Boolean)
  };
 }
@@ -70,7 +71,8 @@ const routes={
  '/':['text/html; charset=utf-8',resolve(ROOT,'tools/nft-operator.html')],
  '/operator.js':['text/javascript; charset=utf-8',resolve(ROOT,'tools/nft-operator.js')],
  '/ethers.js':['text/javascript; charset=utf-8',resolve(ROOT,'node_modules/ethers/dist/ethers.umd.min.js')],
- '/configurer.js':['text/javascript; charset=utf-8',resolve(ROOT,'scripts/lib/opensea-configurer.mjs')]
+ '/configurer.js':['text/javascript; charset=utf-8',resolve(ROOT,'scripts/lib/opensea-configurer.mjs')],
+ '/fork-identity.js':['text/javascript; charset=utf-8',resolve(ROOT,'scripts/lib/fork-provenance.mjs')]
 };
 const server=createServer(async(req,res)=>{
  const url=(req.url||'').split('?')[0];
