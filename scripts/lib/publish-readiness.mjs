@@ -15,7 +15,8 @@ const ageValid=(date,hours,now)=>{
 };
 export function evaluateReadiness({
  plan,catalog,releaseBytes,localVerified=false,remote=null,chain=null,
- enableSigning=false,now=Date.now(),forkProof=null,abiSourceBytes=null
+ enableSigning=false,now=Date.now(),forkProof=null,abiSourceBytes=null,
+ historicImagesVerified=false
 }){
  const release=releaseBytes?JSON.parse(releaseBytes.toString('utf8')):null;
  const validIds=(catalog?.pending??[]).map(item=>String(item.proposed_token_id));
@@ -122,6 +123,7 @@ export function evaluateReadiness({
   valid_offline_atomic_plan:validPlan,
   atomic_fork_proof_verified:forkVerified,
   local_ipfs_bytes_verified:!!localVerified,
+  historic_original_images_verified:historicImagesVerified===true,
   local_release_matches_mint_plan:releaseBound,
   two_public_gateways_verified:remoteVerified,
   entire_id_space_audited:chainVerified,

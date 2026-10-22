@@ -48,7 +48,7 @@ const forkProof={
  created_at:new Date(now-30000).toISOString()
 };
 const valid=()=>({plan,catalog,releaseBytes,localVerified:true,remote,chain,
- enableSigning:true,now,forkProof,abiSourceBytes});
+ enableSigning:true,now,forkProof,abiSourceBytes,historicImagesVerified:true});
 const approved=(opts)=>Object.values(evaluateReadiness(opts)).every(Boolean);
 test('only all exact bound, current proofs can unlock',()=>{
  assert.equal(approved(valid()),true);
@@ -156,4 +156,9 @@ test('corrupted fork provenance safely refuses signing rather than crashing the 
  const missing=structuredClone(forkProof);
  delete missing.fork_identity.fork_block_number;
  assert.equal(approved({...valid(),forkProof:missing}),false);
+});
+
+test('all 19 historic IPFS images must be verified before any mainnet mint',()=>{
+ assert.equal(approved({...valid(),historicImagesVerified:false}),false);
+ assert.equal(approved({...valid(),historicImagesVerified:true}),true);
 });
