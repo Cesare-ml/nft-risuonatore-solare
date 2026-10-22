@@ -75,6 +75,21 @@ npm run nft:ids:audit
 
 Il programma usa Multicall3 su Polygon per controllare al medesimo blocco i 2.358 ID proposti più i 19 storici. Legge `maxSupply`, `totalMinted` e `totalSupply` senza wallet o transazioni. Produce `reports/onchain-new-ids-audit.json` e blocca il piano se trova un ID già utilizzato. La console accetta l'audit solo per **12 ore**, e controlla nuovamente gli ID del lotto prima di ogni firma.
 
+## 4 bis. Riprendere dopo un primo gruppo di NFT mintati
+
+Per non perdere il punto raggiunto, il catalogo ora ha anche un **piano di ripresa**. Dopo il primo lotto, ripeti la scansione blockchain e genera automaticamente il prossimo gruppo di ID ancora liberi:
+
+```powershell
+npm run nft:ids:audit
+npm run nft:mint:resume -- --batch-size 10 --count 100
+```
+
+Il comando legge tutti i 2.358 ID dal report Polygon più recente (massimo 12 ore), riconosce solo una **sequenza iniziale** di ID con `maxSupply=1`, `totalMinted=1` e `totalSupply=1`, e prepara i prossimi 100 ID ancora liberi in 10 lotti da 10. Il file `reports/local-mint-batches.json` viene aggiornato solo localmente, senza alcuna firma. Puoi ridurre `--count` per lavorare su pochi NFT alla volta.
+
+La presenza di supply 1 **non dimostra chi ha ricevuto l'NFT**: prima di considerare conclusi i lotti precedenti, confronta le transazioni che hai firmato e i relativi destinatari. Se il rapporto mostra un token configurato a metà, token non consecutivi oppure stati sconosciuti, la ripresa si blocca; non bisogna correggere manualmente gli ID senza un nuovo audit.
+
+Con il nuovo sistema la **scansione completa resta obbligatoria** ogni volta; soltanto gli ID del piano attuale devono essere liberi, mentre i token precedentemente completati non vengono proposti per un secondo mint. La console ricontrolla tutto prima della firma. Il test Anvil del percorso atomico resta un prerequisito ancora da completare.
+
 ## 5. Piano dei lotti, prova su Anvil e console
 
 ```powershell
