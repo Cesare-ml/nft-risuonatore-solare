@@ -65,7 +65,7 @@ Per una scansione di eventi in una finestra **specifica e documentata**: `npm ru
 
 ## La stessa collezione: mint programmabile dimostrato su fork
 
-**21 ottobre 2026:** il fallback dell'implementazione verificata permette `multiConfigureMint(address,uint256[],uint256[])` con firma dell'owner o del configurer autorizzato. Su fork locale Anvil della **collezione originale** sono state eseguite con successo `setMaxSupply(20,1)` e `multiConfigureMint(owner,[20],[1])`, facendo passare `totalSupply(20)` da 0 a 1 **solo sul fork**. [Prova completa](docs/PROGRAMMATIC-MINT-SAME-COLLECTION.md) e [GitHub Action riuscita](https://github.com/Cesare-ml/nft-risuonatore-solare/actions/runs/39677491570).
+**21 ottobre 2026:** il fallback dell'implementazione verificata permette `multiConfigureMint(address,uint256[],uint256[])` con firma dell'owner o del configurer autorizzato. Su fork locale Anvil della **collezione originale** sono state eseguite con successo `setMaxSupply(20,1)` e `multiConfigureMint(owner,[20],[1])`, facendo passare `totalSupply(20)` da 0 a 1 **solo sul fork**. [Prova completa](docs/PROGRAMMATIC-MINT-SAME-COLLECTION.md) (eseguita storicamente, senza ulteriori GitHub Actions).
 
 Sono disponibili gli script `scripts/plan-next-mints.mjs` per il manifest **2.358 NFT da pianificare** e `scripts/stage-ipfs-release.mjs` per preparare una directory IPFS che conservi esattamente i metadata dei 19 NFT storici. Lo staging su Kubo richiede azione locale esplicita (`--stage`); nessun mint né `setBaseURI` sono stati effettuati su Polygon reale.
 
@@ -77,6 +77,29 @@ node scripts/stage-ipfs-release.mjs
 ```
 
 Il pinning IPFS vero è documentato in [procedura stessa collezione](docs/PROGRAMMATIC-MINT-SAME-COLLECTION.md); richiede il recupero dei metadati storici e non equivale a mint on-chain.
+
+## Recupero IPFS storico e verifica locale (ottobre 2026)
+
+Il collo di bottiglia non è più il numero di transazioni ma la **salvaguardia dei metadata IPFS dei 19 NFT storici**. Per usarli nella nuova directory, devono essere recuperati esattamente dal CID originario. I gateway `ipfs.io` e `dweb.link` non sono più adatti all'uso automatico e sono stati sostituiti da gateway Pinata/Storacha per la diagnosi e il controllo esterno (non equivalgono a due pinning service indipendenti).
+
+```powershell
+npm install
+npm run nft:plan
+npm run nft:doctor
+npm run nft:ipfs:diagnose
+# Dopo aver installato IPFS Kubo e avviato il daemon:
+npm run nft:ipfs:recover
+```
+
+Solo dopo aver recuperato tutti i 19 JSON:
+```powershell
+node scripts/stage-ipfs-release.mjs --stage
+npm run nft:ipfs:verify
+npm run nft:ipfs:public
+npm run nft:ids:audit
+```
+
+**Questi comandi non mintano NFT e non aggiornano la blockchain.** L'archivio finale richiede pinning remoto ridondante e approvazione separata dell'eventuale cambio `baseURI`. Il nuovo metodo batch del configuratore richiede ancora validazione Anvil. [Guida Windows aggiornata](docs/OPERATORE-LOCALE.md).
 
 ## Console locale NFT — senza GitHub Actions
 
