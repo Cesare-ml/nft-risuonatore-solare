@@ -89,6 +89,8 @@ npm run nft:doctor
 npm run nft:ipfs:diagnose
 # Dopo aver installato IPFS Kubo e avviato il daemon:
 npm run nft:ipfs:recover
+npm run nft:historic:images
+npm run nft:historic:images:verify
 ```
 
 Solo dopo aver recuperato tutti i 19 JSON:
@@ -125,3 +127,7 @@ npm run nft:mint:resume -- --batch-size 10 --count 100
 ```
 
 Il sistema rifiuta lacune, supply parziali e ID già occupati dal lotto selezionato. Prima di qualsiasi richiesta di firma reale serve inoltre il report generato da `npm run nft:fork:atomic` su Anvil locale; la console verifica il checksum dell'ABI, il gas e la conservazione della base URI originale. [Guida completa](docs/OPERATORE-LOCALE.md).
+
+### Backup integrale degli NFT storici
+
+Per proteggere i primi 19 NFT, oltre ai metadata JSON ora viene richiesto anche il backup **byte-per-byte delle immagini originali** tramite Kubo e la successiva verifica locale SHA256. I relativi URI vengono mantenuti invariati. Se un'immagine storica punta soltanto a un server HTTPS modificabile (senza CID IPFS), il controllo si interrompe anziché certificare un backup non dimostrabile. La console MetaMask non può autorizzare il mint senza questa prova. [Guida operativa](docs/OPERATORE-LOCALE.md).
