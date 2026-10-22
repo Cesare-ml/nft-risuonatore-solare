@@ -10,6 +10,7 @@ import {readFile,writeFile,mkdir,rm} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {verifyPolygonForkIdentity} from './lib/fork-provenance.mjs';
 import {CONFIGURER,CONFIGURER_ABI,CONFIGURER_SELECTOR,COLLECTION,makeAtomicMintConfig}
   from './lib/opensea-configurer.mjs';
 const RPC='http://127.0.0.1:8545'; // deliberately hard-coded localhost.
@@ -64,8 +65,9 @@ async function main(){
  if(!process.argv.includes('--local-fork-only'))
    throw Error('Explicit --local-fork-only required.');
  const anvil=await rpc('anvil_nodeInfo',[]);
- if(!anvil||typeof anvil!=='object')throw Error('Not an Anvil local node');
- if(BigInt(await rpc('eth_chainId'))!==137n)throw Error('Local fork must represent Polygon 137');
+ const localChainId=await rpc('eth_chainId');
+ const deployedCollection=await rpc('eth_getCode',[COLLECTION,'latest']);
+ const forkIdentity=verifyPolygonForkIdentity(anvil,localChainId,deployedCollection);
  const [owner,configurerOnChain,originalURI]=await Promise.all([
   read('owner'),read('configurer'),read('baseURI')
  ]);
@@ -109,6 +111,7 @@ async function main(){
  const proof={
   status:'LOCAL_ATOMIC_FORK_PROOF_PASSED',created_at:new Date().toISOString(),
   scope:'LOCAL_ANVIL_FORK_ONLY',chain_id:137,collection:COLLECTION,
+  fork_identity:forkIdentity,
   configurer:CONFIGURER,selector:CONFIGURER_SELECTOR,
   abi_source_sha256:createHash('sha256').update(abiSource).digest('hex'),
   configurer_bytecode_keccak256:keccak256(deployedCode),
