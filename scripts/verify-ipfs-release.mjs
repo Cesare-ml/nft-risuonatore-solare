@@ -9,6 +9,7 @@ import { readFile, readdir, stat } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readHistoricArchive } from './lib/historic-archive.mjs';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ORIGINAL_CID='bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4';
@@ -53,12 +54,22 @@ async function main(){
  requireCondition(mediaFiles.length===2358,'Expected 2,358 media files');
  requireCondition(Object.keys(report.archived??{}).length===19,'Historic archive must contain 19 JSON documents');
 
+ // Validate that the staging report is anchored to the Kubo-verified
+ // ORIGINAL content-addressed archive, not just self-consistent local JSONs.
+ const originals=await readHistoricArchive(join(stage,'historic-originals'),
+    plan.existing_token_mapping);
  const historic=[];
  for(const item of plan.existing_token_mapping){
    const filename=id64(item.token_id);
    const source=await readFile(join(metaDir,filename));
    const archived=report.archived[filename];
-   requireCondition(!!archived,'Missing history proof '+filename);
+   const original=originals[filename];
+   requireCondition(!!archived && !!original,'Missing historic provenance '+filename);
+   requireCondition(archived.sha256===original.archive.sha256 &&
+     archived.bytes===original.archive.bytes &&
+     archived.name===original.archive.name &&
+     archived.image===original.archive.image,
+     'Historical report differs from authenticated Kubo archive for token '+item.token_id);
    requireCondition(sha(source)===archived.sha256 && source.length===archived.bytes,
      'Historic bytes differ from original checkpoint token '+item.token_id);
    const parsed=JSON.parse(source.toString('utf8'));
