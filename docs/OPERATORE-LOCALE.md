@@ -41,6 +41,21 @@ Il comando prova il solo token #1 via gateway Pinata e Storacha: non salva o cer
 npm run nft:ipfs:recover
 ```
 
+### Preservare anche le immagini dei 19 NFT esistenti
+
+Dopo il recupero dei 19 JSON storici, esegui:
+
+```powershell
+npm run nft:historic:images
+npm run nft:historic:images:verify
+```
+
+Il primo comando legge gli URI `image` dai JSON **originali** e recupera direttamente con Kubo i 19 file corrispondenti, salvandone i byte sotto `reports/solar-release-staging/historic-originals/images/`. Produce un report con SHA256, URI originale e CID verificato per ciascuna immagine. Il secondo comando controlla di nuovo **offline**, senza contattare alcuna rete, che tutti i byte locali corrispondano al report e all'archivio dei JSON.
+
+Gli URI delle immagini non vengono modificati. I link HTTP centralizzati, senza un CID IPFS, **non sono accettati come prova di conservazione**: in questi casi serve recuperare la fonte autentica e verificarla separatamente, senza ricostruire arbitrariamente le opere dai thumbnail. Un nodo Kubo e il possesso locale dei file non garantiscono la loro disponibilità per sempre; serve comunque pinning remoto duraturo.
+
+**Questa verifica è ora un requisito della console**, come il backup dei 19 JSON, prima che sia possibile autorizzare una firma su Polygon.
+
 Il comando esegue `ipfs cat` dei 19 percorsi originali, li salva sotto `reports/solar-release-staging/historic-originals/`, rilegge via Kubo gli eventuali file già salvati e confronta SHA256. Produce `manifest.json` solo quando **tutti e 19** risultano recuperati. Il recupero interrotto può essere ripreso. **Se Kubo non trova i file, non ricrearli manualmente dalle anteprime OpenSea e non modificare baseURI.**
 
 Dal 2026 i gateway `ipfs.io` e `dweb.link` hanno cessato di essere una sorgente affidabile per client automatici: erano anche due nomi della stessa infrastruttura. [Annuncio IPFS, agosto 2026](https://discuss.ipfs.tech/t/changes-to-ipfs-io-and-dweb-link-gateways/20328). Recuperare con Kubo evita di dipendere dai due hostname.
@@ -140,7 +155,7 @@ L'opt-in non firma automaticamente: permette soltanto di abilitare il pulsante q
 ### Verifiche richieste in console
 
 - Piano atomico con ID e operazioni esattamente corrispondenti.
-- Directory locale completa e integrità SHA256 dei vecchi e nuovi file.
+- Directory locale completa, integrità SHA256 dei 19 JSON e **copia verificata di tutte le 19 immagini storiche**.
 - Report IPFS pubblico su due operatori gateway, non più vecchio di 24 ore.
 - Audit completo 2.358 ID su Polygon, non più vecchio di 12 ore.
 - Nuovo CID della release identico alla `baseURI()` già attiva on-chain.
@@ -154,6 +169,7 @@ Il nuovo CID non può essere attivato dal semplice staging. **Nessuno script del
 ## Codice e test
 
 - `scripts/recover-historic-ipfs.mjs` — recupero byte originali via Kubo.
+- `scripts/verify-historic-ipfs-media.mjs` — recupero e confronto SHA256 delle immagini storiche.
 - `scripts/stage-ipfs-release.mjs` e `scripts/verify-ipfs-release.mjs` — staging e verifica locale.
 - `scripts/verify-public-ipfs-release.mjs` e `scripts/lib/ipfs-gateways.mjs` — gateway e controlli SHA256.
 - `scripts/audit-new-token-ids.mjs` — audit completo Polygon Multicall3.
