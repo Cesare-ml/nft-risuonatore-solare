@@ -115,6 +115,7 @@ if(location.hostname!=='127.0.0.1'){
    valid_offline_atomic_plan:'Piano NFT',
    atomic_fork_proof_verified:'Prova Anvil mint atomico',
    local_ipfs_bytes_verified:'Archivio IPFS locale',
+   historic_original_images_verified:'19 immagini NFT storiche',
    local_release_matches_mint_plan:'Catalogo e CID',
    two_public_gateways_verified:'Due gateway IPFS',
    entire_id_space_audited:'Scansione Polygon completa',

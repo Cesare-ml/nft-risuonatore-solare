@@ -56,9 +56,19 @@ async function localState(){
    verifiedLocal=JSON.parse(out).result==='LOCAL_RELEASE_VERIFIED';
   }catch{verifiedLocal=false}
  }
+ let historicImagesVerified=false;
+ if(verifiedLocal){
+  try{
+   const evidence=execFileSync(process.execPath,[
+    resolve(ROOT,'scripts/verify-historic-ipfs-media.mjs'),'--verify-only'
+   ],{cwd:ROOT,encoding:'utf8',timeout:60000,
+      maxBuffer:2*1024*1024,stdio:['ignore','pipe','ignore']});
+   historicImagesVerified=JSON.parse(evidence).status==='HISTORIC_MEDIA_OFFLINE_VERIFIED';
+  }catch{historicImagesVerified=false}
+ }
  const readiness=evaluateReadiness({
   plan,catalog,releaseBytes,localVerified:verifiedLocal,
-  chain,remote,forkProof,abiSourceBytes,
+  chain,remote,forkProof,abiSourceBytes,historicImagesVerified,
   enableSigning:process.env.NFT_ENABLE_SIGNING==='YES-I-REVIEWED-THE-RELEASE'
  });
  return {

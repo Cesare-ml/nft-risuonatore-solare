@@ -74,6 +74,8 @@ async function main(){
  if(report.files.catalog_present&&!report.files.historical_release_report_present)
    report.next_steps.push('npm run nft:ipfs:recover; inspect 19 historic JSON files, then explicitly run staging.');
  if(!report.files.all_token_ids_audit_present)report.next_steps.push('npm run nft:ids:audit');
+ if(report.files.historical_release_report_present)
+   report.next_steps.push('Verify all historic NFT images: npm run nft:historic:images, then npm run nft:historic:images:verify');
  if(!report.files.remote_ipfs_verification_present)
    report.next_steps.push('Once IPFS staging is complete: npm run nft:ipfs:public');
  if(!report.files.atomic_anvil_fork_proof_present)
