@@ -90,6 +90,14 @@ La presenza di supply 1 **non dimostra chi ha ricevuto l'NFT**: prima di conside
 
 Con il nuovo sistema la **scansione completa resta obbligatoria** ogni volta; soltanto gli ID del piano attuale devono essere liberi, mentre i token precedentemente completati non vengono proposti per un secondo mint. La console ricontrolla tutto prima della firma. Il test Anvil del percorso atomico resta un prerequisito ancora da completare.
 
+### Nuovo controllo: autenticità del fork Anvil
+
+La prova non accetta più un semplice nodo Anvil con `--chain-id 137`: richiede `anvil_nodeInfo.forkConfig` con un blocco Polygon non anteriore al nostro audit storico e il **bytecode EIP-1167 originale** della collezione, che punta all'implementazione `0x9f36ee33fd56c7d9a78facd3249c580b1ca464a2`. Il report locale salva queste informazioni. Un fork di un contratto differente non abilita la firma.
+
+Alla firma reale, la console confronta **di nuovo** il bytecode del proxy con il riferimento storico e il **codehash del configuratore** live con quello del report Anvil; controlla la rete, il wallet owner, il CID on-chain e tutti gli ID, **anche dopo la conferma del preventivo di gas**, subito prima della richiesta a MetaMask.
+
+Questa prova non stabilisce che il wallet sia effettivamente sotto il controllo dell'artista, né che IPFS sia conservato nel tempo. Il test Anvil atomico rimane ancora da eseguire sul PC.
+
 ## 5. Piano dei lotti, prova su Anvil e console
 
 ```powershell
