@@ -77,8 +77,15 @@ async function main(){
      'Bad metadata for proposed token '+item.proposed_token_id);
    requireCondition(meta.attributes?.some(a=>a.trait_type==='ID opera' && a.value===item.artwork_id),
      'Missing artwork ID trait for '+item.artwork_id);
-   const s=await stat(join(mediaDir,item.artwork_id+'.png'));
+   const pngPath=join(mediaDir,item.artwork_id+'.png');
+   const s=await stat(pngPath);
    requireCondition(s.isFile()&&s.size>0,'Missing PNG for '+item.artwork_id);
+   const [source,staged]=await Promise.all([
+     readFile(resolve(ROOT,item.image_path)),
+     readFile(pngPath)
+   ]);
+   requireCondition(source.length===staged.length && sha(source)===sha(staged),
+     'Staged PNG differs from source artwork '+item.artwork_id);
  }
  requireCondition(proposed.size===2358,'Not enough future token metadata');
  const data={

@@ -74,8 +74,9 @@ async function run(){
     try {await link(original,target)}
     catch(e){
       if(e.code==='EEXIST'){
-        if(await size(original)!==await size(target))
-          throw new Error('Existing staged media differs in size: '+item.artwork_id);
+        const [originalRaw,stageRaw]=await Promise.all([readFile(original),readFile(target)]);
+        if(originalRaw.length!==stageRaw.length||checksum(originalRaw)!==checksum(stageRaw))
+          throw new Error('Existing staged media differs in bytes from source: '+item.artwork_id);
       }else{
         throw new Error('Hardlink staging failed for '+item.artwork_id+
           '. Keep reports/ on same filesystem as nft-imgs/. '+e.message);
