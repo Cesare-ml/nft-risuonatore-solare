@@ -7,11 +7,12 @@ export function historicImageToIpfsPath(uri){
  const source=uri.trim();
  let subpath;
  if(source.toLowerCase().startsWith('ipfs://')){
+  if(source.includes('?'))throw Error('Untrusted query parameter in IPFS image path');
   subpath=source.slice(7);
   if(subpath.startsWith('ipfs/'))subpath=subpath.slice(5);
  }else if(source.startsWith('https://')){
   const url=new URL(source);
-  if(url.username||url.password||url.search)throw Error('Image gateway URI has unsafe credential/query');
+  if(url.username||url.password||url.search||url.hash)throw Error('Image gateway URI has unsafe credential/query/fragment');
   const mark='/ipfs/';
   if(!url.pathname.includes(mark))throw Error('HTTPS image is not IPFS content addressed');
   subpath=url.pathname.slice(url.pathname.indexOf(mark)+mark.length);

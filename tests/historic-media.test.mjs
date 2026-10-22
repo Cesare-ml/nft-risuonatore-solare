@@ -17,6 +17,8 @@ test('reject non-content-addressed and dangerous image paths',()=>{
  'javascript:alert(1)','ipfs://badcid/a.png',
  'ipfs://'+CID+'/../secret',
  'ipfs://'+CID+'/%2e%2e/secret',
- 'https://host/ipfs/'+CID+'/x.png?user=1'
+ 'https://host/ipfs/'+CID+'/x.png?user=1',
+ 'https://host/ipfs/'+CID+'/x.png#missing-suffix',
+ 'ipfs://'+CID+'/x.png?version=2'
  ])assert.throws(()=>historicImageToIpfsPath(source));
 });
