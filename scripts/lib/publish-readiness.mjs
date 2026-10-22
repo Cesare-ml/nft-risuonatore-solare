@@ -14,7 +14,7 @@ const ageValid=(date,hours,now)=>{
 };
 export function evaluateReadiness({
  plan,catalog,releaseBytes,localVerified=false,remote=null,chain=null,
- enableSigning=false,now=Date.now()
+ enableSigning=false,now=Date.now(),forkProof=null,abiSourceBytes=null
 }){
  const release=releaseBytes?JSON.parse(releaseBytes.toString('utf8')):null;
  const validIds=(catalog?.pending??[]).map(item=>String(item.proposed_token_id));
@@ -67,6 +67,25 @@ export function evaluateReadiness({
   chain.new_token_states?.length===2358&&
   historicValid&&
   chain.existing_consistent===true&&ageValid(chain.created_at,12,now));
+ const batches=[1,5,10];
+ const forkVerified=!!(forkProof&&abiSourceBytes&&
+  forkProof.status==='LOCAL_ATOMIC_FORK_PROOF_PASSED'&&
+  forkProof.scope==='LOCAL_ANVIL_FORK_ONLY'&&
+  forkProof.chain_id===137&&
+  lower(forkProof.collection)===COLLECTION&&
+  lower(forkProof.configurer)===CONFIGURER&&
+  forkProof.selector==='0xa64dfa75'&&
+  forkProof.abi_source_sha256===sha(abiSourceBytes)&&
+  forkProof.historic_base_uri_unchanged===true&&
+  forkProof.historic_token_1_unchanged===true&&
+  forkProof.public_polygon_transactions===0&&
+  /^0x[a-fA-F0-9]{64}$/.test(forkProof.configurer_bytecode_keccak256??'')&&
+  forkProof.results?.length===3&&
+  forkProof.results.every((r,i)=>r.tokens===batches[i]&&
+    r.tx_count===1&&r.selector==='0xa64dfa75'&&
+    Number.isSafeInteger(r.gas_used)&&r.gas_used>0&&
+    Number.isSafeInteger(r.gas_estimated)&&r.gas_estimated>=r.gas_used)&&
+  ageValid(forkProof.created_at,168,now));
  const approvedOriginalCID='ipfs://bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4/{id}';
  const releaseBound=!!(validPlan&&localVerified&&release&&releaseBytes&&
   release.status==='LOCAL_IPFS_STAGING_COMPLETE'&&
@@ -94,6 +113,7 @@ export function evaluateReadiness({
   ageValid(remote.verified_at,24,now));
  return {
   valid_offline_atomic_plan:validPlan,
+  atomic_fork_proof_verified:forkVerified,
   local_ipfs_bytes_verified:!!localVerified,
   local_release_matches_mint_plan:releaseBound,
   two_public_gateways_verified:remoteVerified,
