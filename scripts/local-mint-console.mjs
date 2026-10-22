@@ -30,12 +30,14 @@ async function optionalJSON(path){
  catch{return null}
 }
 async function localState(){
- const [raw,chain,remote,releaseBytes,catalog]=await Promise.all([
+ const [raw,chain,remote,releaseBytes,catalog,forkProof,abiSourceBytes]=await Promise.all([
    readFile(resolve(ROOT,'reports/local-mint-batches.json'),'utf8'),
    optionalJSON('reports/onchain-new-ids-audit.json'),
    optionalJSON('reports/ipfs-public-verification.json'),
    readFile(resolve(ROOT,'reports/solar-release-staging/release-report.json')).catch(()=>null),
-   optionalJSON('reports/staging-mint-plan.json')
+   optionalJSON('reports/staging-mint-plan.json'),
+   optionalJSON('reports/atomic-fork-proof.json'),
+   readFile(resolve(ROOT,'scripts/lib/opensea-configurer.mjs'))
  ]);
  const plan=JSON.parse(raw);
  if(plan.chain_id!==137||plan.schema_version!==2||
@@ -56,7 +58,7 @@ async function localState(){
  }
  const readiness=evaluateReadiness({
   plan,catalog,releaseBytes,localVerified:verifiedLocal,
-  chain,remote,
+  chain,remote,forkProof,abiSourceBytes,
   enableSigning:process.env.NFT_ENABLE_SIGNING==='YES-I-REVIEWED-THE-RELEASE'
  });
  return {
