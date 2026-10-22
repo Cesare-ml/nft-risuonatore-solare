@@ -9,6 +9,7 @@ import {readFile,writeFile,mkdir,rm} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve,dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {DEFAULT_GATEWAYS,requireDiverseGateways} from './lib/ipfs-gateways.mjs';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const STAGE=resolve(ROOT,'reports/solar-release-staging');
@@ -16,37 +17,15 @@ const REPORT=resolve(ROOT,'reports/ipfs-public-verification.json');
 const PLAN=resolve(ROOT,'reports/staging-mint-plan.json');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const hexId=id=>BigInt(id).toString(16).padStart(64,'0');
-// Distinct gateway operators: Pinata and Storacha; both remain best-effort.
-const defaults=['https://gateway.pinata.cloud/ipfs','https://w3s.link/ipfs'];
-const sleep=ms=>new Promise(done=>setTimeout(done,ms));
+const argv=process.argv.slice(2);
 let chosen=[];
-for(let i=0;i<process.argv.slice(2).length;i++){
- const arg=process.argv.slice(2)[i];
- if(arg!=='--gateway')throw Error('Usage: node scripts/verify-public-ipfs-release.mjs [--gateway https://.../ipfs --gateway https://.../ipfs]');
- const v=process.argv.slice(2)[++i];
- if(!v)throw Error('Missing --gateway URL');
- chosen.push(v);
+for(let i=0;i<argv.length;i++){
+ const key=argv[i],value=argv[++i];
+ if(key!=='--gateway'||!value)throw Error('Usage: node scripts/verify-public-ipfs-release.mjs [--gateway HTTPS_GATEWAY --gateway HTTPS_GATEWAY]');
+ chosen.push(value);
 }
-if(chosen.length===0)chosen=defaults;
-function normalizeGateway(v){
- const u=new URL(v);
- if(u.protocol!=='https:'||!u.hostname||u.username||u.password||u.search||u.hash)
-   throw Error('Only HTTPS gateways without credentials or query parameters are accepted');
- const base=(u.origin+u.pathname).replace(/\/$/,'');
- if(!base.endsWith('/ipfs'))throw Error('Gateway URL must end with /ipfs');
- const host=u.hostname.toLowerCase();
- // Since Sep 2026 these two public-good gateways have ceased serving ordinary
- // backend HTTP retrieval reliably and are run as the SAME backend service.
- if(['ipfs.io','dweb.link','cloudflare-ipfs.com','cf-ipfs.com'].includes(host))
-   throw Error('This gateway is deprecated/unreliable for programmatic retrieval: '+host);
- const provider=host==='gateway.pinata.cloud'||host.endsWith('.mypinata.cloud')
-   ?'pinata':host==='w3s.link'||host==='storacha.link'||host.endsWith('.ipfs.w3s.link')
-   ?'storacha':host;
- return {base,host,provider};
-}
-const gateways=chosen.map(normalizeGateway);
-if(gateways.length<2||new Set(gateways.map(x=>x.provider)).size!==gateways.length)
- throw Error('At least two distinct HTTPS gateway operators required; aliases of the same provider do not count');
+if(chosen.length===0)chosen=DEFAULT_GATEWAYS;
+const gateways=requireDiverseGateways(chosen);
 async function remote(gateway,cid,filename,maxBytes){
  const url=gateway.base+'/'+cid+'/'+filename;
  for(let attempt=0;attempt<3;attempt++){
