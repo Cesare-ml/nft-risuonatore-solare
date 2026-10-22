@@ -5,7 +5,11 @@
  * Start local Anvil: anvil --fork-url https://polygon.drpc.org --chain-id 137
  * Then run npm run nft:fork:atomic
  */
-import {Interface} from 'ethers';
+import {Interface,keccak256} from 'ethers';
+import {readFile,writeFile,mkdir,rm} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {resolve,dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {CONFIGURER,CONFIGURER_ABI,CONFIGURER_SELECTOR,COLLECTION,makeAtomicMintConfig}
   from './lib/opensea-configurer.mjs';
 const RPC='http://127.0.0.1:8545'; // deliberately hard-coded localhost.
@@ -14,7 +18,8 @@ const readAbi=new Interface([
  'function configurer() view returns(address)',
  'function totalSupply(uint256) view returns(uint256)',
  'function totalMinted(uint256) view returns(uint256)',
- 'function maxSupply(uint256) view returns(uint256)'
+ 'function maxSupply(uint256) view returns(uint256)',
+ 'function baseURI() view returns(string)'
 ]);
 const writeAbi=new Interface(CONFIGURER_ABI);
 async function rpc(method,params=[]){
@@ -52,14 +57,24 @@ async function sendLocal(owner,ids){
   event_count:receipt.logs?.length??0,selector:CONFIGURER_SELECTOR};
 }
 async function main(){
+ const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+ const reportPath=resolve(ROOT,'reports/atomic-fork-proof.json');
+ // A failed rerun must NEVER leave a stale green proof.
+ await rm(reportPath,{force:true});
  if(!process.argv.includes('--local-fork-only'))
    throw Error('Explicit --local-fork-only required.');
  const anvil=await rpc('anvil_nodeInfo',[]);
  if(!anvil||typeof anvil!=='object')throw Error('Not an Anvil local node');
  if(BigInt(await rpc('eth_chainId'))!==137n)throw Error('Local fork must represent Polygon 137');
- const [owner,configurerOnChain]=await Promise.all([read('owner'),read('configurer')]);
+ const [owner,configurerOnChain,originalURI]=await Promise.all([
+  read('owner'),read('configurer'),read('baseURI')
+ ]);
+ const originalToken1={maxSupply:String(await read('maxSupply',[1])),
+  totalSupply:String(await read('totalSupply',[1])),
+  totalMinted:String(await read('totalMinted',[1]))};
  if(configurerOnChain.toLowerCase()!==CONFIGURER)throw Error('Unexpected on-chain configurer');
- if((await rpc('eth_getCode',[CONFIGURER,'latest']))==='0x')throw Error('Configurer bytecode missing');
+ const deployedCode=await rpc('eth_getCode',[CONFIGURER,'latest']);
+ if(deployedCode==='0x')throw Error('Configurer bytecode missing');
  await rpc('anvil_impersonateAccount',[owner]);
  await rpc('anvil_setBalance',[owner,'0x56bc75e2d63100000']);
  const results=[];
@@ -80,14 +95,36 @@ async function main(){
     if(max!==1n||minted!==1n||supply!==1n)
       throw Error('After configurer tx unexpected state on ID '+id);
   }
+  if(await read('baseURI')!==originalURI)
+   throw Error('Fork mint unexpectedly changed historic baseURI');
+  if(String(await read('maxSupply',[1]))!==originalToken1.maxSupply||
+     String(await read('totalSupply',[1]))!==originalToken1.totalSupply||
+     String(await read('totalMinted',[1]))!==originalToken1.totalMinted)
+   throw Error('Fork mint unexpectedly modified historic token #1');
   results.push({tokens:amount,tx_count:1,...tx,
     observed_max_supply:'1 each',observed_total_minted:'1 each'});
   if(!(await rpc('evm_revert',[snap])))throw Error('Local snapshot not restored');
  }
- console.log(JSON.stringify({scope:'LOCAL_ANVIL_FORK_ONLY',collection:COLLECTION,
-  configurer:CONFIGURER,owner_impersonated_on_local_fork:owner,
-  public_polygon_transactions:0,results,
-  note:'Fork proof only. Metadata availability, ownership, gas fees and old NFTs must be verified before mainnet.'
+ const abiSource=await readFile(resolve(ROOT,'scripts/lib/opensea-configurer.mjs'));
+ const proof={
+  status:'LOCAL_ATOMIC_FORK_PROOF_PASSED',created_at:new Date().toISOString(),
+  scope:'LOCAL_ANVIL_FORK_ONLY',chain_id:137,collection:COLLECTION,
+  configurer:CONFIGURER,selector:CONFIGURER_SELECTOR,
+  abi_source_sha256:createHash('sha256').update(abiSource).digest('hex'),
+  configurer_bytecode_keccak256:keccak256(deployedCode),
+  owner_impersonated_on_local_fork:owner,
+  historic_base_uri_unchanged:true,historic_token_1_unchanged:true,
+  public_polygon_transactions:0,
+  results,
+  warning:'Anvil fork proof only, NOT control of the live owner wallet or approval to change metadata.'
+ };
+ await mkdir(dirname(reportPath),{recursive:true});
+ await writeFile(reportPath,JSON.stringify(proof,null,2)+'\n','utf8');
+ console.log(JSON.stringify({status:proof.status,
+  output:'reports/atomic-fork-proof.json',
+  scope:proof.scope,collection:COLLECTION,configurer:CONFIGURER,
+  gas_by_batch:proof.results.map(x=>({tokens:x.tokens,gas_used:x.gas_used})),
+  historic_base_uri_unchanged:true,public_polygon_transactions:0
  },null,2));
 }
 main().catch(e=>{console.error('LOCAL ATOMIC MINT TEST STOPPED: '+e.message);process.exitCode=1});
