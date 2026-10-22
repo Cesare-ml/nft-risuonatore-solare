@@ -101,9 +101,21 @@ if(location.hostname!=='127.0.0.1'){
   state=await response.json();
   const batches=state.plan.operations.filter(o=>o.kind==='atomic_configure_mint');
   if(!batches.length)throw Error('Nessun lotto atomic disponibile');
+  const checks={
+   valid_offline_atomic_plan:'Piano NFT',
+   local_ipfs_bytes_verified:'Archivio IPFS locale',
+   local_release_matches_mint_plan:'Catalogo e CID',
+   two_public_gateways_verified:'Due gateway IPFS',
+   entire_id_space_audited:'Scansione Polygon completa',
+   explicit_local_signing_opt_in:'Autorizzazione locale alle firme'
+  };
+  const missing=Object.entries(checks)
+    .filter(([key])=>state.readiness?.[key]!==true)
+    .map(([,label])=>label);
   $('planStatus').textContent=state.plan.totals.selected+' NFT da preparare, '+
     batches.length+' transazioni proposte (una per lotto). '+
-    (state.tx_gates_satisfied_for_ui?'Backup IPFS locale verificato.':'Mint BLOCCATO: IPFS e URI da verificare.');
+    (state.tx_gates_satisfied_for_ui?'CONTROLLI PRELIMINARI SUPERATI: wallet ancora da verificare.':
+     'FIRME BLOCCATE. Mancano: '+missing.join(', ')+'.');
   $('planStatus').className=state.tx_gates_satisfied_for_ui?'good':'warn';
   $('batchInfo').textContent='Lotti disponibili: '+batches.length+'. Dimensione massima 30 token.';
  }catch(e){err(e);$('planStatus').textContent='Preparare il piano NFT sul computer prima di usare la console.'}
