@@ -119,3 +119,52 @@ npm run nft:configurer:audit
 ```
 
 Il comando interroga Polygon e Sourcify dal PC, controlla l'indirizzo del configuratore attualmente associato alla collezione e salva `reports/configurer-inspection.json`. **Non invia transazioni e non utilizza GitHub Actions.** Se l'ABI verificata non è disponibile, il risultato è inconcludente: è necessario recuperare il codice verificato da un explorer e simulare sul fork locale, non inventare il supporto batch.
+
+## Verifica degli ID, dell’IPFS pubblico e autorizzazione alle firme (22/10/2026)
+
+Il mint atomico nella collezione originale ora è protetto da controlli **fail-closed**: non basta che un token non compaia su OpenSea.
+
+### A. Controllo dei 2.358 nuovi token sulla blockchain
+
+```powershell
+npm install
+npm run nft:plan
+npm run nft:ids:audit
+```
+
+Lo script legge tramite **Multicall3** tutti i 2.358 ID proposti e i 19 storici, sullo stesso blocco Polygon. Interroga `maxSupply`, `totalMinted` e `totalSupply`; produce `reports/onchain-new-ids-audit.json` e segnala ogni ID potenzialmente occupato. Non invia transazioni, non richiede wallet e non usa GitHub Actions.
+
+La console accetta soltanto un audit senza ID occupati, completo e recente (massimo **12 ore**). Prima di ogni firma, ricontrolla on-chain tutti gli ID del singolo lotto. Se il nodo pubblico limita le richieste, impostare un endpoint Polygon RPC affidabile tramite variabile `POLYGON_RPC_URL` nel terminale (senza inserire segreti nel repository).
+
+### B. Verifica IPFS su due gateway indipendenti
+
+Dopo aver recuperato i 19 JSON originali e terminato `node scripts/stage-ipfs-release.mjs --stage` e `npm run nft:ipfs:verify`, lanciare:
+
+```powershell
+npm run nft:ipfs:public
+```
+
+Lo script **non carica file**: confronta SHA256 su **due gateway HTTPS distinti** (`ipfs.io` e `dweb.link`), per tutti i 19 JSON storici e per cinque nuovi JSON con le corrispondenti cinque immagini PNG. Esegue 58 verifiche remote e salva `reports/ipfs-public-verification.json` solo in caso di risultato interamente positivo. Il controllo scade dopo **24 ore**. I gateway possono rispondere HTTP 429: in tal caso non si procede.
+
+Due gateway pubblici raggiungibili non sostituiscono un **pinning IPFS remoto ridondante**: è necessario proteggere il nuovo CID su almeno due infrastrutture indipendenti e conservare un backup.
+
+### C. Avviare la console in lettura o autorizzare le richieste di firma
+
+Per la sola lettura (impostazione predefinita):
+
+```powershell
+npm run nft:console
+```
+
+Dopo aver verificato **personalmente** i metadati, il pinning esterno, tutti gli ID e l’aggiornamento separato e approvato della base URI sulla Polygon reale:
+
+```powershell
+$env:NFT_ENABLE_SIGNING="YES-I-REVIEWED-THE-RELEASE"
+npm run nft:console
+```
+
+Questa variabile non effettua alcun mint: abilita soltanto la possibilità di chiedere a MetaMask **una singola firma per lotto**, se tutti i controlli locali e pubblici sono verdi, il wallet è effettivamente il proprietario del contratto e l'URI on-chain coincide con la release prevista. La console non invia `setBaseURI` e non firma automaticamente.
+
+La console mostra ora ciascun controllo mancante: piano NFT, archivio IPFS locale, corrispondenza CID, due gateway pubblici, audit Polygon completo e consenso locale alle firme.
+
+**Stato effettivo:** gli script sono stati pubblicati nel repository, ma non sono ancora stati eseguiti sul PC dell'artista la scansione completa, il recupero Kubo dei 19 JSON o il nuovo test Anvil del metodo atomico. Non considerare la collezione pronta a ricevere mint reali. Nessun GitHub Actions.
