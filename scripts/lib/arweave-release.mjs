@@ -8,6 +8,14 @@ export const ORIGINAL_URI='ipfs://'+HISTORIC_CID+'/{id}';
 export const HEX_ID=id=>BigInt(id).toString(16).padStart(64,'0');
 export const ARWEAVE_ID=/^[A-Za-z0-9_-]{43}$/;
 export const SHA256=/^[0-9a-f]{64}$/;
+
+/** Only catalog generated PNG names and local Kubo original-image backups. */
+export function approvedMediaPath(path){
+ if(typeof path!=='string')return false;
+ return /^nft-imgs\/solar_2222px_39\.00px_#[A-F0-9]{6}_lvl(?:[1-9]|1\d|2[0-2])_n(?:[1-9]|[1-9]\d|10[0-8])\.png$/.test(path)||
+  /^reports\/solar-release-staging\/historic-originals\/images\/[a-f0-9]{64}\.bin$/.test(path);
+}
+
 export function requireOk(value,message){if(!value)throw Error(message)}
 export function mediaType(buffer){
  if(buffer.length>=8&&buffer.subarray(0,8).equals(Buffer.from('89504e470d0a1a0a','hex')))return 'image/png';
@@ -26,7 +34,7 @@ export function validateInventory(inv){
  const map=new Set(),mediaSha=new Set();
  for(const media of inv.media){
   requireOk(SHA256.test(media.sha256)&&!mediaSha.has(media.sha256)&&media.bytes>0&&
-   typeof media.path==='string'&&media.path.length>0&&/^image\/(?:png|jpeg|gif|webp)$/.test(media.content_type),
+   approvedMediaPath(media.path)&&/^image\/(?:png|jpeg|gif|webp)$/.test(media.content_type),
    'Bad or duplicate Arweave image');
   mediaSha.add(media.sha256);
  }

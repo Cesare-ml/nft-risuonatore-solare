@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {ARWEAVE_ID,HEX_ID,buildManifest,arweaveBaseUri,mediaType,newMetadata} from '../scripts/lib/arweave-release.mjs';
+import {ARWEAVE_ID,HEX_ID,buildManifest,arweaveBaseUri,mediaType,newMetadata,approvedMediaPath} from '../scripts/lib/arweave-release.mjs';
 test('Arweave ERC1155 manifest resolves exact lowercase 64-hex token path',()=>{
  const id='A'.repeat(43);
  const mapping=Array.from({length:2377},(_,i)=>({filename:HEX_ID(i+1),id}));
@@ -31,4 +31,15 @@ test('detects historical image formats from actual bytes',()=>{
  assert.equal(mediaType(Buffer.from('ffd8ff','hex')),'image/jpeg');
  assert.equal(mediaType(Buffer.from('GIF89a')),'image/gif');
  assert.throws(()=>mediaType(Buffer.from('not an image')),/Unsupported/);
+});
+
+test('reject inventory paths outside the exact original artworks and Kubo archive',()=>{
+ assert.equal(approvedMediaPath('nft-imgs/solar_2222px_39.00px_#FFDA00_lvl22_n108.png'),true);
+ assert.equal(approvedMediaPath('reports/solar-release-staging/historic-originals/images/'+'a'.repeat(64)+'.bin'),true);
+ for(const bad of [
+  '../../wallet.jwk','nft-imgs/../wallet.jwk',
+  'nft-imgs/solar_2222px_39.00px_#FFDA00_lvl22_n108.png/../../../wallet',
+  'reports/arweave-one-time/receipts-media.json',
+  '/home/user/key.json','C:\\Keys\\arweave.json'
+ ])assert.equal(approvedMediaPath(bad),false);
 });
