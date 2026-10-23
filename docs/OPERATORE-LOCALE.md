@@ -1,5 +1,7 @@
 # Operatore NFT locale — collezione OpenSea originale
 
+**Percorso alternativo senza canoni:** il progetto ora include la pipeline Arweave a pagamento unico, senza R2, e il self-pinning IPFS dei vecchi file. Leggi [ARWEAVE-SENZA-ABBONAMENTO.md](ARWEAVE-SENZA-ABBONAMENTO.md) prima di utilizzare i comandi del precedente percorso IPFS. Le autorizzazioni reali sulla blockchain restano separate.
+
 **Stato al 22 ottobre 2026.** Tutti i workflow GitHub Actions aggiunti sono stati rimossi. **Nessuna transazione Polygon mainnet è stata inviata.** Il nuovo mint atomico tramite configuratore OpenSea non ha ancora superato una prova Anvil eseguita sul PC. Il CID IPFS storico dei 19 NFT già esistenti non è stato ancora recuperato integralmente.
 
 ## Obiettivo, ID e contratto
