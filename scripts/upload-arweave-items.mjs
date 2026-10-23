@@ -14,6 +14,7 @@ import {createHash} from 'node:crypto';
 import {resolve,dirname,join,sep,isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {validateInventory,ARWEAVE_ID,SHA256,requireOk} from './lib/arweave-release.mjs';
+import {creditGate} from './lib/turbo-credits.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const STAGE=resolve(ROOT,'reports/arweave-one-time');
 const args=process.argv.slice(2);
@@ -139,12 +140,22 @@ async function main(){
   const price=Number(quote.amount);
   requireOk(Number.isFinite(price)&&price>=0&&authorizedSpendEstimate+price<=maxUSD,
    'LIVE estimate exceeds --max-usd budget. Nothing further uploaded.');
-  // No token top-up is allowed. Turbo requires prepaid credits or a free
-  // allowance in the selected wallet; payment errors halt immediately.
+  // Consult the REAL Turbo credit unit (winc), wallet balance and free
+  // lifetime quota. USD is only a displayed budget estimate. No top-ups.
+  const [costs,balance,freeStatus]=await Promise.all([
+   turbo.getUploadCosts({bytes:[x.bytes]}),
+   turbo.getBalance(),turbo.getFreeStatus()
+  ]);
+  requireOk(Array.isArray(costs)&&costs.length===1,'Invalid Turbo cost schedule');
+  const credits=creditGate({cost:costs[0],balance,freeStatus,fileBytes:x.bytes});
+  console.error('Turbo credit check: '+credits.estimated_winc+
+   ' winc quoted; '+credits.prepaid_winc+
+   ' winc prepaid; free tier eligible: '+credits.free_tier_eligible);
   // Durable journal BEFORE external charge. An ambiguous network failure
   // leaves this entry in place and blocks further automatic uploads.
   ledger.inflight={key:x.key,sha256:x.sha256,bytes:x.bytes,
-   quote_usd:price,started_at:new Date().toISOString()};
+   quote_usd:price,estimated_winc:credits.estimated_winc,
+   started_at:new Date().toISOString()};
   await atomicWrite(receiptPath,ledger);
   console.error('Uploading confirmed '+kind+' '+(completed+1)+
     ', '+x.bytes+' bytes, quoted USD '+price.toFixed(6));
@@ -156,7 +167,8 @@ async function main(){
   requireOk(ARWEAVE_ID.test(result?.id),'Turbo did not return a valid permanent data-item ID');
   ledger.records[x.key]={id:result.id,sha256:x.sha256,bytes:x.bytes,
    content_type:x.content_type,uploaded_at:new Date().toISOString(),
-   quote_usd:price,upload_service:'ArDrive Turbo / Arweave'};
+   quote_usd:price,estimated_winc:credits.estimated_winc,
+   upload_service:'ArDrive Turbo / Arweave'};
   ledger.inflight=null;
   await atomicWrite(receiptPath,ledger);
   completed++;authorizedSpendEstimate+=price;
