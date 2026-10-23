@@ -119,6 +119,16 @@ async function main(){
   '. Check for a previous interrupted upload before retrying.');throw e}
  await handle.writeFile(JSON.stringify({pid:process.pid,kind,started_at:new Date().toISOString()})+'\n');
  await handle.close();
+ // The pending list was built BEFORE acquiring this lock. Re-read the
+ // receipt file now to prevent a second process from acting on stale state.
+ // This is particularly important if another uploader just finished a batch.
+ let latest=null;
+ try{latest=JSON.parse(await readFile(receiptPath,'utf8'))}
+ catch(e){if(e.code!=='ENOENT')throw e}
+ if(JSON.stringify(latest)!==JSON.stringify(old)){
+   await rm(lock,{force:true});
+   throw Error('Upload ledger changed before lock acquisition: rerun to refresh receipts. No files uploaded.');
+ }
  let authorizedSpendEstimate=0,completed=0;
  try{
  for(const x of pending.slice(0,limit)){
