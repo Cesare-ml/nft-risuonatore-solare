@@ -163,3 +163,30 @@ test('all 19 historic IPFS images must be verified before any mainnet mint',()=>
  assert.equal(approved({...valid(),historicImagesVerified:false}),false);
  assert.equal(approved({...valid(),historicImagesVerified:true}),true);
 });
+
+
+test('Arweave manifest requires complete, recent, two-provider byte checks',()=>{
+ const cid='A'.repeat(43);
+ const candidate={status:'ARWEAVE_UPLOADED_PENDING_INDEPENDENT_VERIFICATION',
+  production_approved:false,chain_modified:false,
+  old_base_uri:release.old_base_uri,historical_json_bytes_preserved:19,
+  metadata_paths:2377,manifest_id:cid,manifest_sha256:'a'.repeat(64),
+  proposed_base_uri:'https://arweave.net/'+cid+'/{id}'};
+ const arPlan={...plan,proposed_base_uri:candidate.proposed_base_uri};
+ const releaseContent=Buffer.from(JSON.stringify(candidate));
+ const certificate={schema:1,status:'ARWEAVE_2_GATEWAY_BYTES_VERIFIED',
+  scope:'FULL',release_report_sha256:sha(releaseContent),
+  proposed_base_uri:candidate.proposed_base_uri,
+  manifest_id:cid,manifest_sha256:candidate.manifest_sha256,
+  entire_historic_archive_verified:true,archive_metadata_count:19,
+  archive_image_count:19,checked_metadata_paths:2377,
+  checked_media_items:2340,total_remote_files_verified:2*(2377+2340),
+  gateway_operators:['arweave.net','ar.io Turbo'],
+  gateway_hosts:['arweave.net','turbo-gateway.com'],
+  checked_at:new Date(now-30000).toISOString()};
+ const params={...valid(),plan:arPlan,releaseBytes:releaseContent,remote:certificate};
+ assert.equal(approved(params),true);
+ assert.equal(approved({...params,remote:{...certificate,scope:'HISTORIC_ALL_PLUS_SAMPLES'}}),false);
+ assert.equal(approved({...params,remote:{...certificate,manifest_sha256:'b'.repeat(64)}}),false);
+ assert.equal(approved({...params,remote:{...certificate,gateway_hosts:['arweave.net','arweave.net']}}),false);
+});
