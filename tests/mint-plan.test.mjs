@@ -31,6 +31,7 @@ test('invalid plans must fail closed',()=>{
 });
 test('local stage report never authorizes live transactions',()=>{
  const report={status:'LOCAL_IPFS_STAGING_COMPLETE',
+  production_approved:false,chain_modified:false,
   historic_json_preserved_byte_identical:19,
   proposed_base_uri:'ipfs://bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4/{id}'};
  const c=buildMintPlan(snapshot,catalog,{count:1,release:report});
