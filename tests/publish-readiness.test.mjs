@@ -184,7 +184,13 @@ test('Arweave manifest requires complete, recent, two-provider byte checks',()=>
   gateway_operators:['arweave.net','ar.io Turbo'],
   gateway_hosts:['arweave.net','turbo-gateway.com'],
   checked_at:new Date(now-30000).toISOString()};
- const params={...valid(),plan:arPlan,releaseBytes:releaseContent,remote:certificate};
+ const params={...valid(),plan:arPlan,releaseBytes:releaseContent,remote:certificate,
+  arweaveUriFork:{status:'LOCAL_ARWEAVE_BASEURI_FORK_PASSED',collection:COLLECTION,
+    chain_id:137,only_local_fork:true,mainnet_transactions:0,
+    manifest_id:cid,proposed_base_uri:candidate.proposed_base_uri,
+    old_uri_restored_after_snapshot:true,historic_tokens_unchanged:true,
+    fork_identity:forkProof.fork_identity,gas_used:50000,
+    created_at:new Date(now-30000).toISOString()}};
  assert.equal(approved(params),true);
  assert.equal(approved({...params,remote:{...certificate,scope:'HISTORIC_ALL_PLUS_SAMPLES'}}),false);
  assert.equal(approved({...params,remote:{...certificate,manifest_sha256:'b'.repeat(64)}}),false);
