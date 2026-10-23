@@ -14,7 +14,7 @@ const sha=b=>createHash('sha256').update(b).digest('hex');
 const fresh=(date,hours)=>{const t=Date.parse(date);return Number.isFinite(t)&&Date.now()>=t&&Date.now()-t<=hours*3600000};
 async function main(){
  const base='reports/arweave-one-time/';
- const [cat,historic,images,inv,media,stage,metadata,manifest,remote,atomic,uri,chain,lock]=await Promise.all([
+ const [cat,historic,images,inv,media,stage,metadata,manifest,remote,atomic,uri,chain,lock,mediaLock,metadataLock]=await Promise.all([
   get('reports/staging-mint-plan.json'),
   get('reports/solar-release-staging/historic-originals/manifest.json'),
   get('reports/solar-release-staging/historic-originals/media-report.json'),
@@ -22,7 +22,8 @@ async function main(){
   get(base+'metadata-stage-report.json'),get(base+'receipts-metadata.json'),
   get(base+'release-report.json'),get(base+'remote-verification.json'),
   get('reports/atomic-fork-proof.json'),get(base+'baseuri-fork-proof.json'),
-  get('reports/onchain-new-ids-audit.json'),get(base+'manifest-upload-inflight.json')
+  get('reports/onchain-new-ids-audit.json'),get(base+'manifest-upload-inflight.json'),
+  get(base+'receipts-media.json.lock'),get(base+'receipts-metadata.json.lock')
  ]);
  const validInv=inv?.doc?.status==='LOCAL_ARWEAVE_INVENTORY_READY'&&
   inv.doc.artworks?.length===2358&&inv.doc.historical?.length===19;
@@ -46,7 +47,7 @@ async function main(){
   forkAtomic:atomic?.doc?.status==='LOCAL_ATOMIC_FORK_PROOF_PASSED'&&fresh(atomic.doc.created_at,168),
   forkURI:uri?.doc?.status==='LOCAL_ARWEAVE_BASEURI_FORK_PASSED'&&fresh(uri.doc.created_at,168),
   chain:chain?.doc?.read_only===true&&fresh(chain.doc.created_at,12),
-  unresolved:!!(lock||media?.doc?.inflight||metadata?.doc?.inflight||
+  unresolved:!!(lock||mediaLock||metadataLock||media?.doc?.inflight||metadata?.doc?.inflight||
    (media&&!goodMedia)||(metadata&&!goodMetadata))
  };
  const result={mode:'LOCAL_READ_ONLY',
