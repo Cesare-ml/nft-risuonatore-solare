@@ -37,3 +37,19 @@ test('local stage report never authorizes live transactions',()=>{
  assert.equal(c.metadata_release_locally_staged,true);
  assert.equal(c.preparation_ready_for_live_execution,false);
 });
+
+test('one-time Arweave manifest is accepted as a DRAFT only, never live approval',()=>{
+ const release={
+   status:'ARWEAVE_UPLOADED_PENDING_INDEPENDENT_VERIFICATION',
+   historical_json_bytes_preserved:19,metadata_paths:2377,
+   manifest_id:'a'.repeat(43),
+   proposed_base_uri:'https://arweave.net/'+'a'.repeat(43)+'/{id}',
+   production_approved:false,chain_modified:false
+ };
+ const plan=buildMintPlan(snapshot,catalog,{start:0,count:1,release});
+ assert.equal(plan.metadata_release_locally_staged,true);
+ assert.equal(plan.proposed_base_uri,release.proposed_base_uri);
+ assert.equal(plan.preparation_ready_for_live_execution,false);
+ release.proposed_base_uri='https://example.com/editable/{id}';
+ assert.equal(buildMintPlan(snapshot,catalog,{start:0,count:1,release}).metadata_release_locally_staged,false);
+});

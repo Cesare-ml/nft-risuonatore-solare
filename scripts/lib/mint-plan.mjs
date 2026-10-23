@@ -53,11 +53,18 @@ export function buildMintPlan(snapshot, catalog, {
    warning:'Configures supply and mints selected IDs atomically; never sets baseURI'
  }));
 
- const validRelease=!!release &&
+ const isIPFS=!!release &&
    release.status==='LOCAL_IPFS_STAGING_COMPLETE' &&
    release.historic_json_preserved_byte_identical===19 &&
-   release.proposed_base_uri?.startsWith('ipfs://') &&
-   release.proposed_base_uri?.endsWith('/{id}');
+   /^ipfs:\/\/bafy[a-z2-7]+\/\{id\}$/.test(release.proposed_base_uri??'');
+ const isArweave=!!release &&
+   release.status==='ARWEAVE_UPLOADED_PENDING_INDEPENDENT_VERIFICATION' &&
+   release.historical_json_bytes_preserved===19 &&
+   release.metadata_paths===2377 &&
+   /^https:\/\/arweave\.net\/[a-zA-Z0-9_-]{43}\/\{id\}$/.test(release.proposed_base_uri??'') &&
+   release.proposed_base_uri==='https://arweave.net/'+release.manifest_id+'/{id}';
+ const validRelease=(isIPFS||isArweave)&&release.production_approved===false&&
+   release.chain_modified===false;
  return {
    schema_version:2,mode:'OFFLINE_TRANSACTION_DRAFT_NO_SIGNATURE',
    chain_id:CHAIN_ID,collection_address:COLLECTION,
