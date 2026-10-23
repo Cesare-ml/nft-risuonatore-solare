@@ -46,6 +46,8 @@ npm run nft:plan
 npm run nft:ipfs:recover
 npm run nft:historic:images
 npm run nft:historic:images:verify
+npm run nft:ipfs:pin-originals
+npm run nft:ipfs:pin-originals -- --pin
 npm run nft:arweave:inventory
 npm run nft:arweave:quote
 \`\`\`
@@ -134,3 +136,7 @@ npm run nft:mint:resume -- --batch-size 10 --count 100 --release-report reports/
 - Finché i vecchi 19 JSON puntano a IPFS, resta un'esigenza di disponibilità IPFS per quei contenuti, senza obbligo di un provider a canone ma senza garanzie assolute.
 
 **Conclusione:** sviluppo preparatorio Arweave implementato senza R2, senza costi mensili obbligatori, con operazioni a pagamento solo su consenso esplicito. Nessuna transazione Polygon reale effettuata.
+
+## Nodo Kubo senza canone
+
+Il comando `npm run nft:ipfs:pin-originals` mostra tutti i CID storici da fissare. La variante `-- --pin` esegue un pin ricorsivo su Kubo per il CID degli originali e i CID delle 19 immagini e scrive un report locale. Non ci sono abbonamenti di archiviazione obbligatori. Per servire sempre i file, però, serve almeno un nodo Kubo con alimentazione, connessione e spazio disponibili; conserva anche un backup offline.
