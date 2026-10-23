@@ -123,9 +123,12 @@ async function main(){
   proposed_base_uri:release.proposed_base_uri,
   archive_metadata_count:19,archive_image_count:19,
   new_sample_metadata_count:FULL?2358:5,
+  checked_metadata_paths:mustCheckJson.length,
+  checked_media_items:mustCheckImages.length,
   gateway_operators:['arweave.net','ar.io Turbo'],
   gateway_hosts:GATEWAYS.map(x=>new URL(x).host),
   total_remote_files_verified:checked,
+  entire_historic_archive_verified:inv.historical.length===19,
   production_approved:false,chain_transactions:0,
   limitations:'Gateway checks attest byte reachability at check time; not a guarantee of future availability or independent Arweave full network inclusion. Original historic image URIs still use IPFS.'
  };
