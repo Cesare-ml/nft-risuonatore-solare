@@ -9,6 +9,7 @@ const plan={schema_version:2,chain_id:137,collection_address:COLLECTION,
  operations:[{kind:'atomic_configure_mint',to:CONFIGURER,target_collection:COLLECTION,token_ids:['20']}]};
 const catalog={pending:ids.map(id=>({proposed_token_id:id}))};
 const release={status:'LOCAL_IPFS_STAGING_COMPLETE',
+ historic_json_preserved_byte_identical:19,
  production_approved:false,chain_modified:false,
  old_base_uri:'ipfs://bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4/{id}',
  proposed_base_uri:plan.proposed_base_uri,media_cid:'bafynewmediacidxxx'};
