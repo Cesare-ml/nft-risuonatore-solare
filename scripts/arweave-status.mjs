@@ -11,6 +11,10 @@ async function get(file){
  catch(e){if(e.code==='ENOENT')return null;throw e}
 }
 const sha=b=>createHash('sha256').update(b).digest('hex');
+async function exists(path){
+ try{await readFile(resolve(ROOT,path));return true}
+ catch(e){if(e.code==='ENOENT')return false;throw e}
+}
 const fresh=(date,hours)=>{const t=Date.parse(date);return Number.isFinite(t)&&Date.now()>=t&&Date.now()-t<=hours*3600000};
 async function main(){
  const base='reports/arweave-one-time/';
@@ -22,8 +26,8 @@ async function main(){
   get(base+'metadata-stage-report.json'),get(base+'receipts-metadata.json'),
   get(base+'release-report.json'),get(base+'remote-verification.json'),
   get('reports/atomic-fork-proof.json'),get(base+'baseuri-fork-proof.json'),
-  get('reports/onchain-new-ids-audit.json'),get(base+'manifest-upload-inflight.json'),
-  get(base+'receipts-media.json.lock'),get(base+'receipts-metadata.json.lock')
+  get('reports/onchain-new-ids-audit.json'),exists(base+'manifest-upload-inflight.json'),
+  exists(base+'receipts-media.json.lock'),exists(base+'receipts-metadata.json.lock')
  ]);
  const validInv=inv?.doc?.status==='LOCAL_ARWEAVE_INVENTORY_READY'&&
   inv.doc.artworks?.length===2358&&inv.doc.historical?.length===19;
