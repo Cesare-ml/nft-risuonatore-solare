@@ -114,6 +114,7 @@ if(location.hostname!=='127.0.0.1'){
   const checks={
    valid_offline_atomic_plan:'Piano NFT',
    atomic_fork_proof_verified:'Prova Anvil mint atomico',
+   arweave_baseuri_fork_verified:'Prova Anvil base URI Arweave',
    local_ipfs_bytes_verified:'Archivio metadata verificato',
    historic_original_images_verified:'19 immagini NFT storiche',
    local_release_matches_mint_plan:'Catalogo e URI immutabile',

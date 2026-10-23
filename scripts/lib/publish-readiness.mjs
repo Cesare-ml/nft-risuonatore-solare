@@ -16,7 +16,7 @@ const ageValid=(date,hours,now)=>{
 export function evaluateReadiness({
  plan,catalog,releaseBytes,localVerified=false,remote=null,chain=null,
  enableSigning=false,now=Date.now(),forkProof=null,abiSourceBytes=null,
- historicImagesVerified=false
+ historicImagesVerified=false,arweaveUriFork=null
 }){
  const release=releaseBytes?JSON.parse(releaseBytes.toString('utf8')):null;
  const validIds=(catalog?.pending??[]).map(item=>String(item.proposed_token_id));
@@ -148,9 +148,24 @@ export function evaluateReadiness({
   new Set(remote.gateway_hosts).size===2&&
   ageValid(remote.checked_at,24,now));
  const remoteVerified=twoIPFSGateways||fullArweaveGateways;
+ const arweaveURITestOk=!arweaveRelease||!!(arweaveUriFork&&
+  arweaveUriFork.status==='LOCAL_ARWEAVE_BASEURI_FORK_PASSED'&&
+  arweaveUriFork.collection===COLLECTION&&arweaveUriFork.chain_id===137&&
+  arweaveUriFork.only_local_fork===true&&arweaveUriFork.mainnet_transactions===0&&
+  arweaveUriFork.manifest_id===release.manifest_id&&
+  arweaveUriFork.proposed_base_uri===release.proposed_base_uri&&
+  arweaveUriFork.old_uri_restored_after_snapshot===true&&
+  arweaveUriFork.historic_tokens_unchanged===true&&
+  arweaveUriFork.fork_identity?.implementation===ORIGINAL_IMPLEMENTATION&&
+  typeof arweaveUriFork.fork_identity?.fork_block_number==='string'&&
+  /^[0-9]+$/.test(arweaveUriFork.fork_identity.fork_block_number)&&
+  BigInt(arweaveUriFork.fork_identity.fork_block_number)>=HISTORIC_BLOCK_FLOOR&&
+  Number.isSafeInteger(arweaveUriFork.gas_used)&&arweaveUriFork.gas_used>0&&
+  ageValid(arweaveUriFork.created_at,168,now));
  return {
   valid_offline_atomic_plan:validPlan,
   atomic_fork_proof_verified:forkVerified,
+  arweave_baseuri_fork_verified:arweaveURITestOk,
   local_ipfs_bytes_verified:!!localVerified,
   historic_original_images_verified:historicImagesVerified===true,
   local_release_matches_mint_plan:releaseBound,

@@ -76,9 +76,11 @@ async function localState(){
    historicImagesVerified=JSON.parse(evidence).status==='HISTORIC_MEDIA_OFFLINE_VERIFIED';
   }catch{historicImagesVerified=false}
  }
+ const arweaveUriFork=usesArweave?
+   await optionalJSON('reports/arweave-one-time/baseuri-fork-proof.json'):null;
  const readiness=evaluateReadiness({
   plan,catalog,releaseBytes:chosenRelease,localVerified:verifiedLocal,
-  chain,remote:chosenRemote,forkProof,abiSourceBytes,historicImagesVerified,
+  chain,remote:chosenRemote,forkProof,abiSourceBytes,historicImagesVerified,arweaveUriFork,
   enableSigning:process.env.NFT_ENABLE_SIGNING==='YES-I-REVIEWED-THE-RELEASE'
  });
  return {
