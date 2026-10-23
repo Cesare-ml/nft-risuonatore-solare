@@ -95,15 +95,26 @@ export function evaluateReadiness({
     Number.isSafeInteger(r.gas_estimated)&&r.gas_estimated>=r.gas_used)&&
   ageValid(forkProof.created_at,168,now));
  const approvedOriginalCID='ipfs://bafybeih7ucalsv5p2xh3zjrslg6fjgz7y3t4q2fivebci56mz3wex4gwj4/{id}';
- const releaseBound=!!(validPlan&&localVerified&&release&&releaseBytes&&
-  release.status==='LOCAL_IPFS_STAGING_COMPLETE'&&
+ const ipfsRelease=!!(release&&release.status==='LOCAL_IPFS_STAGING_COMPLETE'&&
   release.production_approved===false&&release.chain_modified===false&&
   release.old_base_uri===approvedOriginalCID&&
-  plan.metadata_release_locally_staged===true&&
-  plan.proposed_base_uri===release.proposed_base_uri&&
-  /^ipfs:\/\/bafy[a-z2-7]+\/\{id\}$/.test(plan.proposed_base_uri));
+  release.historic_json_preserved_byte_identical===19&&
+  /^ipfs:\/\/bafy[a-z2-7]+\/\{id\}$/.test(release.proposed_base_uri??''));
+ const arweaveRelease=!!(release&&
+  release.status==='ARWEAVE_UPLOADED_PENDING_INDEPENDENT_VERIFICATION'&&
+  release.production_approved===false&&release.chain_modified===false&&
+  release.old_base_uri===approvedOriginalCID&&
+  release.historical_json_bytes_preserved===19&&
+  release.metadata_paths===2377&&
+  /^[A-Za-z0-9_-]{43}$/.test(release.manifest_id??'')&&
+  /^https:\/\/arweave\.net\/[A-Za-z0-9_-]{43}\/\{id\}$/.test(release.proposed_base_uri??'')&&
+  release.proposed_base_uri==='https://arweave.net/'+release.manifest_id+'/{id}'&&
+  /^[a-f0-9]{64}$/.test(release.manifest_sha256??''));
+ const releaseBound=!!(validPlan&&localVerified&&release&&releaseBytes&&
+  (ipfsRelease||arweaveRelease)&&plan.metadata_release_locally_staged===true&&
+  plan.proposed_base_uri===release.proposed_base_uri);
  const expectedSample=[20,609,1199,1788,2377].map(String);
- const remoteVerified=!!(releaseBound&&remote&&
+ const twoIPFSGateways=!!(releaseBound&&ipfsRelease&&remote&&
   remote.schema===2&&remote.status==='TWO_GATEWAY_SAMPLES_VERIFIED'&&
   remote.checks_passed===true&&remote.chain_id===137&&
   lower(remote.collection)===COLLECTION&&
@@ -119,6 +130,24 @@ export function evaluateReadiness({
   new Set(remote.distinct_gateway_operators).size>=2&&
   new Set(remote.distinct_gateway_operators).size===remote.distinct_gateway_operators.length&&
   ageValid(remote.verified_at,24,now));
+ const fullArweaveGateways=!!(releaseBound&&arweaveRelease&&remote&&
+  remote.schema===1&&remote.status==='ARWEAVE_2_GATEWAY_BYTES_VERIFIED'&&
+  remote.scope==='FULL'&&
+  remote.release_report_sha256===sha(releaseBytes)&&
+  remote.proposed_base_uri===release.proposed_base_uri&&
+  remote.manifest_id===release.manifest_id&&
+  remote.manifest_sha256===release.manifest_sha256&&
+  remote.entire_historic_archive_verified===true&&
+  remote.archive_metadata_count===19&&remote.archive_image_count===19&&
+  remote.checked_metadata_paths===2377&&
+  Number.isSafeInteger(remote.checked_media_items)&&remote.checked_media_items>=19&&
+  remote.total_remote_files_verified===2*(2377+remote.checked_media_items)&&
+  Array.isArray(remote.gateway_operators)&&remote.gateway_operators.length===2&&
+  new Set(remote.gateway_operators).size===2&&
+  Array.isArray(remote.gateway_hosts)&&remote.gateway_hosts.length===2&&
+  new Set(remote.gateway_hosts).size===2&&
+  ageValid(remote.checked_at,24,now));
+ const remoteVerified=twoIPFSGateways||fullArweaveGateways;
  return {
   valid_offline_atomic_plan:validPlan,
   atomic_fork_proof_verified:forkVerified,
