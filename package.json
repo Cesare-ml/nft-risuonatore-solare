@@ -26,7 +26,8 @@
     "nft:arweave:quote": "node scripts/quote-arweave-release.mjs",
     "nft:arweave:upload": "node scripts/upload-arweave-items.mjs",
     "nft:arweave:compose": "node scripts/compose-arweave-metadata.mjs",
-    "nft:arweave:manifest": "node scripts/finalize-arweave-manifest.mjs"
+    "nft:arweave:manifest": "node scripts/finalize-arweave-manifest.mjs",
+    "nft:arweave:verify": "node scripts/verify-arweave-release.mjs"
   },
   "keywords": [],
   "author": "",
