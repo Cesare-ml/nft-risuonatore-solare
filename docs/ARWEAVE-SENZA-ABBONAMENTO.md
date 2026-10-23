@@ -140,3 +140,27 @@ npm run nft:mint:resume -- --batch-size 10 --count 100 --release-report reports/
 ## Nodo Kubo senza canone
 
 Il comando `npm run nft:ipfs:pin-originals` mostra tutti i CID storici da fissare. La variante `-- --pin` esegue un pin ricorsivo su Kubo per il CID degli originali e i CID delle 19 immagini e scrive un report locale. Non ci sono abbonamenti di archiviazione obbligatori. Per servire sempre i file, però, serve almeno un nodo Kubo con alimentazione, connessione e spazio disponibili; conserva anche un backup offline.
+
+## Verifica semplice dello stato (23/10/2026)
+
+Il primo comando ora è `npm run nft:arweave:status`: mostra quanti file mancano, eventuali upload sospesi, manifest e prove, e il prossimo comando sicuro. Funziona in sola lettura, senza wallet, senza pagamenti e senza transazioni. Per l'output JSON: `npm run nft:arweave:status -- --json`.
+
+### Caricamenti interrotti senza doppia spesa
+
+Ogni upload conserva prima della richiesta a Turbo uno stato `inflight` e un lock locale. Se l'esito della rete è ambiguo, i tentativi successivi si fermano: **non pagano un secondo caricamento in automatico**. Prima occorre individuare dalla cronologia di Turbo il vero ID dell'elemento e assicurarsi che l'eventuale processo precedente sia terminato.
+
+```powershell
+npm run nft:arweave:reconcile -- --kind media --id ID_ARWEAVE_REALE
+# oppure per un metadata JSON:
+npm run nft:arweave:reconcile -- --kind metadata --id ID_ARWEAVE_REALE
+```
+
+Il comando di riconciliazione **non carica e non paga nulla**: legge l'ID da due operatori gateway, confronta dimensione e SHA256 con il file originale, e solo dopo registra la ricevuta. Se il file `.lock` resta dopo un crash, non cancellarlo prima di aver verificato che l'altro processo non sia attivo. Un manifest già pubblicato è ora riconosciuto ed evita di ripagare un secondo upload.
+
+### Preventivo completo e rete di accesso
+
+Il preventivo `nft:arweave:quote` è una stima di archiviazione, **non l'importo effettivo del top-up**: Turbo prevede tariffa per byte, piccola commissione per data item e commissione sui crediti acquistati. Le eventuali soglie gratuite sono limitate nel tempo e nello spazio, non un abbonamento gratuito illimitato. Prima dell'acquisto consultare il preventivo corrente e la schermata delle commissioni: https://docs.ar.io/build/upload/turbo-credits .
+
+I gateway Arweave possono reindirizzare a sottodomini sandbox: il verificatore li gestisce soltanto entro lo stesso operatore e rifiuta redirect verso domini estranei. Verifica i byte scaricati con un limite di dimensione e SHA256. Riferimento: https://docs.ar.io/build/access/fetch-data/ .
+
+Resta valido il vincolo: **nessun R2, nessun canone mensile obbligatorio, nessun GitHub Actions, nessuna operazione Polygon senza autorizzazione separata**. Conservare gli URI IPFS dei vecchi NFT può richiedere un nodo con elettricità, connettività e backup.
