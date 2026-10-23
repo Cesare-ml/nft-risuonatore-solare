@@ -8,7 +8,7 @@
  * Real upload: --kind media --upload --accept-one-time-charge
  *              --max-usd 1 --limit 1
  */
-import {readFile,writeFile,rename,stat} from 'node:fs/promises';
+import {readFile,writeFile,rename,stat,open,rm} from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {resolve,dirname,join,sep,isAbsolute} from 'node:path';
@@ -74,8 +74,13 @@ async function main(){
  const ledger=old??{
   status:'ARWEAVE_UPLOAD_RECEIPTS',kind,
   inventory_sha256:inventorySha,metadata_stage_sha256:stageSha,
-  records:{},created_at:new Date().toISOString()
+  records:{},inflight:null,created_at:new Date().toISOString()
  };
+ // A crash can occur after Turbo accepted an item but before a local receipt
+ // was written. Never upload that same SHA again automatically.
+ requireOk(!ledger.inflight,
+  'UNRESOLVED UPLOAD: '+JSON.stringify(ledger.inflight)+
+  '. Check Turbo history and reconcile the exact item ID before trying again.');
  const pending=entries.filter(x=>!ledger.records[x.key]);
  for(const [key,value] of Object.entries(ledger.records)){
    requireOk(ARWEAVE_ID.test(value.id)&&SHA256.test(value.sha256)&&
@@ -104,7 +109,18 @@ async function main(){
  try{({TurboFactory}=await import('@ardrive/turbo-sdk'))}
  catch{throw Error('Install SDK locally: npm install --no-save @ardrive/turbo-sdk');}
  const turbo=TurboFactory.authenticated({privateKey:JWK,token:'arweave'});
+ // Process lock stops two local upload processes from spending against the
+ // same inventory simultaneously. A force-killed process leaves the lock so
+ // an operator must inspect receipts before another paid attempt.
+ const lock=receiptPath+'.lock';
+ let handle;
+ try{handle=await open(lock,'wx')}
+ catch(e){if(e.code==='EEXIST')throw Error('Existing uploader lock: '+lock+
+  '. Check for a previous interrupted upload before retrying.');throw e}
+ await handle.writeFile(JSON.stringify({pid:process.pid,kind,started_at:new Date().toISOString()})+'\n');
+ await handle.close();
  let authorizedSpendEstimate=0,completed=0;
+ try{
  for(const x of pending.slice(0,limit)){
   const current=await stat(x.path);
   requireOk(current.isFile()&&current.size===x.bytes&&
@@ -115,6 +131,11 @@ async function main(){
    'LIVE estimate exceeds --max-usd budget. Nothing further uploaded.');
   // No token top-up is allowed. Turbo requires prepaid credits or a free
   // allowance in the selected wallet; payment errors halt immediately.
+  // Durable journal BEFORE external charge. An ambiguous network failure
+  // leaves this entry in place and blocks further automatic uploads.
+  ledger.inflight={key:x.key,sha256:x.sha256,bytes:x.bytes,
+   quote_usd:price,started_at:new Date().toISOString()};
+  await atomicWrite(receiptPath,ledger);
   console.error('Uploading confirmed '+kind+' '+(completed+1)+
     ', '+x.bytes+' bytes, quoted USD '+price.toFixed(6));
   const result=await turbo.uploadFile({
@@ -126,6 +147,7 @@ async function main(){
   ledger.records[x.key]={id:result.id,sha256:x.sha256,bytes:x.bytes,
    content_type:x.content_type,uploaded_at:new Date().toISOString(),
    quote_usd:price,upload_service:'ArDrive Turbo / Arweave'};
+  ledger.inflight=null;
   await atomicWrite(receiptPath,ledger);
   completed++;authorizedSpendEstimate+=price;
  }
@@ -136,5 +158,10 @@ async function main(){
   quoted_usd_this_run:authorizedSpendEstimate,max_usd_for_this_run:maxUSD,
   subscription_required:false,chain_transactions:0,
   warning:'Actual charges can differ from a fiat estimate. Examine each receipt and verify gateway bytes before using any Arweave CID.'},null,2));
+ } finally {
+  // If the process exits unexpectedly, the lock remains for manual review.
+  // Any durable inflight entry is preserved, even though the lock is removed.
+  await rm(lock,{force:true});
+ }
 }
 main().catch(e=>{console.error('ARWEAVE UPLOAD STOPPED: '+e.message);process.exitCode=1});
