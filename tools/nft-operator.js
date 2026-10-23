@@ -54,9 +54,9 @@ async function preflight(needUri=true){
   '\nURI preparata: '+(state?.plan?.proposed_base_uri||'non disponibile');
  if(needUri){
    if(!state?.tx_gates_satisfied_for_ui)
-     throw Error('Pacchetto IPFS locale non verificato: mint bloccato');
+     throw Error('Release metadata non verificata: mint bloccato');
    if(currentURI!==state.plan.proposed_base_uri)
-     throw Error('Base URI on-chain ancora diversa dal CID preparato; stop. Non cambiare URI senza proteggere i 19 NFT storici.');
+     throw Error('Base URI on-chain diversa dalla release preparata; stop. Non cambiare URI senza proteggere i 19 NFT storici.');
  }
  return wallet;
 }
@@ -114,10 +114,10 @@ if(location.hostname!=='127.0.0.1'){
   const checks={
    valid_offline_atomic_plan:'Piano NFT',
    atomic_fork_proof_verified:'Prova Anvil mint atomico',
-   local_ipfs_bytes_verified:'Archivio IPFS locale',
+   local_ipfs_bytes_verified:'Archivio metadata verificato',
    historic_original_images_verified:'19 immagini NFT storiche',
-   local_release_matches_mint_plan:'Catalogo e CID',
-   two_public_gateways_verified:'Due gateway IPFS',
+   local_release_matches_mint_plan:'Catalogo e URI immutabile',
+   two_public_gateways_verified:'Gateway e file verificati',
    entire_id_space_audited:'Scansione Polygon completa',
    explicit_local_signing_opt_in:'Autorizzazione locale alle firme'
   };

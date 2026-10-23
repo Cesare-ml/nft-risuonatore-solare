@@ -40,6 +40,15 @@ async function localState(){
    readFile(resolve(ROOT,'scripts/lib/opensea-configurer.mjs'))
  ]);
  const plan=JSON.parse(raw);
+ const usesArweave=/^https:\/\/arweave\.net\/[A-Za-z0-9_-]{43}\/\{id\}$/.test(plan.proposed_base_uri??'');
+ const chosenRelease=usesArweave?
+    await readFile(resolve(ROOT,'reports/arweave-one-time/release-report.json')).catch(()=>null):
+    releaseBytes;
+ const chosenRemote=usesArweave?
+    await optionalJSON('reports/arweave-one-time/remote-verification.json'):
+    remote;
+ const localVerifier=usesArweave?
+    resolve(ROOT,'scripts/verify-arweave-local.mjs'):script;
  if(plan.chain_id!==137||plan.schema_version!==2||
     plan.collection_address?.toLowerCase()!==CONTRACT||
     plan.mode!=='OFFLINE_TRANSACTION_DRAFT_NO_SIGNATURE'||
@@ -48,12 +57,13 @@ async function localState(){
       o.to?.toLowerCase()===CONFIGURER&&o.target_collection?.toLowerCase()===CONTRACT))
     throw Error('Invalid atomic OpenSea mint plan');
  let verifiedLocal=false;
- if(releaseBytes&&catalog?.pending?.length===2358){
+ if(chosenRelease&&catalog?.pending?.length===2358){
   try{
-   const out=execFileSync(process.execPath,[script],{
+   const out=execFileSync(process.execPath,[localVerifier],{
       cwd:ROOT,encoding:'utf8',timeout:60000,maxBuffer:5*1024*1024,
       stdio:['ignore','pipe','ignore']});
-   verifiedLocal=JSON.parse(out).result==='LOCAL_RELEASE_VERIFIED';
+   const checked=JSON.parse(out);
+   verifiedLocal=checked.result==='LOCAL_RELEASE_VERIFIED'||checked.status==='ARWEAVE_LOCAL_RELEASE_VERIFIED';
   }catch{verifiedLocal=false}
  }
  let historicImagesVerified=false;
@@ -67,8 +77,8 @@ async function localState(){
   }catch{historicImagesVerified=false}
  }
  const readiness=evaluateReadiness({
-  plan,catalog,releaseBytes,localVerified:verifiedLocal,
-  chain,remote,forkProof,abiSourceBytes,historicImagesVerified,
+  plan,catalog,releaseBytes:chosenRelease,localVerified:verifiedLocal,
+  chain,remote:chosenRemote,forkProof,abiSourceBytes,historicImagesVerified,
   enableSigning:process.env.NFT_ENABLE_SIGNING==='YES-I-REVIEWED-THE-RELEASE'
  });
  return {
