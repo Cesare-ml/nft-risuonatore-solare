@@ -164,3 +164,13 @@ Il preventivo `nft:arweave:quote` è una stima di archiviazione, **non l'importo
 I gateway Arweave possono reindirizzare a sottodomini sandbox: il verificatore li gestisce soltanto entro lo stesso operatore e rifiuta redirect verso domini estranei. Verifica i byte scaricati con un limite di dimensione e SHA256. Riferimento: https://docs.ar.io/build/access/fetch-data/ .
 
 Resta valido il vincolo: **nessun R2, nessun canone mensile obbligatorio, nessun GitHub Actions, nessuna operazione Polygon senza autorizzazione separata**. Conservare gli URI IPFS dei vecchi NFT può richiedere un nodo con elettricità, connettività e backup.
+
+### Controlli sui crediti prima di ogni upload (23/10/2026)
+
+Prima di trasmettere ogni immagine o JSON, il programma ora interroga direttamente Turbo per `getUploadCosts` (winc), `getBalance` del wallet e `getFreeStatus` (quota gratuita residua). Se i crediti sono insufficienti **e** non risulta una quota gratuita utilizzabile, l'upload si ferma senza comprare nulla. La quota gratuita è una stima consultiva: la decisione finale è del servizio Turbo.
+
+Lo stesso controllo vale per l'upload del manifest. Il limite `--max-usd` è una **soglia sul preventivo in dollari**, non un limite finanziario garantito sull'addebito effettivo: le commissioni e il prezzo possono cambiare. Consultare sempre il riepilogo Turbo prima di acquistare i crediti. Documentazione: https://docs.ar.io/sdks/turbo-sdk/turboauthenticatedclient
+
+È stato corretto anche il caso di due uploader quasi simultanei: dopo aver ottenuto il lock, il programma legge nuovamente il registro delle ricevute e interrompe il secondo processo se i dati sono cambiati. Il monitor `nft:arweave:status` segnala lock incompleti anche se contengono JSON parziale.
+
+**Limitazione di sicurezza:** il sistema accetta come sorgenti dei file soltanto i PNG generati per il Risuonatore Solare o le immagini dei 19 NFT recuperate nel backup Kubo; non sono caricabili file arbitrari dal computer tramite una modifica del manifest.
