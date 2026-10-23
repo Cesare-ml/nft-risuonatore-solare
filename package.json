@@ -21,7 +21,8 @@
     "nft:doctor": "node scripts/local-nft-doctor.mjs",
     "nft:mint:resume": "node scripts/prepare-next-mint-batches.mjs",
     "nft:historic:images": "node scripts/verify-historic-ipfs-media.mjs",
-    "nft:historic:images:verify": "node scripts/verify-historic-ipfs-media.mjs --verify-only"
+    "nft:historic:images:verify": "node scripts/verify-historic-ipfs-media.mjs --verify-only",
+    "nft:arweave:inventory": "node scripts/prepare-arweave-inventory.mjs"
   },
   "keywords": [],
   "author": "",
