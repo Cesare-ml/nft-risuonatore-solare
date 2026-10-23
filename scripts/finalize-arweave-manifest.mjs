@@ -4,7 +4,7 @@
  * Every previous metadata item must have a Turbo receipt from OUR inventory.
  * Default: DRY RUN. Real manifest upload requires opt-in USD cap + JWK.
  */
-import {readFile,writeFile,rename,stat} from 'node:fs/promises';
+import {readFile,writeFile,rename,stat,rm} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve,dirname,join,sep,isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -66,6 +66,27 @@ async function main(){
    command:'npm run nft:arweave:manifest -- --upload --accept-one-time-charge --max-usd 1'},null,2));
   return;
  }
+ // Never upload a manifest a second time just because the operator reruns
+ // the command. If Turbo accepted a previous upload and we lost the receipt,
+ // the on-disk inflight marker intentionally blocks payment pending review.
+ const target=join(STAGE,'release-report.json');
+ const manifestLock=join(STAGE,'manifest-upload-inflight.json');
+ let prior=null;
+ try{prior=JSON.parse(await readFile(target,'utf8'))}
+ catch(e){if(e.code!=='ENOENT')throw e}
+ if(prior){
+  requireOk(prior.status==='ARWEAVE_UPLOADED_PENDING_INDEPENDENT_VERIFICATION'&&
+   prior.manifest_sha256===hash(bytes)&&
+   prior.metadata_receipts_sha256===hash(metaReceiptsBytes)&&
+   ARWEAVE_ID.test(prior.manifest_id),'Previous Arweave manifest does not match');
+  console.log(JSON.stringify({status:'EXISTING_ARWEAVE_MANIFEST_REUSED',
+   manifest_id:prior.manifest_id,proposed_base_uri:prior.proposed_base_uri,
+   new_uploads:0,new_payments:0},null,2));
+  return;
+ }
+ try{await readFile(manifestLock);throw Error(
+   'Ambiguous earlier manifest upload. Review Turbo item history before re-uploading. No further charge authorized.')}
+ catch(e){if(e.code!=='ENOENT')throw e}
  requireOk(consent&&Number.isFinite(maxUSD)&&maxUSD>0&&maxUSD<=100,
   'Manifest publishing requires --accept-one-time-charge and --max-usd');
  const wallet=process.env.ARWEAVE_JWK_PATH;
@@ -81,6 +102,12 @@ async function main(){
  const turbo=TurboFactory.authenticated({privateKey:JWK,token:'arweave'});
  const price=Number((await turbo.getFiatEstimateForBytes({byteCount:bytes.length,currency:'usd'})).amount);
  requireOk(Number.isFinite(price)&&price>=0&&price<=maxUSD,'Manifest upload quote exceeds budget');
+ // Journal the ambiguous paid state before the external network request.
+ // A crash may occur after Turbo accepted the bytes and before we got the ID.
+ await writeFile(manifestLock,JSON.stringify({
+  kind:'manifest',manifest_sha256:hash(bytes),metadata_receipts_sha256:hash(metaReceiptsBytes),
+  estimated_usd:price,started_at:new Date().toISOString()
+ },null,2)+'\n',{flag:'wx'});
  const result=await turbo.upload({
   data:bytes,
   dataItemOpts:{tags:[{name:'Content-Type',value:'application/x.arweave-manifest+json'}]}
@@ -98,14 +125,10 @@ async function main(){
   monthly_fees_required:false,production_approved:false,chain_modified:false,
   warning:'A valid Turbo upload ID does not by itself prove permanent inclusion, all file bytes on independent gateways, IPFS availability, or authorization for setBaseURI.'
  };
- const target=join(STAGE,'release-report.json');
- try{
-  const old=JSON.parse(await readFile(target,'utf8'));
-  if(old.manifest_id!==result.id)throw Error('A different release was already uploaded; do not overwrite proof');
- }catch(e){if(e.code!=='ENOENT')throw e}
  const tmp=target+'.tmp';
  await writeFile(tmp,JSON.stringify(report,null,2)+'\n','utf8');
  await rename(tmp,target);
+ await rm(manifestLock,{force:true});
  console.log(JSON.stringify({status:report.status,proposed_base_uri:report.proposed_base_uri,
   public_polygon_transactions:0,monthly_fees_required:false,quoted_manifest_usd:price},null,2));
 }
