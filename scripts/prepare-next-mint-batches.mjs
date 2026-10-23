@@ -15,13 +15,14 @@ const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const readJSON=path=>readFile(resolve(ROOT,path),'utf8').then(JSON.parse);
 const sha=s=>createHash('sha256').update(s).digest('hex');
 const args=process.argv.slice(2);
-let batchSize=10,count=100,recipient=null;
+let batchSize=10,count=100,recipient=null,releaseReport='reports/solar-release-staging/release-report.json';
 for(let i=0;i<args.length;i++){
  const flag=args[i],value=args[++i];
  if(value===undefined)throw Error('Missing argument value for '+flag);
  if(flag==='--batch-size')batchSize=Number(value);
  else if(flag==='--count')count=Number(value);
  else if(flag==='--recipient')recipient=value;
+ else if(flag==='--release-report')releaseReport=value;
  else throw Error('Unknown argument '+flag);
 }
 async function run(){
@@ -31,7 +32,7 @@ async function run(){
   readJSON('data/opensea/observed-2026-10-21.json'),
   readJSON('reports/staging-mint-plan.json'),
   readJSON('reports/onchain-new-ids-audit.json'),
-  readJSON('reports/solar-release-staging/release-report.json').catch(()=>null)
+  readJSON(releaseReport).catch(()=>null)
  ]);
  const ids=catalog.pending.map(x=>String(x.proposed_token_id));
  const received=Date.parse(audit.created_at);
