@@ -1,3 +1,7 @@
+## Archiviazione NFT senza canoni
+
+La nuova modalità Arweave permette un pagamento unico per immagini e metadata, senza R2. Mantiene intatti i 19 JSON storici e aggiunge pin ricorsivi Kubo per i vecchi contenuti IPFS: `npm run nft:ipfs:pin-originals -- --pin`. Il nodo deve restare accessibile per servire i vecchi URI. Nessuna pubblicazione reale è stata eseguita. [Procedura completa](docs/ARWEAVE-SENZA-ABBONAMENTO.md).
+
 # Risuonatore Solare — archivio NFT
 
 **Ottimizzazione mint (22/10/2026):** individuato `multiConfigure` del configuratore OpenSea ERC-1155, che può impostare le supply e mintare i nuovi NFT con **una transazione per lotto**. [Console e test locali aggiornati](docs/OPERATORE-LOCALE.md). Questo nuovo percorso non è ancora stato validato tramite un fork locale; nessun mint reale è stato effettuato e nessun GitHub Actions sarà utilizzato.
