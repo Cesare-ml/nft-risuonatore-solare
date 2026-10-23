@@ -29,7 +29,8 @@
     "nft:arweave:manifest": "node scripts/finalize-arweave-manifest.mjs",
     "nft:arweave:verify": "node scripts/verify-arweave-release.mjs",
     "nft:arweave:local": "node scripts/verify-arweave-local.mjs",
-    "nft:fork:arweave": "node scripts/fork-arweave-uri-proof.mjs --local-fork-only"
+    "nft:fork:arweave": "node scripts/fork-arweave-uri-proof.mjs --local-fork-only",
+    "nft:ipfs:pin-originals": "node scripts/pin-historic-cids.mjs"
   },
   "keywords": [],
   "author": "",
