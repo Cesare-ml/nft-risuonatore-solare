@@ -9,6 +9,7 @@ import {createHash} from 'node:crypto';
 import {resolve,dirname,join,sep,isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildManifest,arweaveBaseUri,ARWEAVE_ID,validateInventory,requireOk} from './lib/arweave-release.mjs';
+import {creditGate} from './lib/turbo-credits.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const STAGE=resolve(ROOT,'reports/arweave-one-time');
 const hash=data=>createHash('sha256').update(data).digest('hex');
@@ -100,13 +101,21 @@ async function main(){
  try{({TurboFactory}=await import('@ardrive/turbo-sdk'))}
  catch{throw Error('Install Turbo SDK locally: npm install --no-save @ardrive/turbo-sdk')}
  const turbo=TurboFactory.authenticated({privateKey:JWK,token:'arweave'});
- const price=Number((await turbo.getFiatEstimateForBytes({byteCount:bytes.length,currency:'usd'})).amount);
+ const [priceQuote,costs,balance,freeStatus]=await Promise.all([
+  turbo.getFiatEstimateForBytes({byteCount:bytes.length,currency:'usd'}),
+  turbo.getUploadCosts({bytes:[bytes.length]}),
+  turbo.getBalance(),turbo.getFreeStatus()
+ ]);
+ const price=Number(priceQuote.amount);
  requireOk(Number.isFinite(price)&&price>=0&&price<=maxUSD,'Manifest upload quote exceeds budget');
+ requireOk(Array.isArray(costs)&&costs.length===1,'Invalid manifest Turbo credit quote');
+ const credits=creditGate({cost:costs[0],balance,freeStatus,fileBytes:bytes.length});
  // Journal the ambiguous paid state before the external network request.
  // A crash may occur after Turbo accepted the bytes and before we got the ID.
  await writeFile(manifestLock,JSON.stringify({
   kind:'manifest',manifest_sha256:hash(bytes),metadata_receipts_sha256:hash(metaReceiptsBytes),
-  estimated_usd:price,started_at:new Date().toISOString()
+  estimated_usd:price,estimated_winc:credits.estimated_winc,
+  started_at:new Date().toISOString()
  },null,2)+'\n',{flag:'wx'});
  const result=await turbo.upload({
   data:bytes,
@@ -130,6 +139,7 @@ async function main(){
  await rename(tmp,target);
  await rm(manifestLock,{force:true});
  console.log(JSON.stringify({status:report.status,proposed_base_uri:report.proposed_base_uri,
-  public_polygon_transactions:0,monthly_fees_required:false,quoted_manifest_usd:price},null,2));
+  public_polygon_transactions:0,monthly_fees_required:false,
+  quoted_manifest_usd:price,estimated_winc:credits.estimated_winc},null,2));
 }
 main().catch(e=>{console.error('ARWEAVE MANIFEST STOPPED: '+e.message);process.exitCode=1});
