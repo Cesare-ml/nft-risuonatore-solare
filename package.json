@@ -23,7 +23,8 @@
     "nft:historic:images": "node scripts/verify-historic-ipfs-media.mjs",
     "nft:historic:images:verify": "node scripts/verify-historic-ipfs-media.mjs --verify-only",
     "nft:arweave:inventory": "node scripts/prepare-arweave-inventory.mjs",
-    "nft:arweave:quote": "node scripts/quote-arweave-release.mjs"
+    "nft:arweave:quote": "node scripts/quote-arweave-release.mjs",
+    "nft:arweave:upload": "node scripts/upload-arweave-items.mjs"
   },
   "keywords": [],
   "author": "",
