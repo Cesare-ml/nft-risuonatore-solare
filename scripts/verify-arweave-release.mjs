@@ -10,6 +10,7 @@ import {createHash} from 'node:crypto';
 import {resolve,dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {ARWEAVE_ID,HEX_ID,validateInventory,requireOk,arweaveBaseUri} from './lib/arweave-release.mjs';
+import {fetchVerifiedArweaveBytes} from './lib/arweave-gateway.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const STAGE=resolve(ROOT,'reports/arweave-one-time');
 const sha=b=>createHash('sha256').update(b).digest('hex');
@@ -19,23 +20,14 @@ const GATEWAYS=['https://arweave.net','https://turbo-gateway.com'];
 const REPORT=join(STAGE,'remote-verification.json');
 async function download(url,limit){
  for(let attempt=0;attempt<3;attempt++){
-  try{
-   const response=await fetch(url,{
-    signal:AbortSignal.timeout(30000),redirect:'error',
-    headers:{accept:'application/octet-stream'}
-   });
-   requireOk(response.ok,'HTTP '+response.status);
-   const headerLen=Number(response.headers.get('content-length')||0);
-   requireOk(headerLen<=limit,'Content-Length exceeds safe limit');
-   const raw=Buffer.from(await response.arrayBuffer());
-   requireOk(raw.length>0&&raw.length<=limit,'Remote file exceeds safe limit');
-   return raw;
-  }catch(e){
+  try{return await fetchVerifiedArweaveBytes(url,limit)}
+  catch(e){
    if(attempt===2)throw Error(url+': '+e.message);
    await new Promise(r=>setTimeout(r,1500*(attempt+1)));
   }
  }
 }
+
 async function main(){
  // Remove stale positive evidence BEFORE attempting a fresh verification.
  await rm(REPORT,{force:true});
